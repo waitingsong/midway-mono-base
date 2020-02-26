@@ -1,0 +1,326 @@
+# ---------------------------
+# Used work tags :
+# - `worker` for common jobs
+# - `cd-worker` for image pack, deploy, restart svcs
+# ---------------------------
+
+
+image: $NODE_CI_IMAGE
+include:
+  - local: '/.scripts/cd/.gitlab-cd.yml'
+
+stages:
+  - build
+  - testing
+  - rc-pack
+  - pre-release  # create release branch
+  - pre-publish
+  - publish
+  - pack
+  - deploy
+  - post-deploy
+
+variables:
+  GIT_STRATEGY: fetch
+  GIT_DEPTH: 10
+
+  # for branches except version tag
+  PACK_DEV_TAR: ""
+  PACK_DEV_IMG: ""
+  # only for master and release branches
+  PACK_RC_TAR: ""
+  PACK_RC_IMG: ""
+  # only for version tag
+  PACK_GA_TAR: ""
+  PACK_GA_IMG: "yes"
+  TAR_COMPRESSION_LEVEL: 7
+  IMG_COMPRESSION_LEVEL: 4
+
+  PUB_AS_BETA: ""
+  PUB_AS_LATEST: "yes"
+  PUB_AS_NEXT: ""
+
+  # for pull
+  NPM_REGISTRY: https://nexus.sundsoft.com/repository/npm-central/
+  # for npm publish, equal to version.registry of lerna.json (if exists)
+  NPM_VERSION_REGISTRY: https://nexus.sundsoft.com/repository/mynpm/
+  NPM_DIST: https://npm.taobao.org/dist
+  # restrict branch for version, equal to  version.allowBranch of lerna.json
+  RELEASE_BRANCH: release
+  BUILD_TMP_DIR: /tmp/build
+  PUB_LOG_LEVEL: error
+
+
+before_script:
+  - echo $SHELL
+  - echo $CI_SERVER_VERSION
+  - echo "$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/$CI_COMMIT_REF_NAME"
+  - echo $CI_COMMIT_REF_SLUG
+  - echo "$CI_COMMIT_TAG-$CI_COMMIT_SHORT_SHA"
+  - echo "$CI_PIPELINE_ID:$CI_JOB_ID"
+  - echo $GITLAB_USER_LOGIN
+  - git config --global protocol.version 2
+  - npm config set registry "$NPM_REGISTRY"
+  - npm config set disturl "$NPM_DIST"
+  - npm root -g
+  - node -v
+  - npm -v
+  - free -m
+  - df -hT
+  - du -sh *
+  - sh .scripts/ci/ci-prepare.sh
+  - source .scripts/util/import-myca.sh
+
+cache: &global_cache
+  key: cache_dev
+  paths:
+    - node_modules
+  policy: pull
+
+
+.build:
+  stage: build
+  tags:
+    - worker
+  variables:
+    GIT_DEPTH: 20
+  script:
+    - npm run bootstrap
+    - echo "$CI_COMMIT_MESSAGE" | node_modules/.bin/commitlint
+    - npm run lint:nofix
+    - npm run build
+    - npm run test
+
+build_dev:
+  extends: .build
+  except:
+    - master
+    - /^release.*/
+    - /^v\d+(\.\d+){2}.*/
+  cache:
+    <<: *global_cache
+    policy: pull-push
+
+build_rc:
+  extends: .build
+  only:
+    - master
+    - /^release.*/
+  except:
+    variables:
+      # no tag merging
+      - $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
+  cache:
+    <<: *global_cache
+    key: cache_release
+    policy: pull-push
+
+
+
+# create new release branch and push
+pre_release:
+  stage: pre-release
+  tags:
+    - worker
+  only:
+    - master
+  except:
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
+  cache: {}
+  variables:
+    GIT_STRATEGY: clone
+  script:
+    - sh .scripts/ci/ci-pre-publish.sh
+  # true for no blocked status
+  allow_failure: true
+  when: manual
+
+
+.rc-pack:
+  stage: rc-pack
+  tags:
+    - worker
+  artifacts:
+    expire_in: '7 day'
+    name: "$CI_PROJECT_NAME-$CI_COMMIT_REF_SLUG-$(date +%Y-%m-%d.%H_%M_%S)-$CI_COMMIT_SHORT_SHA"
+    paths:
+      - assets/
+  script:
+    - npm run bootstrap
+    - echo "$CI_COMMIT_MESSAGE" | node_modules/.bin/commitlint
+    - npm run lint:nofix
+    - npm run build
+    - npm run tar
+  when: manual
+
+tar_dev:
+  extends: .rc-pack
+  only:
+    refs:
+      - branches
+    variables:
+      - $PACK_DEV_TAR == "yes"
+  except:
+    - master
+    - /^release.*/
+    - /^v\d+(\.\d+){2}.*/
+
+tar_rc:
+  extends: .rc-pack
+  only:
+    variables:
+      - $CI_COMMIT_REF_NAME == "master"
+      - $CI_COMMIT_REF_NAME == $RELEASE_BRANCH
+  except:
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
+      - $PACK_RC_TAR != "yes"
+  cache:
+    <<: *global_cache
+    key: cache_release
+
+
+.build-image:
+  image: $NODE_DOCKER_IMAGE
+  tags:
+    # - worker
+    # should running on dedicated worker
+    - cd-worker
+  cache:
+    <<: *global_cache
+  script:
+    - npm run bootstrap
+    - npm run lint:nofix
+    - npm run build
+    - sh .scripts/build-images.sh
+    - free -m
+  when: manual
+
+image_dev:
+  extends: .build-image
+  stage: rc-pack
+  only:
+    refs:
+      - branches
+    variables:
+      - $PACK_DEV_IMG == "yes"
+  except:
+    - master
+    - /^release.*/
+    - /^v\d+(\.\d+){2}.*/
+
+image_rc:
+  extends: .build-image
+  stage: rc-pack
+  only:
+    refs:
+      # - master
+      - /^release.*/
+    variables:
+      - $PACK_RC_IMG == "yes"
+  except:
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
+  cache:
+    <<: *global_cache
+    key: cache_release
+
+
+.publish:
+  stage: publish
+  tags:
+    # - worker
+    # should running on dedicated worker
+    - cd-worker
+  cache: {}
+  variables:
+    GIT_STRATEGY: clone
+  only:
+    variables:
+      - $CI_COMMIT_REF_NAME == $RELEASE_BRANCH
+  allow_failure: false
+  # $GITLAB_USER_NAME will be deploy name if auto,
+  # and be the user of running the job if manual
+  when: manual
+
+# npm with latest
+publish_latest:
+  extends: .publish
+  script:
+    # workaround for preversion and prepack of pkg.scripts
+    - echo "unsafe-perm = true" >> ~/.npmrc
+    - bash .scripts/ci/ci-publish.sh --loglevel $PUB_LOG_LEVEL --conventional-commits --create-release gitlab
+  except:
+    variables:
+      - $PUB_AS_LATEST != "yes"
+      - $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
+
+# npm with beta
+publish_beta:
+  extends: .publish
+  script:
+    - echo "unsafe-perm = true" >> ~/.npmrc
+    - bash .scripts/ci/ci-publish.sh --loglevel $PUB_LOG_LEVEL --conventional-commits --create-release gitlab --dist-tag beta --force-publish=*
+  except:
+    variables:
+      - $PUB_AS_BETA != "yes"
+      - $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
+  allow_failure: true
+
+# npm with next
+publish_next:
+  extends: .publish
+  script:
+    - echo "unsafe-perm = true" >> ~/.npmrc
+    - bash .scripts/ci/ci-publish.sh --loglevel $PUB_LOG_LEVEL --conventional-commits --create-release gitlab --dist-tag next
+  except:
+    variables:
+      - $PUB_AS_NEXT != "yes"
+      - $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
+  allow_failure: true
+
+
+tar_ga:
+  stage: pack
+  tags:
+    - worker
+  only:
+    refs:
+      - /^v\d+(\.\d+){2}.*/
+    variables:
+      - $PACK_GA_TAR == "yes"
+  except:
+    refs:
+      - branches
+    variables:
+      - $CI_PUBLISH_COMPLETED != "true"
+  artifacts:
+    expire_in: '1 month'
+    name: "$CI_PROJECT_NAME-$CI_COMMIT_TAG-$(date +%Y-%m-%d.%H_%M_%S)-$CI_COMMIT_SHORT_SHA"
+    paths:
+      - assets/
+  cache: {}
+  when: delayed
+  start_in: 5 seconds
+  script:
+    - npm run tar
+
+
+image_ga:
+  extends: .build-image
+  stage: pack
+  only:
+    - /^v\d+(\.\d+){2}.*/
+  except:
+    refs:
+      - branches
+    variables:
+      - $PACK_GA_IMG != "yes"
+      - $CI_PUBLISH_COMPLETED != "true"
+  cache: {}
+  when: delayed
+  start_in: 5 seconds
+  script:
+    - sh .scripts/build-images.sh
+

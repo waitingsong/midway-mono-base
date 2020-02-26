@@ -1,6 +1,7 @@
 dbconfig.json
 package-lock.json
 yarn.lock
+package.json.lerna_backup
 
 .coveralls.yml
 .factorypath
@@ -23,6 +24,13 @@ Thumbs.db
 *.map
 *.md5
 *.[oa]
+
+
+# for lerna mono repo
+# egg
+/packages/*/*.js
+/packages/*/config/
+/packages/*/lib/
 
 
 # for java

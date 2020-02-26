@@ -1,0 +1,95 @@
+{
+  "name": "@scope/demo-service",
+  "version": "0.0.0",
+  "description": "",
+  "private": true,
+  "bin": {},
+  "dependencies": {
+    "@scope/docs": "^0.0.0",
+    "@waiting/base64": "4",
+    "@waiting/egg-fetch": "3",
+    "@waiting/egg-jwt": "3",
+    "@waiting/shared-core": "3",
+    "@waiting/shared-types": "3",
+    "egg-cors": "2",
+    "egg-kmore": "^0.14.0",
+    "egg-scripts": "^2.11.0",
+    "knex": "^0.20.0",
+    "midway": "1",
+    "pg": "^7.12.0",
+    "rxjs": "6"
+  },
+  "devDependencies": {
+    "cross-env": "7",
+    "midway-bin": "1"
+  },
+  "engines": {
+    "node": ">=12.16.0"
+  },
+  "files": [
+    "dist",
+    "Dockerfile",
+    "package-lock.json"
+  ],
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://"
+  },
+  "license": "",
+  "scripts": {
+    "build": "npm run db:gen && midway-bin build",
+    "ci": "cross-env TS_NODE_PROJECT=test/tsconfig.json npm run cov --ts",
+    "clean": "midway-bin clean",
+    "cov": "cross-env TS_NODE_PROJECT=test/tsconfig.json midway-bin cov --ts",
+    "db:gen": "kmore gen --path ./src",
+    "devtest": "cross-env TS_NODE_PROJECT=test/tsconfig.json midway-bin test --ts",
+    "debug": "cross-env NODE_ENV=local midway-bin debug --ts",
+    "dev": "cross-env NODE_ENV=local midway-bin dev --ts",
+    "lint": "eslint --fix --cache {src,test}/**/*.ts",
+    "lint:nofix": "eslint --cache {src,test}/**/*.ts",
+    "start": "egg-scripts start --daemon --framework=midway --ts --workers=4",
+    "start_build": "npm run clean && npm run build && cross-env NODE_ENV=development midway-bin dev --ts",
+    "start_docker": "egg-scripts start --framework=midway --ts --workers=4",
+    "stop": "egg-scripts stop",
+    "test": "npm run devtest"
+  },
+  "midway-bin-clean": [
+    ".vscode/.tsbuildinfo",
+    "dist",
+    "logs",
+    "run"
+  ],
+  "midway-bin-build": {
+    "include": [
+      "app/public",
+      "app/view"
+    ]
+  },
+  "nyc": {
+    "include": [
+      "src/**/*.ts"
+    ],
+    "exclude": [
+      ".githooks",
+      "dist",
+      "node_modules*",
+      "src/bin",
+      "src/domain.ts",
+      "src/interface.ts",
+      "test*",
+      "**/node_modules*",
+      "**/*.d.ts",
+      "**/*.js"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "reporter": [
+      "text-summary",
+      "json",
+      "html"
+    ],
+    "all": true
+  }
+}

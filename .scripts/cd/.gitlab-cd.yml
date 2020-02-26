@@ -1,0 +1,137 @@
+# ---------------------------
+# Used work tags :
+# - `cd-worker` for image pack, deploy, restart svcs
+# ---------------------------
+
+
+.deploy:
+  image: $NODE_DOCKER_IMAGE
+  tags:
+    # - worker
+    # should running on dedicated worker
+    - cd-worker
+  cache: {}
+  when: delayed
+  start_in: 5 seconds
+
+# Caution: not available if deploy_ga completed (due to branch release deleted)
+deploy_rc:
+  extends: .deploy
+  stage: pre-publish
+  only:
+    refs:
+      - /^release.*/
+    variables:
+      - $PACK_RC_IMG == "yes"
+  except:
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
+  needs:
+    - image_rc
+    # - tar_rc
+  script:
+    - sh .scripts/cd-distribute-images.sh
+
+depoly_ga:
+  extends: .deploy
+  stage: deploy
+  only:
+    refs:
+      - /^v\d+(\.\d+){2}.*/
+    variables:
+      - $PACK_GA_IMG == "yes"
+  except:
+    refs:
+      - branches
+    variables:
+      - $CI_PUBLISH_COMPLETED != "true"
+  needs:
+    - image_ga
+    # - tar_ga
+  script:
+    - sh .scripts/cd-distribute-images.sh
+
+
+.restart-services:
+  tags:
+    # - worker
+    # should running on dedicated worker
+    - cd-worker
+  variables:
+    GIT_DEPTH: 5
+  cache: {}
+  allow_failure: true
+  when: manual
+
+restart_svcs_rc:
+  extends: .restart-services
+  stage: pre-publish
+  only:
+    refs:
+      - /^release.*/
+    variables:
+      - $PACK_RC_IMG == "yes"
+  except:
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
+  needs:
+    - image_rc
+    # - tar_rc
+  script:
+    - sh .scripts/cd/cd-restart-services.sh
+  allow_failure: true
+
+restart_svcs_ga:
+  extends: .restart-services
+  stage: post-deploy
+  only:
+    - /^v\d+(\.\d+){2}.*/
+  except:
+    refs:
+      - branches
+    variables:
+      - $CI_PUBLISH_COMPLETED != "true"
+  needs:
+    - image_ga
+    # - tar_ga
+  script:
+    - sh .scripts/cd/cd-restart-services.sh
+
+
+.rm-images:
+  image: $NODE_DOCKER_IMAGE
+  tags:
+    # - worker
+    # should running on dedicated worker
+    - cd-worker
+  variables:
+    GIT_DEPTH: 5
+  cache: {}
+  except:
+    refs:
+      - branches
+    variables:
+      - $CI_PUBLISH_COMPLETED != "true"
+  allow_failure: true
+  when: manual
+
+rm_local_images_ga:
+  extends: .rm-images
+  stage: post-deploy
+  only:
+    - /^v\d+(\.\d+){2}.*/
+  needs:
+    - image_ga
+  script:
+    - sh .scripts/cd/cd-rm-local-images.sh
+
+rm_remote_images_ga:
+  extends: .rm-images
+  stage: post-deploy
+  only:
+    - /^v\d+(\.\d+){2}.*/
+  needs:
+    - image_ga
+  script:
+    - sh .scripts/cd/cd-rm-remote-images.sh
+

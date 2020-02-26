@@ -1,0 +1,34 @@
+{
+  "name": "@scope/docs",
+  "version": "0.0.0",
+  "description": "",
+  "private": true,
+  "bin": {},
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "dependencies": {
+    "@waiting/shared-types": "3"
+  },
+  "devDependencies": { },
+  "files": [
+    "dist",
+    "Dockerfile",
+    "package-lock.json"
+  ],
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://"
+  },
+  "license": "",
+  "scripts": {
+    "build": "npm run tsc",
+    "clean": "rm -rf dist/* .vscode/.tsbuildinfo",
+    "lint": "eslint --fix --cache src/**/*.ts",
+    "lint:nofix": "eslint --cache src/**/*.ts",
+    "test": "npm run lint:nofix",
+    "tsc": "tsc -p tsconfig.json",
+    "tsc:w": "tsc -p tsconfig.json -w"
+  }
+}
