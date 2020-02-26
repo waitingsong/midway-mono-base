@@ -3,12 +3,12 @@ import { JsonType } from '@waiting/shared-types'
 
 /** UC 应用列表 */
 export interface TbApp {
-  appId: number
-  appName: string
-  appUrl: string
-  appValid: number
-  appSecret: string
-  allowIps: string[]
+  app_id: number
+  app_name: string
+  app_url: string
+  app_valid: number
+  app_authkey: string
+  allow_ips: string[]
   ctime: string | Date
   mtime: string | Date
 }
@@ -16,8 +16,8 @@ export interface TbApp {
 /** UC 注册用户基础信息 */
 export interface TbMember {
   uid: number
-  userName: string
-  userValid: number
+  user_name: string
+  user_valid: number
   sex: number
   passwd: string
   salt: string
