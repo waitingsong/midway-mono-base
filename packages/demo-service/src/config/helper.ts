@@ -5,7 +5,7 @@ import { JwtConfig } from '@waiting/egg-jwt'
 import { UcTbListModel } from './db.model'
 
 
-const master: ClientOpts = {
+const master: ClientOpts<UcTbListModel> = {
   knexConfig: {
     client: 'pg',
     connection: {
@@ -16,10 +16,10 @@ const master: ClientOpts = {
     },
     acquireConnectionTimeout: 10000,
   },
-  tables: genTbListFromType<UcTbListModel>(),
+  kTables: genTbListFromType<UcTbListModel>(),
 }
 
-export const kmore: EggKmoreConfig = {
+export const kmore: EggKmoreConfig<UcTbListModel> = {
   client: master,
 }
 

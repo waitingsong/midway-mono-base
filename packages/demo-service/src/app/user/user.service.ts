@@ -1,4 +1,7 @@
-import { provide } from 'midway'
+import {
+  // plugin,
+  provide,
+} from 'midway'
 // import { DbModel } from 'egg-kmore'
 
 // import { UcTbListModel } from '../../config/db.model'
@@ -28,7 +31,8 @@ export class UserService {
   }
 
 
-  /* Ensure kmore plugin enabled in config/plugin.ts
+  // Ensure kmore plugin enabled in config/plugin.ts
+  /*
   public async getUserName(options: GetUserOpts): Promise<UserInfo['userName']> {
     const { rb } = this.db
 

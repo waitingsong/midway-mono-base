@@ -8,4 +8,3 @@ export interface UcTbListModel {
   tb_app: Uc.TbApp
   tb_user: Uc.TbMember
 }
-

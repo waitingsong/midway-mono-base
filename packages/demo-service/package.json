@@ -12,7 +12,7 @@
     "@waiting/shared-core": "3",
     "@waiting/shared-types": "3",
     "egg-cors": "2",
-    "egg-kmore": "^0.14.0",
+    "egg-kmore": "^0.15.0",
     "egg-scripts": "^2.11.0",
     "knex": "^0.20.0",
     "midway": "1",
