@@ -1,7 +1,7 @@
-import * as assert from 'power-assert'
+import { Jwt, JwtMsg, schemePrefix } from '@waiting/egg-jwt'
 import { basename, join } from '@waiting/shared-core'
 import { app } from 'midway-mock/bootstrap'
-import { Jwt, JwtMsg, schemePrefix } from '@waiting/egg-jwt'
+import * as assert from 'power-assert'
 
 
 const filename = basename(__filename)

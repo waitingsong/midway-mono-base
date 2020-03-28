@@ -1,9 +1,9 @@
-import {
-  Context, config, controller, get, provide, plugin,
-} from 'midway'
 import { Fetch, RxRequestInit } from '@waiting/egg-fetch'
 import { Jwt } from '@waiting/egg-jwt'
 import { NpmPkg } from '@waiting/shared-types'
+import {
+  Context, config, controller, get, provide, plugin,
+} from 'midway'
 
 
 @provide()

@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs'
 
-import { EggAppInfo } from 'midway'
 import { join } from '@waiting/shared-core'
+import { EggAppInfo } from 'midway'
 
 import { DefaultConfig } from './config.modal'
 

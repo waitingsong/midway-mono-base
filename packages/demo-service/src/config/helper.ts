@@ -1,6 +1,6 @@
-import { Context } from 'midway'
-import { EggKmoreConfig, genTbListFromType, ClientOpts } from 'egg-kmore'
 import { JwtConfig } from '@waiting/egg-jwt'
+import { EggKmoreConfig, genTbListFromType, ClientOpts } from 'egg-kmore'
+import { Context } from 'midway'
 
 import { UcTbListModel } from './db.model'
 
