@@ -12,7 +12,7 @@
     "@types/rewire": "2",
     "@types/rimraf": "3",
     "@types/yargs": "15",
-    "@waiting/eslint-config": "4",
+    "@waiting/eslint-config": "5",
     "coveralls": "3",
     "debug": "^4.1.0",
     "eslint": "6",
@@ -28,6 +28,9 @@
     "ts-node": "8",
     "typescript": "3",
     "yargs": "15"
+  },
+  "engines": {
+    "node": ">=12.16.0"
   },
   "scripts": {
     "bp:add": "git remote add bp https://github.com/waitingsong/midway-mono-base",
