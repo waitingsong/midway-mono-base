@@ -9,7 +9,6 @@
 # - GL_TOKEN (optinal for creating release to gitlab)
 # --------------
 
-
 appDir=`pwd`
 scriptDir="$appDir/.scripts"
 
@@ -76,7 +75,7 @@ npm run bootstrap
 source $scriptDir/build.sh
 
 echo -e ">>> lerna publishing..."
-git add --ignore-errors .
+git add --ignore-errors ./packages
 lerna publish $*
 sleep "5s"
 git push --follow-tags origin
