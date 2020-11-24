@@ -1,5 +1,5 @@
 import { JwtConfig } from '@waiting/egg-jwt'
-import { Config } from 'egg-kmore'
+import { KnexConfig } from 'egg-kmore'
 import { EggAppConfig, PowerPartial } from 'midway'
 
 
@@ -21,6 +21,6 @@ export const enum DbName {
 }
 export type DbNameKeys = keyof typeof DbName
 export type DbConfigList = {
-  readonly [name in DbNameKeys]: Readonly<Config>
+  readonly [name in DbNameKeys]: Readonly<KnexConfig>
 }
 

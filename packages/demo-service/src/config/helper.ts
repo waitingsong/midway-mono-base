@@ -1,5 +1,5 @@
 import { JwtConfig } from '@waiting/egg-jwt'
-import { EggKmoreConfig, genTbListFromType, ClientOpts } from 'egg-kmore'
+import { EggKmoreConfig, genDbDictFromType, ClientOpts } from 'egg-kmore'
 import { Context } from 'midway'
 
 import { UcTbListModel } from './db.model'
@@ -16,7 +16,7 @@ const master: ClientOpts<UcTbListModel> = {
     },
     acquireConnectionTimeout: 10000,
   },
-  kTables: genTbListFromType<UcTbListModel>(),
+  dbDict: genDbDictFromType<UcTbListModel>(),
 }
 
 export const kmore: EggKmoreConfig<UcTbListModel> = {
@@ -37,7 +37,7 @@ export const jwt: JwtConfig = {
 }
 
 // see: test/app/home/home.test.ts
-async function testJumpTo(ctx: Context) {
+async function testJumpTo(ctx: Context): Promise<string | false> {
   return ctx.method === 'GET' && ctx.path === '/test_passthrough_redirect'
     ? '/test_passthrough_redirect_path'
     : false

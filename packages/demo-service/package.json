@@ -9,14 +9,14 @@
     "@waiting/base64": "4",
     "@waiting/egg-fetch": "3",
     "@waiting/egg-jwt": "3",
-    "@waiting/shared-core": "4",
-    "@waiting/shared-types": "4",
+    "@waiting/shared-core": "5",
+    "@waiting/shared-types": "5",
     "egg-cors": "2",
-    "egg-kmore": "^0.15.0",
+    "egg-kmore": "^2.0.0",
     "egg-scripts": "^2.11.0",
-    "knex": "^0.20.0",
+    "knex": "^0.21.0",
     "midway": "1",
-    "pg": "^7.12.0",
+    "pg": "^8.5.0",
     "rxjs": "6"
   },
   "devDependencies": {
@@ -24,7 +24,7 @@
     "midway-bin": "1"
   },
   "engines": {
-    "node": ">=12.16.0"
+    "node": ">=14.15.0"
   },
   "files": [
     "dist",

@@ -1,13 +1,13 @@
 {
   "name": "midway-mono-base",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "monorepo",
   "private": true,
   "devDependencies": {
-    "@commitlint/cli": "8",
-    "@commitlint/config-conventional": "8",
-    "@types/mocha": "7",
-    "@types/node": "13",
+    "@commitlint/cli": "11",
+    "@commitlint/config-conventional": "11",
+    "@types/mocha": "8",
+    "@types/node": "14",
     "@types/power-assert": "1",
     "@types/rewire": "2",
     "@types/rimraf": "3",
@@ -15,22 +15,22 @@
     "@waiting/eslint-config": "5",
     "coveralls": "3",
     "debug": "^4.1.0",
-    "eslint": "6",
+    "eslint": "7",
     "lerna": "3",
     "midway-mock": "1",
-    "mocha": "7",
+    "mocha": "8",
     "mocha-lcov-reporter": "1",
     "nyc": "15",
     "power-assert": "1",
     "rewire": "5",
     "rimraf": "3",
     "rxrunscript": "5",
-    "ts-node": "8",
-    "typescript": "3",
-    "yargs": "15"
+    "ts-node": "9",
+    "typescript": "4",
+    "yargs": "16"
   },
   "engines": {
-    "node": ">=12.16.0"
+    "node": ">=14.15.0"
   },
   "scripts": {
     "bp:add": "git remote add bp https://github.com/waitingsong/midway-mono-base",

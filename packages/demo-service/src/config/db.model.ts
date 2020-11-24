@@ -1,10 +1,11 @@
 import { Uc } from '@scope/docs'
+import { DbModel } from 'kmore';
 
 
 /**
  * 设定链接库表
  */
-export interface UcTbListModel {
+export interface UcTbListModel extends DbModel {
   tb_app: Uc.TbApp
   tb_user: Uc.TbMember
 }

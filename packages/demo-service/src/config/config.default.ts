@@ -4,8 +4,10 @@ import { join } from '@waiting/shared-core'
 import { EggAppInfo } from 'midway'
 
 import { DefaultConfig } from './config.modal'
+import { jwt } from './helper'
 
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export default (appInfo: EggAppInfo) => {
   const config = {} as DefaultConfig
 
@@ -33,7 +35,7 @@ export default (appInfo: EggAppInfo) => {
   }
 
   config.jwt = {
-    enable: true, // enable middleware
+    ...jwt,
     client: {
       authOpts: {
         cookie: 'access_token',
@@ -42,7 +44,7 @@ export default (appInfo: EggAppInfo) => {
       },
       secret: config.keys, // update it!
     },
-    ignore: [/^\/$/u, '/login', '/hello', '/test_sign', '/ip'],
+    // ignore: [/^\/$/u, '/login', '/hello', '/test_sign', '/ip', '/ping'],
   }
 
   return config

@@ -10,7 +10,7 @@ import { UserService } from './user.service'
 export class UserController {
 
   constructor(
-    @inject() private userService: UserService,
+    @inject() private readonly userService: UserService,
   ) { }
 
   @get('/:uid')
