@@ -21,7 +21,9 @@
   },
   "devDependencies": {
     "cross-env": "7",
-    "midway-bin": "1"
+    "kmore": "^2.0.0",
+    "midway-bin": "1",
+    "power-assert": "1"
   },
   "engines": {
     "node": ">=14.15.0"
