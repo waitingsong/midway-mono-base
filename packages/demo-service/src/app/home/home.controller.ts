@@ -56,7 +56,7 @@ pkgVer: "${this.pkg.version ?? 'n/a'}"
   }
 
   @get('/ip')
-  public async ip(ctx: Context) {
+  public async ip(ctx: Context): Promise<void> {
     // const url = 'http://ip.360.cn/IPShare/info'
     const url = 'https://www.taobao.com/help/getip.php'
     const args: RxRequestInit = {
