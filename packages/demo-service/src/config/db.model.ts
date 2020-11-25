@@ -1,5 +1,5 @@
 import { Uc } from '@scope/docs'
-import { DbModel } from 'kmore';
+import { DbModel } from 'egg-kmore'
 
 
 /**

@@ -21,7 +21,7 @@ export class HomeController {
   public index(ctx: Context): void {
     const msg = `${this.welcomeMsg} - ${ctx.api.reqTimeStr}
 pkgName: "${this.pkg.name}"
-pkgVer: "${this.pkg.version}"
+pkgVer: "${this.pkg.version ?? 'n/a'}"
     `
     ctx.body = msg
   }
@@ -35,19 +35,19 @@ pkgVer: "${this.pkg.version}"
   public hello(ctx: Context): void {
     const msg = `${this.welcomeMsg} - ${ctx.api.reqTimeStr}
 pkgName: "${this.pkg.name}"
-pkgVer: "${this.pkg.version}"
+pkgVer: "${this.pkg.version ?? 'n/a'}"
     `
     ctx.body = msg
   }
 
   @get('/token')
-  public token(ctx: Context) {
-    const payload = ctx.state && ctx.state.user ? JSON.stringify(ctx.state.user) : 'Not found'
+  public token(ctx: Context): void {
+    const payload = ctx.jwtState?.user ? JSON.stringify(ctx.jwtState.user) : 'Not found'
     ctx.body = `\nRequest: ${payload}`
   }
 
   @get('/test_sign')
-  public sign(ctx: Context) {
+  public sign(ctx: Context): void {
     const payload = { foo: 'bar' }
     const token = this.jwt.sign(payload)
     const valid = this.jwt.verify(token)

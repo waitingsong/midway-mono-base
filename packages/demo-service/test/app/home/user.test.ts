@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Jwt, JwtMsg, schemePrefix } from '@waiting/egg-jwt'
 import { basename, join } from '@waiting/shared-core'
 import { JsonResp } from '@waiting/shared-types'

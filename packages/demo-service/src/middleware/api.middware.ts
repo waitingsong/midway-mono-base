@@ -14,3 +14,15 @@ export class ApiMiddleware implements WebMiddleware {
   }
 
 }
+
+declare module 'egg' {
+  interface Context {
+    api: {
+      /** From api.middleware.ts */
+      reqTimeStr: string,
+    }
+    jwtState?: {
+      user: string,
+    }
+  }
+}

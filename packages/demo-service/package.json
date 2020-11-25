@@ -21,8 +21,8 @@
   },
   "devDependencies": {
     "cross-env": "7",
-    "kmore": "^2.0.0",
     "midway-bin": "1",
+    "midway-mock": "1",
     "power-assert": "1"
   },
   "engines": {

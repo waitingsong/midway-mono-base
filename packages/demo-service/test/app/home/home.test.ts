@@ -18,6 +18,7 @@ describe(filename, () => {
   it('should assert', async () => {
     // eslint-disable-next-line
     const pkg = require('../../../package.json')
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     assert(app.config.keys.startsWith(pkg.name))
     const ctx = app.mockContext({})
     // await ctx.service.xx();
@@ -108,7 +109,9 @@ describe(filename, () => {
         .set('authorization', `${schemePrefix} ${token1}  \v`)
     }
     catch (ex) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       assert(ex && ex.message.includes('Invalid character in header content'))
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       assert(ex && ex.message.includes('["authorization"]'))
     }
   })
