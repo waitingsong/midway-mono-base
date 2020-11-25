@@ -3,6 +3,8 @@ import { basename, join } from '@waiting/shared-core'
 import { app } from 'midway-mock/bootstrap'
 import * as assert from 'power-assert'
 
+import * as JwtType from '../../../src/config/config.modal'
+
 
 const filename = basename(__filename)
 
@@ -130,6 +132,7 @@ describe(filename, () => {
   it('should works with header auth', async () => {
     // npm run test/cov read different config file (local|unittest)
     const jwt = new Jwt({
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       secret: app.config.jwt.client.secret,
     })
     const token2 = jwt.sign({ foo: 'bar', iat: 1566629919 })

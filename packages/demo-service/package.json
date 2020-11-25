@@ -8,7 +8,7 @@
     "@scope/docs": "^0.0.0",
     "@waiting/base64": "4",
     "@waiting/egg-fetch": "3",
-    "@waiting/egg-jwt": "3",
+    "@waiting/egg-jwt": "4",
     "@waiting/shared-core": "5",
     "@waiting/shared-types": "5",
     "egg-cors": "2",

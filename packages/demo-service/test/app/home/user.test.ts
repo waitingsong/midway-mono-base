@@ -6,6 +6,7 @@ import { app } from 'midway-mock/bootstrap'
 import * as assert from 'power-assert'
 
 import { UserInfo } from '../../../src/app/user/user.model'
+import * as JwtType from '../../../src/config/config.modal'
 
 
 const filename = basename(__filename)

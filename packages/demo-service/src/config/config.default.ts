@@ -8,7 +8,7 @@ import { jwt } from './helper'
 
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export default (appInfo: EggAppInfo) => {
+export default (appInfo: EggAppInfo): DefaultConfig => {
   const config = {} as DefaultConfig
 
   // use for cookie sign key, should change to your own and keep security
@@ -39,7 +39,6 @@ export default (appInfo: EggAppInfo) => {
     client: {
       authOpts: {
         cookie: 'access_token',
-        key: 'user',
         passthrough: false,
       },
       secret: config.keys, // update it!

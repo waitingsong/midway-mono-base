@@ -28,7 +28,6 @@ export const jwt: JwtConfig = {
   client: {
     authOpts: {
       cookie: 'access_token',
-      key: 'user',
       passthrough: testJumpTo,
     },
     secret: '123456abc',
