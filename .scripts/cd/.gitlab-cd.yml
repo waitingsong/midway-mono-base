@@ -45,6 +45,8 @@ depoly_ga:
       - branches
     variables:
       - $CI_PUBLISH_COMPLETED != "true"
+      # /help/user/project/releases/index#prevent-unintentional-releases-by-setting-a-deploy-freeze
+      - $CI_DEPLOY_FREEZE != null
   needs:
     - image_ga
     # - tar_ga
