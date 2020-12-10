@@ -20,8 +20,9 @@ NPM scope: `@scope`
 | [`service`] | [![service-svg]][service-ch] |
 
 
-## Initialize
+## Initialize and install dependencies
 
+run it at first time and any time
 ```sh
 npm run repo:init
 ```
@@ -29,8 +30,13 @@ npm run repo:init
 
 ## Compile
 
+Run under root folder
 ```sh
 npm run build
+# specify scope
+npm run build @scope/demo-docs
+# specify scopes
+npm run build @scope/demo-docs @scope/demo-serivce
 ```
 
 
@@ -51,6 +57,7 @@ npm run bootstrap
 
 - Run `npm run clean` before `npm run build`, if any file under typescript outDir folder was deleted manually.
 - Default publish registry is `NPM`, configurated in file `lerna.json`
+- Any commands above (such as `npm run build`) running in `Git-Bash` under Windows OS
 
 
 ## Global Documents
@@ -74,6 +81,8 @@ npm run bootstrap
 - [egg-jwt]
 - [egg-kmore]
 
+
+<br>
 
 [Midway]: https://midwayjs.org/midway
 [Eggjs]: https://eggjs.org
