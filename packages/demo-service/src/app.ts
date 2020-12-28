@@ -1,21 +1,38 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
-import { EggApplication } from 'midway'
+import { NpmPkg } from '@waiting/shared-types'
+import { Application } from 'egg'
 
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export default (app: EggApplication): void => {
-  app.beforeStart((): void => {
-    console.log('🚀 Your awesome APP is launching...')
+// https://eggjs.org/zh-cn/advanced/loader.html
+export default class AppBootHook {
 
-    const { pkg } = app.config
-    console.info({
+  constructor(public readonly app: Application) {
+  }
+
+  // configWillLoad(): void {
+  //   console.log('🚀 Your APP is launching...')
+  // }
+
+  // Config, plugin files have been loaded.
+  configDidLoad(): void {
+    // 增加全局错误处理中间件
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    this.app.config.coreMiddleware.unshift('errorHandlerMiddleware')
+  }
+
+  async serverDidReady(): Promise<void> {
+    // Server is listening.
+    const { pkg }: { pkg: NpmPkg } = this.app.config
+    const info = {
       pkgName: pkg.name,
       pkgVersion: pkg.version,
-    })
+    }
+    console.log('✅ Your APP launched', info)
+  }
 
-    console.log('✅  Your awesome APP launched')
-  })
+  // async beforeClose(): Promise<void> {
+  //   console.log('Your APP Closed')
+  // }
+
 }
+

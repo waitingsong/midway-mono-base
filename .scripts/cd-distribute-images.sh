@@ -8,6 +8,7 @@
 # - CD_SSH_PORT: optional, Default 22
 # - CD_SSH_PRIVATE_KEY: base64 encoded
 # - IMG_COMPRESSION_LEVEL: defined in .gitlab-ci.yml
+# - ZSTD_CLEVEL: defined in .gitlab-ci.yml
 # ---------------------------
 
 echo -e "-------------------------------------------"
@@ -83,8 +84,8 @@ do
   echo -e "------------------------------"
 
   echo -e ">>> Compressing image of $pkg"
-  time docker save "$imgPatch" | xz > /tmp/$fileNameNormVer.xz
-  ls -l /tmp/$fileNameNormVer.xz
+  time docker save "$imgPatch" | zstdmt > /tmp/$fileNameNormVer.zst
+  ls -l /tmp/$fileNameNormVer.zst
 
   if [ $imgExists == 2 ]; then
     echo -e ">>> Cleaning local image of $pkg"
@@ -93,13 +94,14 @@ do
 
   echo -e ">>> Distributing image of $pkg"
   set -e
-  scp -p -P $CD_SSH_PORT /tmp/$fileNameNormVer.xz $CD_SSH_USER@$CD_SSH_HOST:/tmp/
+  scp -p -P $CD_SSH_PORT /tmp/$fileNameNormVer.zst $CD_SSH_USER@$CD_SSH_HOST:/tmp/
   set +e
-  rm /tmp/$fileNameNormVer.xz -f
+  rm /tmp/$fileNameNormVer.zst -f
 
   echo -e ">>> Loading image of $pkg on deploy"
-  cmd="time xz -cd /tmp/$fileNameNormVer.xz | docker load \
-    && rm /tmp/$fileNameNormVer.xz -f \
+
+  cmd="time sh -c "zstdmt -cd /tmp/$fileNameNormVer.zst | docker load " \
+    && rm /tmp/$fileNameNormVer.zst -f \
     && echo -e '\\n' \
     && docker image ls | grep -F '$pkgImgNameNorm' | grep -F '$patchVer' | head -n 10"
   echo "cmd: \"$cmd\""

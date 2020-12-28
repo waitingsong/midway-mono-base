@@ -1,13 +1,12 @@
 # Midway mono repository
 
 
-[![pipeline status](https://gitlab.foo.com/your-group/apps/badges/master/pipeline.svg)](https://gitlab.foo.com/your-group/apps/commits/master)
 [![GitHub tag](https://img.shields.io/github/tag/waitingsong/midway-mono-base.svg)]()
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![](https://img.shields.io/badge/lang-TypeScript-blue.svg)]()
-[![Node CI](https://github.com/waitingsong/midway-mono-base/workflows/Node%20CI/badge.svg)](https://github.com/waitingsong/midway-mono-base/actions?query=workflow%3A%22Node+CI%22)
+[![ci](https://github.com/waitingsong/midway-mono-base/workflows/ci/badge.svg)](https://github.com/waitingsong/midway-mono-base/actions?query=workflow%3A%22ci%22)
+[![codecov](https://codecov.io/gh/waitingsong/midway-mono-base/branch/master/graph/badge.svg?token=64mSqC475E)](https://codecov.io/gh/waitingsong/midway-mono-base)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
-[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
 
 
 ## Packages
@@ -52,6 +51,14 @@ npm run bootstrap
 - Use `npm run lint` to check code style.
 - Use `npm run test` to run unit test.
 
+## Clan or Purge
+
+```sh
+# clean build dis and cache
+npm run clean
+# clean and remove all node_modules
+npm run purge
+```
 
 ## Note
 
@@ -60,35 +67,24 @@ npm run bootstrap
 - Any commands above (such as `npm run build`) running in `Git-Bash` under Windows OS
 
 
-## Global Documents
-
-- [文档目录结构](packages/demo-docs/rule/docs-map.rule.md)
-- [服务目录结构](packages/demo-docs/rule/service-map.rule.md)
-- [数据库设计](packages/demo-docs/rule/db.rule.md)
-- [服务设计](packages/demo-docs/rule/design.rule.md)
-
-
 ## Project Documents
 
+- [Wiki](https://git.foo.com/group/services/-/wikis/home)
 - [docs](packages/docs/)
 
 
 ## Freamwork and Plugin Documents
 
 - [Midway]
+- [Midway v2 docs]
 - [Eggjs]
-- [egg-fetch]
-- [egg-jwt]
-- [egg-kmore]
 
 
 <br>
 
 [Midway]: https://midwayjs.org/midway
+[Midway v2 Docs]: https://www.yuque.com/midwayjs/midway_v2
 [Eggjs]: https://eggjs.org
-[egg-fetch]: https://github.com/waitingsong/egg-fetch
-[egg-jwt]: https://github.com/waitingsong/egg-jwt
-[egg-kmore]: https://github.com/waitingsong/egg-kmore
 
 
 [`docs`]: https://github.com/waitingsong/midway-mono-base/tree/master/packages/demo-docs

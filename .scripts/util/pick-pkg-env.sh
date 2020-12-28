@@ -3,7 +3,8 @@
 # Should under the folder <project>/packages/<some-pkg>
 
 if [ ! -f "package.json" ]; then
-  echo -e "package.json not exists!"
+  echo -e "package.json not exists!, current dir:"
+  pwd
   exit 1
 fi
 

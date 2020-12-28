@@ -1,0 +1,16 @@
+
+services:
+  - name: $PG_IMAGE
+    alias: postgres
+  - name: $REDIS_IMAGE
+    alias: redis
+
+variables:
+  POSTGRES_DB: db_ci_test
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_HOST_AUTH_METHOD: trust
+
+  REDIS_HOST: redis
+  REDIS_PORT: 6379
+

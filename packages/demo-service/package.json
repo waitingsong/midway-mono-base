@@ -5,24 +5,29 @@
   "private": true,
   "bin": {},
   "dependencies": {
+    "@midwayjs/bootstrap": "^2.6.9",
+    "@midwayjs/decorator": "^2.6.8",
+    "@midwayjs/web": "^2.6.9",
     "@scope/docs": "^0.0.0",
     "@waiting/base64": "4",
     "@waiting/egg-fetch": "3",
-    "@waiting/egg-jwt": "4",
+    "@waiting/egg-jwt": "5",
     "@waiting/shared-core": "5",
     "@waiting/shared-types": "5",
+    "egg": "^2.0.0",
     "egg-cors": "2",
     "egg-kmore": "^2.0.0",
+    "egg-koid": "^3.0.0",
+    "egg-redis": "^2.4.0",
     "egg-scripts": "^2.11.0",
     "knex": "^0.21.0",
-    "midway": "1",
     "pg": "^8.5.0",
-    "rxjs": "6"
+    "tsconfig-paths": "3"
   },
   "devDependencies": {
+    "@midwayjs/mock": "^2.6.9",
     "cross-env": "7",
-    "midway-bin": "1",
-    "midway-mock": "1",
+    "kmore-cli": "2",
     "power-assert": "1"
   },
   "engines": {
@@ -40,24 +45,32 @@
   },
   "license": "",
   "scripts": {
-    "build": "npm run db:gen && midway-bin build",
-    "ci": "cross-env TS_NODE_PROJECT=test/tsconfig.json npm run cov --ts",
-    "clean": "midway-bin clean",
+    "build": "npm run db:gen && midway-bin build -c",
+    "clean": "npm run clean:lock && npm run clean:cache && npm run clean:mw",
+    "clean:cache": "rm .eslintcache -f & rm src/**/.kmore.ts -f & rm src/**/helper.__built-dict.ts -f",
+    "clean:lock": "rm package-lock.json -f",
+    "clean:mw": "midway-bin clean",
     "cov": "cross-env TS_NODE_PROJECT=test/tsconfig.json midway-bin cov --ts",
+    "cov:local": "cross-env TS_NODE_PROJECT=test/tsconfig.json ../../node_modules/.bin/midway-bin cov --ts",
     "db:gen": "kmore gen --path ./src",
-    "devtest": "cross-env TS_NODE_PROJECT=test/tsconfig.json midway-bin test --ts",
-    "debug": "cross-env NODE_ENV=local midway-bin debug --ts",
-    "dev": "cross-env NODE_ENV=local midway-bin dev --ts",
+    "debug": "cross-env NODE_ENV=local ../../node_modules/.bin/midway-bin dev --debug --ts",
+    "dev": "cross-env NODE_ENV=local ../../node_modules/.bin/midway-bin dev --ts",
+    "dev:debug": "cross-env NODE_DEBUG=midway* NODE_ENV=local ../../node_modules/.bin/midway-bin dev --ts",
     "lint": "eslint --fix --cache {src,test}/**/*.ts",
     "lint:nofix": "eslint --cache {src,test}/**/*.ts",
-    "start": "egg-scripts start --daemon --framework=midway --ts --workers=4",
+    "purge": "npm run clean && rm node_modules -rf",
+    "start": "egg-scripts start --daemon --framework=@midwayjs/web --title=midway-server-svc --workers=4",
     "start_build": "npm run clean && npm run build && cross-env NODE_ENV=development midway-bin dev --ts",
-    "start_docker": "egg-scripts start --framework=midway --ts --workers=4",
-    "stop": "egg-scripts stop",
-    "test": "npm run devtest"
+    "start_docker": "egg-scripts start --framework=@midwayjs/web --title=midway-server-svc --workers=4",
+    "stop": "egg-scripts stop --title=midway-server-svc",
+    "test": "cross-env TS_NODE_PROJECT=test/tsconfig.json midway-bin test --ts",
+    "test:local": "cross-env TS_NODE_PROJECT=test/tsconfig.json ../../node_modules/.bin/midway-bin test --ts"
   },
   "midway-bin-clean": [
+    ".kmore.ts",
     ".vscode/.tsbuildinfo",
+    ".vscode/.tsbuildinfo.*",
+    ".vscode/.jest-cache",
     "dist",
     "logs",
     "run"
@@ -88,9 +101,9 @@
       ".ts"
     ],
     "reporter": [
-      "text-summary",
+      "html",
       "json",
-      "html"
+      "text-summary"
     ],
     "all": true
   }

@@ -1,11 +1,12 @@
 import { JwtConfig } from '@waiting/egg-jwt'
+import { Context } from 'egg'
 import { EggKmoreConfig, genDbDictFromType, ClientOpts } from 'egg-kmore'
-import { Context } from 'midway'
+import { KoidEggConfig } from 'egg-koid'
 
-import { UcTbListModel } from './db.model'
+import { UcModel } from './db.model'
 
 
-const master: ClientOpts<UcTbListModel> = {
+const master: ClientOpts<UcModel> = {
   knexConfig: {
     client: 'pg',
     connection: {
@@ -16,10 +17,11 @@ const master: ClientOpts<UcTbListModel> = {
     },
     acquireConnectionTimeout: 10000,
   },
-  dbDict: genDbDictFromType<UcTbListModel>(),
+  dbDict: genDbDictFromType<UcModel>(),
+  waitConnected: false,
 }
 
-export const kmore: EggKmoreConfig<UcTbListModel> = {
+export const kmore: EggKmoreConfig<UcModel> = {
   client: master,
 }
 
@@ -32,7 +34,7 @@ export const jwt: JwtConfig = {
     },
     secret: '123456abc',
   },
-  ignore: [/^\/$/u, '/login', '/hello', '/test_sign', '/ip', '/ping'],
+  ignore: [/^\/$/u, '/login', '/hello', '/test_sign', '/ip', '/ping', '/test_err/'],
 }
 
 // see: test/app/home/home.test.ts
@@ -40,5 +42,14 @@ async function testJumpTo(ctx: Context): Promise<string | false> {
   return ctx.method === 'GET' && ctx.path === '/test_passthrough_redirect'
     ? '/test_passthrough_redirect_path'
     : false
+}
+
+export const koid: KoidEggConfig = {
+  client: {
+    koidConfig: {
+      dataCenter: process.env.KOID_DATACENTER ? +process.env.KOID_DATACENTER : 0,
+      worker: process.env.KOID_WORKER ? +process.env.KOID_WORKER : 0,
+    },
+  },
 }
 

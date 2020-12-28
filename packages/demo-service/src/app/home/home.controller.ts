@@ -1,71 +1,90 @@
-import { Fetch, RxRequestInit } from '@waiting/egg-fetch'
-import { Jwt } from '@waiting/egg-jwt'
-import { NpmPkg } from '@waiting/shared-types'
 import {
-  Context, config, controller, get, provide, plugin,
-} from 'midway'
+  Config,
+  Controller,
+  Get,
+  Inject,
+  Plugin,
+  Provide,
+} from '@midwayjs/decorator'
+import { Fetch } from '@waiting/egg-fetch'
+import { NpmPkg } from '@waiting/shared-types'
+import { Context } from 'egg'
+import type { Koid } from 'egg-koid'
+
+import { HomeService } from './home.service'
+
+import { BaseController } from '~/interface'
 
 
-@provide()
-@controller('/')
-export class HomeController {
+@Provide()
+@Controller('/')
+export class HomeController extends BaseController {
 
-  constructor(
-    @config() private readonly pkg: NpmPkg,
-    @config() private readonly welcomeMsg: string,
-    @plugin() private readonly fetch: Fetch,
-    @plugin() private readonly jwt: Jwt,
-  ) { }
+  @Config() readonly pkg: NpmPkg
 
-  @get('/', { middleware: ['apiMiddleware'] })
-  public index(ctx: Context): void {
-    const msg = `${this.welcomeMsg} - ${ctx.api.reqTimeStr}
-pkgName: "${this.pkg.name}"
-pkgVer: "${this.pkg.version ?? 'n/a'}"
-    `
+  @Config() readonly welcomeMsg: string
+
+  @Plugin() readonly fetch: Fetch
+
+  @Plugin() readonly koid: Koid
+
+  @Inject() readonly homeService: HomeService
+
+
+  @Get('/', { middleware: ['apiMiddleware'] })
+  index(ctx: Context): string {
+    const { reqId } = ctx
+    let body = `${this.welcomeMsg} - ${ctx.api.reqTimeStr}`
+    body += `\npkgName: "${this.pkg.name}"\npkgVer: "${this.pkg.version ?? 'n/a'}"`
+    body += `\nreqId: "${reqId}"`
+    return body
+  }
+
+  @Get('/ping')
+  ping(): string {
+    return 'OK'
+  }
+
+  @Get('/hello', { middleware: ['apiMiddleware'] })
+  hello(ctx: Context): void {
+    let msg = `${this.welcomeMsg} - ${ctx.api.reqTimeStr}`
+    msg += `\npkgName: "${this.pkg.name}"\npkgVer: "${this.pkg.version ?? 'n/a'}"`
     ctx.body = msg
   }
 
-  @get('/ping')
-  public ping(ctx: Context): void {
-    ctx.body = 'OK'
-  }
-
-  @get('/hello', { middleware: ['apiMiddleware'] })
-  public hello(ctx: Context): void {
-    const msg = `${this.welcomeMsg} - ${ctx.api.reqTimeStr}
-pkgName: "${this.pkg.name}"
-pkgVer: "${this.pkg.version ?? 'n/a'}"
-    `
-    ctx.body = msg
-  }
-
-  @get('/token')
-  public token(ctx: Context): void {
+  @Get('/token')
+  token(ctx: Context): string {
     const payload = ctx.jwtState?.user ? JSON.stringify(ctx.jwtState.user) : 'Not found'
-    ctx.body = `\nRequest: ${payload}`
+    const body = `\nRequest: ${payload}`
+    return body
   }
 
-  @get('/test_sign')
-  public sign(ctx: Context): void {
+  @Get('/test_sign')
+  sign(): unknown {
     const payload = { foo: 'bar' }
-    const token = this.jwt.sign(payload)
-    const valid = this.jwt.verify(token)
+    const token = this.homeService.jwtSign(payload)
+    const valid = this.homeService.jwtVerify(token)
 
-    ctx.body = `\nPayload: ${JSON.stringify(payload)}\nToken: ${token}\nResult: ${JSON.stringify(valid)}`
+    // const body = `\nPayload: ${JSON.stringify(payload)}\nToken: ${token}\nResult: ${JSON.stringify(valid)}`
+    const ret = {
+      payload,
+      token,
+      result: valid,
+    }
+    return ret
   }
 
-  @get('/ip')
-  public async ip(ctx: Context): Promise<void> {
-    // const url = 'http://ip.360.cn/IPShare/info'
-    const url = 'https://www.taobao.com/help/getip.php'
-    const args: RxRequestInit = {
-      dataType: 'text',
-    }
-    // ipCallback({ip:"222.233.10.1"})
-    const html = await this.fetch.get<string>(url, args).toPromise()
+  @Get('/ip')
+  async ip(): Promise<string> {
+    const body = this.homeService.retrieveGatewayIp()
+    return body
+  }
 
-    ctx.body = html
+  @Get('/test_err')
+  testError(): never {
+    // HTTP Response Code is 200, Result.code is 2404
+    this.throwError('管理员不存在，请检查', 2404)
   }
 
 }
+

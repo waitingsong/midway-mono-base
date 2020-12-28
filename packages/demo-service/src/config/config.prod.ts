@@ -1,9 +1,10 @@
-import { SvcHosts } from './config.modal'
+import { SvcHosts } from './config.types'
 
 
 export {
-  kmore,
   jwt,
+  kmore,
+  koid,
 } from './helper'
 
 export const svcHosts: SvcHosts = {
@@ -16,5 +17,5 @@ Object.keys(svcHosts).forEach((key) => {
   }
 })
 // eslint-disable-next-line no-console
-console.log('svcHosts:', svcHosts)
+// console.log('svcHosts:', svcHosts)
 

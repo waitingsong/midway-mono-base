@@ -15,8 +15,13 @@ export const jwt = {
 }
 
 export const kmore = {
-  enable: false,
+  enable: true,
   package: 'egg-kmore',
+}
+
+export const koid = {
+  enable: true,
+  package: 'egg-koid',
 }
 
 // false 禁用全部安全检查用于临时调试

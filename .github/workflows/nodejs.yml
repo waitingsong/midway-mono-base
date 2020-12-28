@@ -1,14 +1,19 @@
-name: Node CI
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: ci
 
 on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    container: node:14.15-buster
 
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [14]
+        os: [ubuntu-latest]
 
     steps:
       - uses: actions/checkout@v2
@@ -16,27 +21,73 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: npm install, build, and test
+      - name: Verify Postgres connection from container and init data
+        run: |
+          uname -a
+          apt-get update 
+          apt-get install -y lsb-release wget
+          lsb_release -cs
+          sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+          wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
+          apt-get update
+          apt-get install -y net-tools
+          #apt-get install -y postgresql-client-13
+          apt-get install -y postgresql-client
+          psql -V
+          netstat -tunpl
+          echo "\l" | psql -h postgres -Upostgres -d postgres
+          ls -al
+          psql -h $PGHOST -U$PGUSER -d db_ci_test -f ./packages/demo-service/src/database/init.sql
+        env:
+          CI: true
+          PGHOST: postgres
+          PGUSER: postgres
+          PGPASSWORD: postgres
+      - name: npm build
         run: |
           openssl version
           npm i -g lerna
           npm run bootstrap
           npm run build --if-present
-          npm run test
+      - name: npm ci
+        run: |
+          # lint must after build
+          lerna run lint:nofix
+          npm run ci
         env:
           CI: true
-          PGHOST: localhost
+          # pgsql
+          PGHOST: postgres
           PGUSER: postgres
           PGPASSWORD: postgres
+          # redis
+          REDIS_HOST: redis
+          REDIS_PORT: 6379
 
-    #services:
-    #  postgres:
-    #    image: postgres:alpine
-    #    ports:
-    #      - 5432:5432
-    #    env:
-    #      POSTGRES_USER: postgres
-    #      POSTGRES_PASSWORD: postgres
-    #      POSTGRES_DB: db_ci_test
-    #    # needed because the postgres container does not provide a healthcheck
-    #    options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+#       with:
+#         token: ${{secrets.CODECOV_TOKEN}}
+#         file: ./coverage/coverage-final.json
+
+    services:
+      postgres:
+        image: postgres:alpine
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: db_ci_test
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      
+      redis:
+        image: redis
+        # Set health checks to wait until redis has started
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+

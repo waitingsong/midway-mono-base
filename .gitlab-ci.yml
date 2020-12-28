@@ -2,12 +2,17 @@
 # Used work tags :
 # - `worker` for common jobs
 # - `cd-worker` for image pack, deploy, restart svcs
+#
+# ENV from Gitlab
+# - NPM_REGISTRY for pull
+# - NPM_VERSION_REGISTRY for npm publish, equal to version.registry of lerna.json (if exists)
 # ---------------------------
 
 
 image: $NODE_CI_IMAGE
 include:
   - local: '/.scripts/cd/.gitlab-cd.yml'
+  - local: '/.scripts/ci/.services.yml'
 
 stages:
   - build
@@ -35,20 +40,20 @@ variables:
   PACK_GA_IMG: "yes"
   TAR_COMPRESSION_LEVEL: 7
   IMG_COMPRESSION_LEVEL: 4
+  ZSTD_CLEVEL: 11
 
   PUB_AS_BETA: ""
   PUB_AS_LATEST: "yes"
   PUB_AS_NEXT: ""
 
   # for pull
-  NPM_REGISTRY: https://nexus.sundsoft.com/repository/npm-central/
+  #NPM_REGISTRY: https://nexus.foo.com/repository/npm-central/
   # for npm publish, equal to version.registry of lerna.json (if exists)
-  NPM_VERSION_REGISTRY: https://nexus.sundsoft.com/repository/mynpm/
+  #NPM_VERSION_REGISTRY: https://nexus.foo.com/repository/mynpm/
   NPM_DIST: https://npm.taobao.org/dist
   # restrict branch for version, equal to  version.allowBranch of lerna.json
   RELEASE_BRANCH: release
   BUILD_TMP_DIR: /tmp/build
-  PUB_LOG_LEVEL: error
 
 
 before_script:
@@ -59,9 +64,9 @@ before_script:
   - echo "$CI_COMMIT_TAG-$CI_COMMIT_SHORT_SHA"
   - echo "$CI_PIPELINE_ID:$CI_JOB_ID"
   - echo $GITLAB_USER_LOGIN
-  - git config --global protocol.version 2
   - npm config set registry "$NPM_REGISTRY"
   - npm config set disturl "$NPM_DIST"
+  - npm config set cache .npm && npm config set prefer-offline true
   - npm root -g
   - node -v
   - npm -v
@@ -74,6 +79,7 @@ before_script:
 cache: &global_cache
   key: cache_dev
   paths:
+    - .npm
     - node_modules
   policy: pull
 
@@ -85,11 +91,20 @@ cache: &global_cache
   variables:
     GIT_DEPTH: 20
   script:
+    - npm i -g nyc
     - npm run bootstrap
     - echo "$CI_COMMIT_MESSAGE" | node_modules/.bin/commitlint
-    - npm run lint:nofix
     - npm run build
-    - npm run test
+    # lint must after build for mono-repo
+    - lerna run lint:nofix
+    - npm run ci
+    - sh .scripts/collect-coverages.sh
+  artifacts:
+    expire_in: '14 day'
+    reports:
+      cobertura: coverage/cobertura-coverage.xml
+    paths:
+      - coverage/
 
 build_dev:
   extends: .build
@@ -114,7 +129,12 @@ build_rc:
     <<: *global_cache
     key: cache_release
     policy: pull-push
-
+  artifacts:
+    expire_in: '30 day'
+    reports:
+      cobertura: coverage/cobertura-coverage.xml
+    paths:
+      - coverage/
 
 
 # create new release branch and push
