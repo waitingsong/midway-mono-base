@@ -13,10 +13,10 @@
 
 NPM scope: `@scope`
 
-| Package     | Version                      |
-| ----------- | ---------------------------- |
-| [`docs`]    | [![docs-svg]][docs-ch]       |
-| [`service`] | [![service-svg]][service-ch] |
+| Package     | Version            |
+| ----------- | ------------------ |
+| [`docs`]    | [文档][docs-ch]    |
+| [`service`] | [服务][service-ch] |
 
 
 ## Initialize and install dependencies
@@ -69,29 +69,26 @@ npm run purge
 
 ## Project Documents
 
-- [Wiki](https://git.foo.com/group/services/-/wikis/home)
-- [docs](packages/docs/)
+- [Wiki](../../wikis/home)
 
 
 ## Freamwork and Plugin Documents
 
 - [Midway]
-- [Midway v2 docs]
+- [Midway_v2_Docs]
 - [Eggjs]
 
 
 <br>
 
 [Midway]: https://midwayjs.org/midway
-[Midway v2 Docs]: https://www.yuque.com/midwayjs/midway_v2
+[Midway_v2_Docs]: https://www.yuque.com/midwayjs/midway_v2
 [Eggjs]: https://eggjs.org
 
 
-[`docs`]: https://github.com/waitingsong/midway-mono-base/tree/master/packages/demo-docs
-[docs-svg]: https://img.shields.io/npm/v/kmore-types.svg?cacheSeconds=86400
-[docs-ch]: https://github.com/waitingsong/midway-mono-base/tree/master/packages/demo-docs/CHANGELOG.md
+[`docs`]: packages/demo-docs
+[docs-ch]: packages/demo-docs/CHANGELOG.md
 
-[`service`]: https://github.com/waitingsong/midway-mono-base/tree/master/packages/demo-service
-[service-svg]: https://img.shields.io/npm/v/kmore.svg?cacheSeconds=86400
-[service-ch]: https://github.com/waitingsong/midway-mono-base/tree/master/packages/demo-service/CHANGELOG.md
+[`service`]: packages/demo-service
+[service-ch]: packages/demo-service/CHANGELOG.md
 
