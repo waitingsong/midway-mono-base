@@ -129,7 +129,7 @@ function wrap(ctx: Context, payload: any): JsonResp {
   }
 
   /* istanbul ignore else */
-  if (typeof payload !== 'undefined') {
+  if (typeof payload === 'object' && Object.keys(payload).length > 0) {
     const { codeKey, ...dat } = payload
     /* istanbul ignore else */
     if (typeof dat !== 'undefined') {
@@ -139,6 +139,9 @@ function wrap(ctx: Context, payload: any): JsonResp {
     if (typeof codeKey === 'string') {
       body.codeKey = codeKey
     }
+  }
+  else if (typeof payload !== 'undefined') {
+    body.dat = payload
   }
 
   return body

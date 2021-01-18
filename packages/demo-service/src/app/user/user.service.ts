@@ -28,8 +28,8 @@ export class UserService extends BaseService {
   }
 
   async getUserNameByUid(_uid: GetUserDTO['uid']): Promise<UserDetailDTO['userName']> {
-    const name = await this.userRepo.getUserNameByUid(_uid)
-    // const name = 'mockedName'
+    // const name = await this.userRepo.getUserNameByUid(_uid)
+    const name = 'mockedName'
     return name
   }
 
