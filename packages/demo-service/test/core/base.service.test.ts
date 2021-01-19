@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-var-requires */
 import { createApp, close, createHttpRequest } from '@midwayjs/mock'
 import { Framework } from '@midwayjs/web'
 import { basename, join } from '@waiting/shared-core'
@@ -7,8 +5,8 @@ import { Application } from 'egg'
 
 import { HomeService } from '~/app/home/home.service'
 
-
-const assert = require('power-assert')
+// eslint-disable-next-line import/order
+import assert = require('power-assert')
 
 
 const filename = basename(__filename)

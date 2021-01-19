@@ -16,13 +16,9 @@ export class ErrorHandlerMiddleware implements IWebMiddleware {
 }
 
 async function errHandleMiddleware(ctx: Context, next: IMidwayWebNext): Promise<void> {
-  /* istanbul ignore next */
-  if (! ctx.reqId) {
-    ctx.reqId = ctx.app.koid.nextBigint.toString()
-  }
-
   try {
     await next()
+    /* istanbul ignore next */
     if (ctx.status === 404) {
       const { reqId } = ctx
       ctx.body = { code: 404, reqId, msg: 'Not Found' }

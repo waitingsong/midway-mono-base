@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-var-requires */
-import { createApp, close, createHttpRequest } from '@midwayjs/mock'
+import { createApp, close } from '@midwayjs/mock'
 import { Framework } from '@midwayjs/web'
 import { basename, join } from '@waiting/shared-core'
 import { Application, Context } from 'egg'
@@ -9,8 +8,8 @@ import { Application, Context } from 'egg'
 import { ErrorHandlerMiddleware } from '~/middleware/error-handler.middleware'
 import MyError from '~/util/my-error'
 
-
-const assert = require('power-assert')
+// eslint-disable-next-line import/order
+import assert = require('power-assert')
 
 
 const filename = basename(__filename)
@@ -34,10 +33,9 @@ describe(filename, () => {
     // @ts-expect-error
     await mw(ctx, next)
 
-    const { body, status, reqId } = ctx
+    const { body, status } = ctx
     assert(status === 404)
 
-    assert(body.reqId === reqId && typeof reqId === 'string')
     assert(body.code === status)
     assert(body.msg === 'Not Found')
   })
@@ -50,10 +48,9 @@ describe(filename, () => {
     // @ts-expect-error
     await mw(ctx, nextThrowError)
 
-    const { status, body, reqId } = ctx
+    const { status, body } = ctx
     assert(status === 422, status.toString())
     assert(body.code === 422)
-    assert(body.reqId === reqId && typeof reqId === 'string')
     assert(body.msg === 'ValidationError')
   })
 
@@ -72,10 +69,8 @@ describe(filename, () => {
     // @ts-expect-error
     await mw(ctx, next)
 
-    const { body, status, reqId } = ctx
+    const { body, status } = ctx
     assert(status === 200)
-
-    assert(body.reqId === reqId && typeof reqId === 'string')
     assert(body.code === status)
     assert(body.dat === payload)
   })
@@ -91,7 +86,7 @@ describe(filename, () => {
     // @ts-expect-error
     await mw(ctx, next)
 
-    const { body, status, reqId } = ctx
+    const { body, status } = ctx
     assert(status === 200)
 
     assert(typeof body.reqId === 'undefined')
@@ -99,7 +94,6 @@ describe(filename, () => {
     assert(typeof body.dat === 'undefined')
     assert(body === payload)
   })
-
 
 })
 

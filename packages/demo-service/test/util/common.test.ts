@@ -1,11 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-var-requires */
 import { basename, join } from '@waiting/shared-core'
 
 import { retrieveExternalNetWorkInfo } from '~/util/common'
 
-
-const assert = require('power-assert')
+// eslint-disable-next-line import/order
+import assert = require('power-assert')
 
 
 const filename = basename(__filename)

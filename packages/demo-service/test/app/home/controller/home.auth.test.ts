@@ -1,13 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-var-requires */
 import { createApp, close, createHttpRequest } from '@midwayjs/mock'
 import { Framework } from '@midwayjs/web'
 import { Jwt, JwtMsg, schemePrefix } from '@waiting/egg-jwt'
 import { basename, join } from '@waiting/shared-core'
 import { Application } from 'egg'
-
-
-const assert = require('power-assert')
+import assert = require('power-assert')
 
 
 const filename = basename(__filename)

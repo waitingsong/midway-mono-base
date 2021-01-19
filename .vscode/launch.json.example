@@ -34,4 +34,36 @@
       ],
       "timeout": 30000
     },
+    {
+      "name": "Midway TEST",
+      "type": "node",
+      "autoAttachChildProcesses": true,
+      "console": "integratedTerminal",
+      "env": {
+        "NODE_ENV": "local",
+        "PGHOST": "",
+        "PGUSER": "postgres",
+        "PGPASSWORD": "",
+      },
+      "port": 9229,
+      // "preLaunchTask": "TypeScript compile",
+      "protocol": "auto",
+      "request": "launch",
+      "restart": true,
+      "runtimeArgs": [
+        "run",
+        "test:local",
+        "--",
+        "--runInBand",
+        "--inspect-brk"
+      ],
+      "runtimeExecutable": "npm",
+      "skipFiles": [
+        "${workspaceFolder}/../../node_modules/rxjs/**/*.js",
+        "${workspaceFolder}/node_modules/rxjs/**/*.js",
+        "<node_internals>/**/*.js"
+      ],
+      "timeout": 30000
+    },
+  ]
 }
