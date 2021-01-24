@@ -1,4 +1,4 @@
-import { Jwt, JwtConfig, JwtState } from '@waiting/egg-jwt'
+import { Jwt, JwtEggConfig, JwtState } from '@waiting/egg-jwt'
 import { EggAppConfig, PowerPartial } from 'egg'
 import { KnexConfig } from 'egg-kmore'
 import { Koid, KoidEggConfig } from 'egg-koid'
@@ -6,7 +6,7 @@ import { Koid, KoidEggConfig } from 'egg-koid'
 
 export interface DefaultConfig extends PowerPartial<EggAppConfig> {
   welcomeMsg: string
-  jwt: JwtConfig
+  jwt: JwtEggConfig
   jwtAuth: JwtAuthMiddlewareConfig
   koid: KoidEggConfig
   svcHosts: SvcHosts
@@ -31,7 +31,7 @@ export type DbConfigList = {
 export interface JwtAuthMiddlewareConfig {
   /** 签名过期时间也可写 */
   accessTokenExpiresIn: number
-  ignore: JwtConfig['ignore']
+  ignore: JwtEggConfig['ignore']
   /** redis的作用域前缀 */
   redisScope: string
 }
@@ -47,7 +47,7 @@ declare module 'egg' {
   }
 
   interface EggAppConfig {
-    jwt: JwtConfig
+    jwt: JwtEggConfig
     jwtAuth: JwtAuthMiddlewareConfig
     koid: KoidEggConfig
   }

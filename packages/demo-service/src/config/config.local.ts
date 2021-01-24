@@ -1,9 +1,9 @@
 // config for `npm run test`
-import { JwtConfig } from '@waiting/egg-jwt'
+import { JwtEggConfig } from '@waiting/egg-jwt'
 import { EggKmoreConfig, ClientOpts } from 'egg-kmore'
 
 import { UcModel } from './db.model'
-import { jwt as jwtConfig, kmore as kmoreDefault } from './helper'
+import { jwt as jwtEggConfig, kmore as kmoreDefault } from './helper'
 
 
 export { koid } from './helper'
@@ -18,9 +18,9 @@ export const kmore: EggKmoreConfig<UcModel> = {
   client: master,
 }
 
-const jwt: JwtConfig = {
+const jwt: JwtEggConfig = {
   // 必须展开赋值，不得直接修改属性！
-  ...jwtConfig,
+  ...jwtEggConfig,
   enable: false,
 }
 export { jwt }

@@ -1,4 +1,4 @@
-import { JwtConfig } from '@waiting/egg-jwt'
+import { JwtEggConfig } from '@waiting/egg-jwt'
 import { Context } from 'egg'
 import { EggKmoreConfig, genDbDictFromType, ClientOpts } from 'egg-kmore'
 import { KoidEggConfig } from 'egg-koid'
@@ -25,7 +25,7 @@ export const kmore: EggKmoreConfig<UcModel> = {
   client: master,
 }
 
-export const jwt: JwtConfig = {
+export const jwt: JwtEggConfig = {
   enable: true, // enable middleware
   client: {
     authOpts: {

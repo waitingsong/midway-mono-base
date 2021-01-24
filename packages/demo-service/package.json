@@ -11,7 +11,7 @@
     "@scope/docs": "^0.0.0",
     "@waiting/base64": "4",
     "@waiting/egg-fetch": "3",
-    "@waiting/egg-jwt": "5",
+    "@waiting/egg-jwt": "6",
     "@waiting/shared-core": "5",
     "@waiting/shared-types": "5",
     "egg": "^2.0.0",
