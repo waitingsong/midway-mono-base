@@ -44,11 +44,15 @@ async function testJumpTo(ctx: Context): Promise<string | false> {
     : false
 }
 
+// '2000-01-01T00:00:00Z'
+const epoch = 946684800000
+
 export const koid: KoidEggConfig = {
   client: {
     koidConfig: {
       dataCenter: process.env.KOID_DATACENTER ? +process.env.KOID_DATACENTER : 0,
       worker: process.env.KOID_WORKER ? +process.env.KOID_WORKER : 0,
+      epoch,
     },
   },
 }
