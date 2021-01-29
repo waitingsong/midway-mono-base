@@ -24,25 +24,28 @@ jobs:
       - name: Verify Postgres connection from container and init data
         run: |
           uname -a
-          apt-get update 
+          apt-get update
           apt-get install -y lsb-release wget
           lsb_release -cs
           sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
           wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
           apt-get update
-          apt-get install -y net-tools
+          apt-get install -y net-tools dnsutils
           #apt-get install -y postgresql-client-13
           apt-get install -y postgresql-client
           psql -V
           netstat -tunpl
-          echo "\l" | psql -h postgres -Upostgres -d postgres
+          echo "\l" | psql -h postgres -p $PGPORT -Upostgres -d postgres
           ls -al
-          psql -h $PGHOST -U$PGUSER -d db_ci_test -f ./packages/demo-service/src/database/init.sql
+          psql -h $PGHOST -p $PGPORT -U$PGUSER -d db_ci_test -f ./packages/demo-service/src/database/init.sql
         env:
           CI: true
+          # use `localhost` if running the job on the VM
+          # use `postgres` if running the job on in a container
           PGHOST: postgres
           PGUSER: postgres
           PGPASSWORD: postgres
+          PGPORT: ${{ job.services.postgres.ports[5432] }}
       - name: npm build
         run: |
           openssl version
@@ -57,9 +60,12 @@ jobs:
         env:
           CI: true
           # pgsql
+          # use `localhost` if running the job on the VM
+          # use `postgres` if running the job on in a container
           PGHOST: postgres
           PGUSER: postgres
           PGPASSWORD: postgres
+          PGPORT: ${{ job.services.postgres.ports[5432] }}
           # redis
           REDIS_HOST: redis
           REDIS_PORT: 6379
@@ -74,6 +80,8 @@ jobs:
       postgres:
         image: postgres:alpine
         ports:
+          # will assign a random free host port
+          # - 5432/tcp
           - 5432:5432
         env:
           POSTGRES_USER: postgres
@@ -81,7 +89,7 @@ jobs:
           POSTGRES_DB: db_ci_test
         # needed because the postgres container does not provide a healthcheck
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-      
+
       redis:
         image: redis
         # Set health checks to wait until redis has started
