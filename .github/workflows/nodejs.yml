@@ -1,43 +1,62 @@
-# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
 name: ci
 
-on: [push, pull_request]
+on:
+  push:
+    branches-ignore:
+      - release
+    tags-ignore:
+      - v*
+  pull_request:
+    branches-ignore:
+      - release
 
 jobs:
   build:
     runs-on: ${{ matrix.os }}
-    container: node:14.15-buster
+    container: node:14-buster
 
     strategy:
       matrix:
-        node-version: [14]
+        node: [14]
         os: [ubuntu-latest]
 
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node-version }}
-      - name: Verify Postgres connection from container and init data
+          node-version: ${{ matrix.node }}
+      - name: Cache lerna
+        uses: actions/cache@v2
+        id: cache-lerna
+        env:
+          cache-name: cache-lerna
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.OS }}-build-${{ env.cache-name }}-${{ github.ref }}-${{ hashFiles('**/lockfiles') }}
+      - name: Verify
         run: |
           uname -a
-          apt-get update
-          apt-get install -y lsb-release wget
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get -qq -y update > /dev/null
+          apt-get -qq -y install dnsutils jq net-tools > /dev/null
+          apt-get -qq -y install lsb-release > /dev/null
           lsb_release -cs
           sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
           wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
-          apt-get update
-          apt-get install -y net-tools dnsutils
-          #apt-get install -y postgresql-client-13
-          apt-get install -y postgresql-client
+          # update again for pg13
+          apt-get -qq -y update > /dev/null
+          apt-get -qq -y install postgresql-client > /dev/null
           psql -V
           netstat -tunpl
-          echo "\l" | psql -h postgres -p $PGPORT -Upostgres -d postgres
-          ls -al
-          psql -h $PGHOST -p $PGPORT -U$PGUSER -d db_ci_test -f ./packages/demo-service/src/database/init.sql
+          dig postgres
+          echo "\l" | psql -h $PGHOST -p $PGPORT -U$PGUSER -d postgres
+          psql -h $PGHOST -p $PGPORT -U$PGUSER -d $PGDB -1 -bq -f ./packages/demo-service/src/database/init.sql
+          psql -h $PGHOST -p $PGPORT -U$PGUSER -d $PGDB -c "\d+"
         env:
           CI: true
           # use `localhost` if running the job on the VM
@@ -46,9 +65,11 @@ jobs:
           PGUSER: postgres
           PGPASSWORD: postgres
           PGPORT: ${{ job.services.postgres.ports[5432] }}
+          PGDB: db_ci_test
       - name: npm build
         run: |
           openssl version
+          node -v
           npm i -g lerna
           npm run bootstrap
           npm run build --if-present
@@ -66,22 +87,18 @@ jobs:
           PGUSER: postgres
           PGPASSWORD: postgres
           PGPORT: ${{ job.services.postgres.ports[5432] }}
+          PGDB: db_ci_test
           # redis
           REDIS_HOST: redis
           REDIS_PORT: 6379
-
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
-#       with:
-#         token: ${{secrets.CODECOV_TOKEN}}
-#         file: ./coverage/coverage-final.json
+
 
     services:
       postgres:
         image: postgres:alpine
         ports:
-          # will assign a random free host port
-          # - 5432/tcp
           - 5432:5432
         env:
           POSTGRES_USER: postgres

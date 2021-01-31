@@ -12,9 +12,9 @@ const master: ClientOpts<UcModel> = {
     connection: {
       host: process.env.PGHOST ? process.env.PGHOST : 'localhost',
       user: process.env.PGUSER ? process.env.PGUSER : 'postgres',
-      password: process.env.PGPASSWORD ? process.env.PGPASSWORD : '',
-      port: process.env.PGPORT ? +process.env.PGPORT : 6432,
-      database: 'db_ci_test',
+      password: process.env.PGPASSWORD ? process.env.PGPASSWORD : 'postgres',
+      port: process.env.PGPORT ? +process.env.PGPORT : 5432,
+      database: process.env.PGDB ? process.env.PGDB : 'db_ci_test',
     },
     acquireConnectionTimeout: 10000,
   },
