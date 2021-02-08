@@ -9,6 +9,7 @@
     "module": "commonjs",
     "newLine": "lf",
     "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "outDir": "dist",
