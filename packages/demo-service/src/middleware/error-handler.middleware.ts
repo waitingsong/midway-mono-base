@@ -37,7 +37,7 @@ async function errHandleMiddleware(ctx: Context, next: IMidwayWebNext): Promise<
     let status: number = typeof myerr.status === 'number'
       ? myerr.status
       /* istanbul ignore next */
-      : parseInt(messageStatus, 10)
+      : messageStatus ? parseInt(messageStatus, 10) : 0
 
     /* istanbul ignore next */
     if (status === 0 || Number.isNaN(status)) {
@@ -91,9 +91,15 @@ async function errHandleMiddleware(ctx: Context, next: IMidwayWebNext): Promise<
  * 对于 `application/json` 相应类型，包裹成 JsonResp 格式数据
  */
 function wrapRespForJson(ctx: Context): void {
-  const contentType: string | null = ctx.response.header?.['content-type']
+  const contentType: string | number | string[] | undefined = ctx.response.header?.['content-type']
   /* istanbul ignore else */
-  if (! contentType || ! contentType.includes('application/json')) {
+  if (! contentType || typeof contentType === 'number') {
+    return
+  }
+  else if (typeof contentType === 'string' && ! contentType.includes('application/json')) {
+    return
+  }
+  else if (Array.isArray(contentType) && ! contentType.includes('application/json')) {
     return
   }
 

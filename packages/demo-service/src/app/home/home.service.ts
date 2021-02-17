@@ -39,7 +39,7 @@ export class HomeService extends BaseService {
     let ip = ''
     if (text) {
       const arr = /"([\d.]+)"/ui.exec(text)
-      ip = arr && arr.length >= 1 ? arr[1] : ''
+      ip = arr && arr.length >= 1 && arr[1] ? arr[1] : ''
     }
     this.logger.info({ ip })
     return ip
