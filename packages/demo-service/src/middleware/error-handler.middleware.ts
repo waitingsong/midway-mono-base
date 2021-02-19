@@ -91,7 +91,7 @@ async function errHandleMiddleware(ctx: Context, next: IMidwayWebNext): Promise<
  * 对于 `application/json` 相应类型，包裹成 JsonResp 格式数据
  */
 function wrapRespForJson(ctx: Context): void {
-  const contentType: string | number | string[] | undefined = ctx.response.header?.['content-type']
+  const contentType: string | number | string[] | undefined = ctx.response.header['content-type']
   /* istanbul ignore else */
   if (! contentType || typeof contentType === 'number') {
     return
@@ -103,10 +103,11 @@ function wrapRespForJson(ctx: Context): void {
     return
   }
 
-  const { body, status } = ctx
+  const { status } = ctx
+  const body = ctx.body as JsonResp | void
 
   /* istanbul ignore else */
-  if (typeof body === 'object' && typeof body.code === 'number') {
+  if (body && typeof body === 'object' && typeof body.code === 'number') {
     /* istanbul ignore else */
     if (body.code === status) {
       return
