@@ -57,6 +57,7 @@ variables:
 
 
 before_script:
+  - echo -e "\e[0Ksection_start:`date +%s`:before_script_section[collapsed=true]\r\e[0K Prepare"
   - echo $SHELL
   - echo $CI_SERVER_VERSION
   - echo "$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/$CI_COMMIT_REF_NAME"
@@ -75,6 +76,7 @@ before_script:
   - du -sh *
   - sh .scripts/ci/ci-prepare.sh
   - source .scripts/util/import-myca.sh
+  - echo -e "\e[0Ksection_end:`date +%s`:before_script_section\r\e[0K"
 
 cache: &global_cache
   key: cache_dev
@@ -91,14 +93,20 @@ cache: &global_cache
   variables:
     GIT_DEPTH: 20
   script:
+    - echo -e "\e[0Ksection_start:`date +%s`:build_section[collapsed=true]\r\e[0K Build"
     - npm i -g nyc
     - npm run bootstrap
     - echo "$CI_COMMIT_MESSAGE" | node_modules/.bin/commitlint
     - npm run build
+    - echo -e "\e[0Ksection_end:`date +%s`:build_section\r\e[0K"
+    - echo -e "\e[0Ksection_start:`date +%s`:ci_section[collapsed=true]\r\e[0K CI"
     # lint must after build for mono-repo
     - lerna run lint:nofix
     - npm run ci
+    - echo -e "\e[0Ksection_end:`date +%s`:ci_section\r\e[0K"
+    - echo -e "\e[0Ksection_start:`date +%s`:cov_section[collapsed=true]\r\e[0K Coverage"
     - sh .scripts/collect-coverages.sh
+    - echo -e "\e[0Ksection_end:`date +%s`:cov_section\r\e[0K"
   artifacts:
     expire_in: '14 day'
     reports:
@@ -151,7 +159,9 @@ pre_release:
   variables:
     GIT_STRATEGY: clone
   script:
+    - echo -e "\e[0Ksection_start:`date +%s`:pre_release_section[collapsed=true]\r\e[0K Pre Release"
     - sh .scripts/ci/ci-pre-publish.sh
+    - echo -e "\e[0Ksection_end:`date +%s`:pre_release_section\r\e[0K"
   # true for no blocked status
   allow_failure: true
   when: manual
@@ -167,11 +177,17 @@ pre_release:
     paths:
       - assets/
   script:
+    - echo -e "\e[0Ksection_start:`date +%s`:build_section[collapsed=true]\r\e[0K Build"
     - npm run bootstrap
     - echo "$CI_COMMIT_MESSAGE" | node_modules/.bin/commitlint
-    - npm run lint:nofix
     - npm run build
+    - echo -e "\e[0Ksection_end:`date +%s`:build_section\r\e[0K"
+    - echo -e "\e[0Ksection_start:`date +%s`:ci_section[collapsed=true]\r\e[0K CI"
+    - npm run lint:nofix
+    - echo -e "\e[0Ksection_end:`date +%s`:ci_section\r\e[0K"
+    - echo -e "\e[0Ksection_start:`date +%s`:pack_section[collapsed=true]\r\e[0K Pack"
     - npm run tar
+    - echo -e "\e[0Ksection_end:`date +%s`:pack_section\r\e[0K"
   when: manual
 
 tar_dev:
@@ -210,10 +226,16 @@ tar_rc:
   cache:
     <<: *global_cache
   script:
+    - echo -e "\e[0Ksection_start:`date +%s`:build_section[collapsed=true]\r\e[0K Build"
     - npm run bootstrap
-    - npm run lint:nofix
     - npm run build
+    - echo -e "\e[0Ksection_end:`date +%s`:build_section\r\e[0K"
+    - echo -e "\e[0Ksection_start:`date +%s`:ci_section[collapsed=true]\r\e[0K CI"
+    - npm run lint:nofix
+    - echo -e "\e[0Ksection_end:`date +%s`:ci_section\r\e[0K"
+    - echo -e "\e[0Ksection_start:`date +%s`:build_image_section[collapsed=true]\r\e[0K Build Image"
     - sh .scripts/build-images.sh
+    - echo -e "\e[0Ksection_end:`date +%s`:build_image_section\r\e[0K"
     - free -m
   when: manual
 
@@ -268,9 +290,11 @@ image_rc:
 publish_latest:
   extends: .publish
   script:
+    - echo -e "\e[0Ksection_start:`date +%s`:publish_latest_section[collapsed=true]\r\e[0K Publish Latest"
     # workaround for preversion and prepack of pkg.scripts
     - echo "unsafe-perm = true" >> ~/.npmrc
     - bash .scripts/ci/ci-publish.sh --loglevel $PUB_LOG_LEVEL --conventional-commits --create-release gitlab
+    - echo -e "\e[0Ksection_end:`date +%s`:publish_latest_section\r\e[0K"
   except:
     variables:
       - $PUB_AS_LATEST != "yes"
@@ -280,8 +304,10 @@ publish_latest:
 publish_beta:
   extends: .publish
   script:
+    - echo -e "\e[0Ksection_start:`date +%s`:publish_beta_section[collapsed=true]\r\e[0K Publish Beta"
     - echo "unsafe-perm = true" >> ~/.npmrc
     - bash .scripts/ci/ci-publish.sh --loglevel $PUB_LOG_LEVEL --conventional-commits --create-release gitlab --dist-tag beta --force-publish=*
+    - echo -e "\e[0Ksection_end:`date +%s`:publish_beta_section\r\e[0K"
   except:
     variables:
       - $PUB_AS_BETA != "yes"
@@ -292,8 +318,10 @@ publish_beta:
 publish_next:
   extends: .publish
   script:
+    - echo -e "\e[0Ksection_start:`date +%s`:publish_next_section[collapsed=true]\r\e[0K Publish Next"
     - echo "unsafe-perm = true" >> ~/.npmrc
     - bash .scripts/ci/ci-publish.sh --loglevel $PUB_LOG_LEVEL --conventional-commits --create-release gitlab --dist-tag next
+    - echo -e "\e[0Ksection_end:`date +%s`:publish_next_section\r\e[0K"
   except:
     variables:
       - $PUB_AS_NEXT != "yes"
@@ -342,5 +370,7 @@ image_ga:
   when: delayed
   start_in: 5 seconds
   script:
+    - echo -e "\e[0Ksection_start:`date +%s`:image_ga_section[collapsed=true]\r\e[0K Image GA"
     - sh .scripts/build-images.sh
+    - echo -e "\e[0Ksection_end:`date +%s`:image_ga_section\r\e[0K"
 

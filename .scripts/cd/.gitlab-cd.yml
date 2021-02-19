@@ -30,7 +30,9 @@ deploy_rc:
     - image_rc
     # - tar_rc
   script:
+    - echo -e "\e[0Ksection_start:`date +%s`:deploy_rc_section[collapsed=true]\r\e[0KHeader of the deploy_rc collapsible section"
     - sh .scripts/cd-distribute-images.sh
+    - echo -e "\e[0Ksection_end:`date +%s`:deploy_rc_section\r\e[0K"
 
 depoly_ga:
   extends: .deploy
@@ -51,7 +53,9 @@ depoly_ga:
     - image_ga
     # - tar_ga
   script:
+    - echo -e "\e[0Ksection_start:`date +%s`:deploy_ga_section[collapsed=true]\r\e[0KHeader of the deploy_ga collapsible section"
     - sh .scripts/cd-distribute-images.sh
+    - echo -e "\e[0Ksection_end:`date +%s`:deploy_ga_section\r\e[0K"
 
 
 .restart-services:
