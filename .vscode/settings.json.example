@@ -115,6 +115,7 @@
     "editor.defaultFormatter": "yzhang.markdown-all-in-one",
     "editor.formatOnPaste": true,
     "editor.formatOnSave": true,
+    "editor.quickSuggestions": true,
     "files.trimTrailingWhitespace": false
   },
   "[typescript]": {
