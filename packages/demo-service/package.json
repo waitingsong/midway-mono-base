@@ -5,15 +5,15 @@
   "private": true,
   "bin": {},
   "dependencies": {
-    "@midwayjs/bootstrap": "^2.7.5",
-    "@midwayjs/decorator": "^2.7.5",
-    "@midwayjs/web": "^2.7.6",
+    "@midwayjs/bootstrap": "^2.8.3",
+    "@midwayjs/decorator": "^2.8.3",
+    "@midwayjs/web": "^2.8.3",
     "@scope/docs": "^0.0.0",
     "@waiting/base64": "4",
     "@waiting/egg-fetch": "3",
     "@waiting/egg-jwt": "6",
-    "@waiting/shared-core": "5",
-    "@waiting/shared-types": "5",
+    "@waiting/shared-core": "6",
+    "@waiting/shared-types": "6",
     "egg": "^2.0.0",
     "egg-cors": "2",
     "egg-kmore": "^2.0.0",
@@ -25,7 +25,7 @@
     "tsconfig-paths": "3"
   },
   "devDependencies": {
-    "@midwayjs/mock": "^2.7.5",
+    "@midwayjs/mock": "^2.8.3",
     "cross-env": "7",
     "kmore-cli": "2",
     "power-assert": "1"
