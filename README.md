@@ -54,10 +54,10 @@ npm run bootstrap
 ## Clan or Purge
 
 ```sh
-# clean build dis and cache
-npm run clean
+# clean build dist and cache
+npm run clean && npm run bootstrap
 # clean and remove all node_modules
-npm run purge
+npm run purge && npm run bootstrap
 ```
 
 ## Note
