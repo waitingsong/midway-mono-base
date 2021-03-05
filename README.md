@@ -55,9 +55,9 @@ npm run bootstrap
 
 ```sh
 # clean build dist and cache
-npm run clean && npm run bootstrap
+npm run clean && npm run bootstrap && npm run build
 # clean and remove all node_modules
-npm run purge && npm run bootstrap
+npm run purge && npm run bootstrap && npm run build
 ```
 
 ## Note
