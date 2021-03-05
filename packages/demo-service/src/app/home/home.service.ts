@@ -1,20 +1,11 @@
-import { Provide, Plugin } from '@midwayjs/decorator'
-import { Fetch } from '@waiting/egg-fetch'
-import { Jwt } from '@waiting/egg-jwt'
+import { Provide } from '@midwayjs/decorator'
 import { JsonObject, JsonType } from '@waiting/shared-types'
-import type { Koid } from 'egg-koid'
 
 import { BaseService } from '~/interface'
 
 
 @Provide()
 export class HomeService extends BaseService {
-
-  @Plugin() readonly fetch: Fetch
-
-  @Plugin() readonly jwt: Jwt
-
-  @Plugin() readonly koid: Koid
 
   jwtSign(payload: JsonObject): string {
     const token = this.jwt.sign(payload)

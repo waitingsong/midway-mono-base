@@ -3,13 +3,10 @@ import {
   Controller,
   Get,
   Inject,
-  Plugin,
   Provide,
 } from '@midwayjs/decorator'
-import { Fetch } from '@waiting/egg-fetch'
 import { NpmPkg } from '@waiting/shared-types'
 import { Context } from 'egg'
-import type { Koid } from 'egg-koid'
 
 import { HomeService } from './home.service'
 
@@ -23,10 +20,6 @@ export class HomeController extends BaseController {
   @Config() readonly pkg: NpmPkg
 
   @Config() readonly welcomeMsg: string
-
-  @Plugin() readonly fetch: Fetch
-
-  @Plugin() readonly koid: Koid
 
   @Inject() readonly homeService: HomeService
 
