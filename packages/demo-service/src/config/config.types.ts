@@ -11,6 +11,23 @@ export interface DefaultConfig extends PowerPartial<EggAppConfig> {
   koid: KoidEggConfig
   svcHosts: SvcHosts
 }
+declare module 'egg' {
+  interface Application {
+    jwt: Jwt
+    koid: Koid
+  }
+
+  interface Context {
+    jwtState?: JwtState
+  }
+
+  interface EggAppConfig {
+    jwt: JwtEggConfig
+    jwtAuth: JwtAuthMiddlewareConfig
+    koid: KoidEggConfig
+  }
+}
+
 
 export interface SvcHosts {
   uc: string
@@ -34,23 +51,5 @@ export interface JwtAuthMiddlewareConfig {
   ignore: JwtEggConfig['ignore']
   /** redis的作用域前缀 */
   redisScope: string
-}
-
-declare module 'egg' {
-  interface Application {
-    jwt: Jwt
-    koid: Koid
-  }
-
-  interface Context {
-    jwtState?: JwtState
-  }
-
-  interface EggAppConfig {
-    jwt: JwtEggConfig
-    jwtAuth: JwtAuthMiddlewareConfig
-    koid: KoidEggConfig
-  }
-
 }
 

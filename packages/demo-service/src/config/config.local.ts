@@ -3,10 +3,7 @@ import { JwtEggConfig } from '@waiting/egg-jwt'
 import { EggKmoreConfig, ClientOpts } from 'egg-kmore'
 
 import { UcModel } from './db.model'
-import { jwt as jwtEggConfig, kmore as kmoreDefault } from './helper'
-
-
-export { koid } from './helper'
+import { kmore as kmoreDefault } from './helper'
 
 
 const master = {
@@ -18,12 +15,9 @@ export const kmore: EggKmoreConfig<UcModel> = {
   client: master,
 }
 
-const jwt: JwtEggConfig = {
-  // 必须展开赋值，不得直接修改属性！
-  ...jwtEggConfig,
-  enable: false,
-}
-export { jwt }
+export const jwt = {
+  enable: false, // disable middleware
+} as JwtEggConfig
 
 export const development = {
   watchDirs: [

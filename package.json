@@ -7,7 +7,6 @@
     "@commitlint/cli": "12",
     "@commitlint/config-conventional": "12",
     "@midwayjs/cli": "^1.2.41",
-    "@midwayjs/cli-plugin-dev": "1",
     "@midwayjs/egg-ts-helper": "1",
     "@rollup/plugin-commonjs": "17",
     "@rollup/plugin-node-resolve": "11",
