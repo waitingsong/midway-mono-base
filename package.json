@@ -46,7 +46,7 @@
     "build": "sh .scripts/build.sh",
     "ci": "npm run cov",
     "clean": "lerna clean --loglevel error --yes && lerna run clean",
-    "cov": "lerna run cov --concurrency=1",
+    "cov": "sh .scripts/cov.sh",
     "doc": "node .githooks/doc.js",
     "lint": "sh .scripts/lint.sh",
     "lint:nofix": "sh .scripts/lint-no-fix.sh",
