@@ -94,14 +94,14 @@ cache: &global_cache
     GIT_DEPTH: 20
   script:
     - echo -e "\e[0Ksection_start:`date +%s`:build_section[collapsed=true]\r\e[0K Build"
-    - npm i -g nyc
     - npm run bootstrap
     - echo "$CI_COMMIT_MESSAGE" | node_modules/.bin/commitlint
     - npm run build
     - echo -e "\e[0Ksection_end:`date +%s`:build_section\r\e[0K"
     - echo -e "\e[0Ksection_start:`date +%s`:ci_section[collapsed=true]\r\e[0K CI"
     # lint must after build for mono-repo
-    - lerna run lint:nofix
+    #- lerna run lint:nofix # will fail under lerna4
+    - npm run lint:nofix
     - npm run ci
     - echo -e "\e[0Ksection_end:`date +%s`:ci_section\r\e[0K"
     - echo -e "\e[0Ksection_start:`date +%s`:cov_section[collapsed=true]\r\e[0K Coverage"
