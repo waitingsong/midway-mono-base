@@ -33,6 +33,12 @@ export default (appInfo: EggAppInfo): DefaultConfig => {
 
   config.welcomeMsg = 'Hello Midwayjs!'
 
+  config.midwayFeature = {
+    // true 使用 midway-logger
+    // false 或空代表使用 egg-logger
+    replaceEggLogger: true,
+  }
+
   config.svcHosts = {
     uc: 'http://127.0.0.1:7001',
   }
