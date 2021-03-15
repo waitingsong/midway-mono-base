@@ -1,6 +1,4 @@
 
-export * as Uc from '@scope/docs'
-
 export { BaseController } from './core/base.controller'
 export { BaseService } from './core/base.service'
 export { BaseRepo } from './core/base.repo'
