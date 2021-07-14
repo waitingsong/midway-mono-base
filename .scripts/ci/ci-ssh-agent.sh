@@ -32,5 +32,3 @@ git remote -v
 # git checkout "$CI_COMMIT_REF_NAME"
 # git remote update
 
-set +e
-

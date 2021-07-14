@@ -14,14 +14,6 @@ API_URL=$2
 PID=$3
 PLID=$4
 
-type jq 1>/dev/null
-if [ $? != 0 ]; then
-  echo -e "jq not callable!"
-  echo -e "Download: https://stedolan.github.io/jq/download/"
-  echo -e "For win32: copy jq-win64.exe to %windir%/system32/jq.exe"
-  exit 1
-fi
-
 if [ -z $TOKEN ]; then
   echo -e "Parameter ACESS TOKEN EMPTY!"
   exit 1

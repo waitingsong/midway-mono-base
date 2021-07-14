@@ -24,5 +24,3 @@ cat ~/.ssh/known_hosts
 # echo "$CD_SSH_PRIVATE_KEY" | base64 -d -
 echo "$CD_SSH_PRIVATE_KEY" | base64 -d - | tr -d '\r' | ssh-add - > /dev/null
 
-set +e
-

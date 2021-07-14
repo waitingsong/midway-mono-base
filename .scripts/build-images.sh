@@ -18,35 +18,18 @@ source "$cwd/.scripts/ci/ci-env.sh"
 # echo $authorOfTagOrCommit
 echo -e "CI_JOB_MANUAL: $CI_JOB_MANUAL"
 echo -e "base img: $NODE_BASE_IMAGE"
-echo "--------------\n\n"
+echo -e "--------------\n\n"
 
 if [ -z "$CI_COMMIT_TAG" -a -z "$CI_COMMIT_SHORT_SHA" ]; then
   echo -e 'Both $CI_COMMIT_TAG and $CI_COMMIT_SHORT_SHA are empty!'
   exit 1
 fi
 
-if [ -z "$DOCKER_REG_USER" ]; then
-  echo -e '$DOCKER_REG_USER undefined!'
-  exit 1
-fi
-if [ -z "$DOCKER_REG_PWD" ]; then
-  echo -e '$DOCKER_REG_PWD undefined!'
-  exit 1
-fi
-
-docker info
+source "$cwd/.scripts/util/login-docker-repo.sh"
 
 pkgs=`find packages -maxdepth 1 -mindepth 1`
 globalIgnoreFile="$cwd/.dockerignore"
 imgGC=$(( ( RANDOM % 10 )  + 1 ))
-
-echo -e ">>> Login docker hub"
-if [ -z $DOCKER_REG_SERVER ]; then
-  echo "$DOCKER_REG_PWD" | docker login -u "$DOCKER_REG_USER" --password-stdin
-else
-  echo "$DOCKER_REG_PWD" | docker login -u "$DOCKER_REG_USER" --password-stdin $DOCKER_REG_SERVER
-fi
-
 
 for pkg in $pkgs
 do
@@ -169,4 +152,6 @@ cd $cwd
 echo -e "-------------------------------------------"
 echo -e "      images build and push succeeded"
 echo -e "-------------------------------------------\n\n "
+
+set -e
 

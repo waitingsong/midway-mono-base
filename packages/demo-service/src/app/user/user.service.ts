@@ -1,44 +1,37 @@
-import { provide } from 'midway'
-// import { DbModel } from 'egg-kmore'
+import { Inject, Provide } from '@midwayjs/decorator'
 
-// import { UcTbListModel } from '../../config/db.model'
+import { UserRepo } from './user.repo'
+import {
+  GetUserDTO,
+  UserDetailDTO,
+} from './user.types'
 
-import { GetUserOpts, UserInfo } from './user.model'
+import { BaseService } from '~/interface'
 
 
-@provide()
-export class UserService {
+@Provide()
+export class UserService extends BaseService {
 
-  /*
-  constructor(
-    @plugin('kmore') private readonly db: DbModel<UcTbListModel>,
-  ) { }
-  */
+  @Inject() readonly repo: UserRepo
 
   /**
    * 读取用户信息
    */
-  public async getUser(options: GetUserOpts): Promise<UserInfo> {
-    const ret: UserInfo = {
+  async getUser(options: GetUserDTO): Promise<UserDetailDTO> {
+    const userName = await this.getUserNameByUid(options.uid)
+    const ret: UserDetailDTO = {
       email: 'foo@bar.com',
       uid: options.uid,
-      userName: 'mockedName',
+      userName,
     }
     return ret
   }
 
-
-  /* Ensure kmore plugin enabled in config/plugin.ts
-  public async getUserName(options: GetUserOpts): Promise<UserInfo['userName']> {
-    const { rb } = this.db
-
-    const name = await rb.tb_user()
-      .select('user_name')
-      .where('uid', options.uid)
-      .then(rows => rows[0] ? rows[0].user_name : '')
-
+  async getUserNameByUid(_uid: GetUserDTO['uid']): Promise<UserDetailDTO['userName']> {
+    const name = await this.repo.getUserNameByUid(_uid)
+    // const name = 'mockedName'
     return name
   }
-  */
 
 }
+

@@ -6,13 +6,13 @@ WORKDIR /app
 COPY node_modules ./node_modules
 COPY dist ./dist
 COPY node_modules-ext ./node_modules
-COPY package.json README.md ./
+COPY package.json README.md tsconfig.json tsconfig.cjs.json ./
 
 EXPOSE 7001
 HEALTHCHECK \
   --interval=10s \
   --retries=3 \
-  --start-period=5s \
+  --start-period=8s \
   --timeout=3s \
   CMD curl -fs http://localhost:7001/ping || exit 1
 

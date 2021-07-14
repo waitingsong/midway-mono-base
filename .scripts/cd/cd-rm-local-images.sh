@@ -16,7 +16,7 @@ if [ -z "$CI_COMMIT_TAG" -a -z "$CI_COMMIT_SHORT_SHA" ]; then
   exit 1
 fi
 
-docker info
+#docker info
 
 pkgs=`find packages -maxdepth 1 -mindepth 1`
 

@@ -26,7 +26,9 @@ source .scripts/util/verify-publish.sh
 if [ "$RELEASE_BRANCH" != "master" ]; then
   echo -e ">>> Do deleting local release branch if exists..."
   git branch -a
+  set +e
   git branch -D $RELEASE_BRANCH
+  set -e
 
   echo -e ">>> Do creating a new release branch for publishing..."
   git checkout -b $RELEASE_BRANCH
@@ -41,7 +43,9 @@ if [ "$RELEASE_BRANCH" != "master" ]; then
 fi
 
 
+set +e
 tagVer=$(jq -r '.version' lerna.json)
+set -e
 if [ -z "$tagVer" ]; then
   echo -e "Retrieve version of lerna.json failed!"
   exit 1

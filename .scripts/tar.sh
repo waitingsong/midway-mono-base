@@ -49,5 +49,3 @@ cd $cwd
 echo -e ">>> Result assets:"
 ls -lh $outDir
 
-set +e
-

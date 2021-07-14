@@ -28,7 +28,7 @@ npm stop
 ## Test
 
 - Use `npm run lint` to check code style.
-- Use `npm run test` to run unit test.
+- Use `npm run test:local` to run unit test (under sub package).
 
 
 ## Note

@@ -1,8 +1,7 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "declaration": false, 
-    "inlineSourceMap": false,
+    "declaration": false,
     "module": "commonjs",
     "noImplicitAny": false,
     "noImplicitThis": false,

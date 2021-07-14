@@ -17,5 +17,3 @@ else
     --no-audit --no-optional --prod --package-lock-only
 fi
 
-set +e
-

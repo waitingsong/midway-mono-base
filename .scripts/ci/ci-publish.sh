@@ -60,6 +60,7 @@ echo -e "-------------------------------------------"
 
 # merge to master
 echo -e ">>> Do Merging to master..."
+git config pull.rebase false
 git checkout master
 git pull origin
 set +e
@@ -113,4 +114,6 @@ source .scripts/ci/ci-delete-remote-branch.sh $GL_TOKEN "$CI_API_V4_URL" $CI_PRO
 echo -e "-------------------------------------------"
 echo -e "            publish succeeded "
 echo -e "-------------------------------------------\n\n"
+
+set -e
 

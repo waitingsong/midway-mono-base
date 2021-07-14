@@ -3,15 +3,8 @@
 # Should under the folder <project>/packages/<some-pkg>
 
 if [ ! -f "package.json" ]; then
-  echo -e "package.json not exists!"
-  exit 1
-fi
-
-type jq 1>/dev/null
-if [ $? != 0 ]; then
-  echo -e "jq not callable!"
-  echo -e "Download: https://stedolan.github.io/jq/download/"
-  echo -e "For win32: copy jq-win64.exe to %windir%/system32/jq.exe"
+  echo -e "package.json not exists!, current dir:"
+  pwd
   exit 1
 fi
 
@@ -41,16 +34,22 @@ majorValue=$(echo "$pkgVer" | awk -F'.' '{print $1}')
 minorValue=$(echo "$pkgVer" | awk -F'.' '{print $2}')
 patchValue=$(echo "$pkgVer" | awk -F'.' '{print $3}')
 
-# @scope/pkg => scope/pkg
-pkgImgNameNorm=$(echo "$pkgName" | sed -r 's/[@]//g')
-if [ -z "$pkgImgNameNorm" ]; then
-  echo -e "Value of name from package.json invalid!"
-  exit 1
-fi
+# # @scope/pkg => scope/pkg
+# pkgImgNameNorm=$(echo "$pkgName" | sed -r 's/[@]//g')
+# if [ -z "$pkgImgNameNorm" ]; then
+#   echo -e "Value of name from package.json invalid!"
+#   exit 1
+# fi
 
 # @scope/pkg => scope-pkg
 fileNameNorm=$(echo "$pkgName" | sed -r 's/[@]//g' | tr / -)
 if [ -z "$fileNameNorm" ]; then
+  echo -e "Value of name from package.json invalid!"
+  exit 1
+fi
+# @scope/pkg => scope-pkg
+pkgImgNameNorm="$fileNameNorm"
+if [ -z "$pkgImgNameNorm" ]; then
   echo -e "Value of name from package.json invalid!"
   exit 1
 fi
@@ -60,7 +59,7 @@ majorVer="$majorValue" # 2
 minorVer="${majorVer}.${minorValue}"  # 2.3
 patchVer="${minorVer}.${patchValue}"  # 2.3.4
 
-# @scope/pkg => scope/pkg
+# @scope/pkg => scope-pkg:version
 imgLatest="$pkgImgNameNorm:$latestVer"
 imgMajor="$pkgImgNameNorm:$majorVer"
 imgMinor="$pkgImgNameNorm:$minorVer"
@@ -83,6 +82,9 @@ if [ -n "$DOCKER_REG_SERVER" ]; then
   imgMajor="$DOCKER_REG_SERVER/$imgMajor"
   imgMinor="$DOCKER_REG_SERVER/$imgMinor"
   imgPatch="$DOCKER_REG_SERVER/$imgPatch"
+else
+  echo "env DOCKER_REG_SERVER empty"
+  exit 1
 fi
 
 # scope-pkg-1.2.3

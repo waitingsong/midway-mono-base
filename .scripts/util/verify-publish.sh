@@ -25,14 +25,18 @@ fi
 
 echo -e ">>> Verifying no newer publish..."
 git fetch origin
+set +e
 latestTag="$(git describe --abbrev=0 origin/$defaultBranch)"
+set -e
 
 if [ -z "$latestTag" ]; then
   return 0
 fi
 
+set +e
 # https://stackoverflow.com/a/29984371
 distance=$(git rev-list --count $CI_COMMIT_SHORT_SHA.."$latestTag")
+set -e
 
 if [ "$distance" != "0" ]; then
   echo "distance: $distance to $latestTag"

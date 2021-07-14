@@ -12,11 +12,11 @@ fi
 echo -e ">>> Npm installing"
 # remove the pkg symlink created by lerna
 rm node_modules -rf
-npm i --prod --no-audit --no-optional
+npm i --prod --no-audit --no-optional --legacy-peer-deps
 
 # Note: file link not works under windows properly
-echo -e ">>> Npm deduping"
-npm ddp --no-audit
+#echo -e ">>> Npm deduping"
+#npm ddp --no-audit
 
 echo -e ">>> Purging"
 cd node_modules
@@ -26,7 +26,7 @@ find . -type d -iname "example" -print0 | xargs -0i rm -rf {}
 find . -type d -iname "test" -print0 | xargs -0i rm -rf {}
 find . -type d -iname "tests" -print0 | xargs -0i rm -rf {}
 
-# for image build cache
+# unlink for image build cache
 find . -type f -iname "package-lock.json" -print0 | xargs -0i rm -f {}
 
 find . -type f -iname ".coveralls.yml" -print0 | xargs -0i rm -f {}
@@ -47,10 +47,11 @@ find . -type f -iname "docker-compose.yml" -print0 | xargs -0i rm -f {}
 find . -type f -iname "CHANGELOG*" -print0 | xargs -0i rm -rf {}
 find . -type f -iname "Makefile" -print0 | xargs -0i rm -f {}
 find . -type f -iname "yarn.lock" -print0 | xargs -0i rm -f {}
-find . -type f -iname "*.html" -print0 | xargs -0i rm -f {}
 find . -type f -iname "*.markdown" -print0 | xargs -0i rm -f {}
 find . -type f -iname "*.md" -print0 | xargs -0i rm -f {}
 find . -type f -iname "*.swp" -print0 | xargs -0i rm -f {}
+
+find . -type f -iname "*.html" -not -path "./koa-onerror/templates/*" -print0 | xargs -0i rm -f {}
 
 find . -type f -iname "*.d.ts" -print0 | xargs -0i rm -f {}
 

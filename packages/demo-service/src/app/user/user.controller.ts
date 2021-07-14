@@ -1,28 +1,55 @@
-import { Context, controller, get, inject, provide } from 'midway'
-import { JsonResp } from '@waiting/shared-types'
+import {
+  ALL,
+  Controller,
+  Get,
+  Inject,
+  Param,
+  Provide,
+  Query,
+  Validate,
+} from '@midwayjs/decorator'
 
 import { UserService } from './user.service'
-import { UserInfo } from './user.model'
+import { GetUserDTO, UserDetailDTO } from './user.types'
+
+import { BaseController, JsonResp } from '~/interface'
 
 
-@provide()
-@controller('/user')
-export class UserController {
+@Provide()
+@Controller('/user')
+export class UserController extends BaseController {
 
-  constructor(
-    @inject() private userService: UserService,
-  ) { }
+  @Inject() readonly svc: UserService
 
-  @get('/:uid')
-  public async getUser(ctx: Context): Promise<void> {
-    const uid = +ctx.params.uid
-    const user = await this.userService.getUser({ uid })
-    const res: JsonResp<UserInfo> = {
+  /**
+   * @url /user?uid=1
+   */
+  @Get('/')
+  @Validate()
+  async getUser(@Query(ALL) param: GetUserDTO): Promise<UserDetailDTO> {
+    const user = await this.svc.getUser(param)
+    return user
+  }
+
+  /**
+   *
+   * @url /user/1
+   * @description 不推荐单个参数获取，因为无法校验并自动格式化输入参数！
+   */
+  @Get('/:id')
+  @Validate()
+  async getUser2(@Param() id: GetUserDTO['uid']): Promise<JsonResp<UserDetailDTO>> {
+    const uid = +id
+    if (Number.isNaN(uid) || uid <= 0) {
+      this.throwError('uid必须自然数')
+    }
+    const user = await this.svc.getUser({ uid })
+    const res = {
       code: 0,
-      dat: user,
+      data: user,
     }
 
-    ctx.body = res
+    return res
   }
 
 }

@@ -30,7 +30,9 @@ deploy_rc:
     - image_rc
     # - tar_rc
   script:
+    - echo -e "\e[0Ksection_start:`date +%s`:deploy_section[collapsed=true]\r\e[0KHeader of the deploy_rc collapsible section"
     - sh .scripts/cd-distribute-images.sh
+    - echo -e "\e[0Ksection_end:`date +%s`:deploy_section\r\e[0K"
 
 depoly_ga:
   extends: .deploy
@@ -45,11 +47,15 @@ depoly_ga:
       - branches
     variables:
       - $CI_PUBLISH_COMPLETED != "true"
+      # /help/user/project/releases/index#prevent-unintentional-releases-by-setting-a-deploy-freeze
+      - $CI_DEPLOY_FREEZE != null
   needs:
     - image_ga
     # - tar_ga
   script:
+    - echo -e "\e[0Ksection_start:`date +%s`:deploy_section[collapsed=true]\r\e[0KHeader of the deploy_ga collapsible section"
     - sh .scripts/cd-distribute-images.sh
+    - echo -e "\e[0Ksection_end:`date +%s`:deploy_section\r\e[0K"
 
 
 .restart-services:
@@ -123,7 +129,9 @@ rm_local_images_ga:
   needs:
     - image_ga
   script:
+    - echo -e "\e[0Ksection_start:`date +%s`:rm_images_section[collapsed=true]\r\e[0KHeader of the rm_local_images collapsible section"
     - sh .scripts/cd/cd-rm-local-images.sh
+    - echo -e "\e[0Ksection_end:`date +%s`:rm_images_section\r\e[0K"
 
 rm_remote_images_ga:
   extends: .rm-images
@@ -133,5 +141,7 @@ rm_remote_images_ga:
   needs:
     - image_ga
   script:
+    - echo -e "\e[0Ksection_start:`date +%s`:rm_images_section[collapsed=true]\r\e[0KHeader of the rm_remote_images collapsible section"
     - sh .scripts/cd/cd-rm-remote-images.sh
+    - echo -e "\e[0Ksection_end:`date +%s`:rm_images_section\r\e[0K"
 

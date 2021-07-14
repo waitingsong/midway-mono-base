@@ -1,11 +1,20 @@
 {
+  "debug.node.autoAttach": "on",
+  "editor.detectIndentation": false,
   "editor.minimap.renderCharacters": false,
   "editor.renderFinalNewline": false,
   "editor.tabSize": 2,
   "editor.wordWrap": "on",
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": true,
+    "source.organizeImports": false
   },
+  "eslint.run": "onSave",
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript"
+  ],
   "files.eol": "\n",
   "files.exclude": {
     "**/*.js": {
@@ -13,15 +22,13 @@
     },
     ".build": true,
     ".dockerignore": true,
-    ".editorconfig": true,
     ".eslint*": true,
-    ".gitignore": true,
     ".githooks": true,
-    ".npmignore": true,
+    ".github": true,
+    ".gitlab": true,
     ".nyc_output": true,
+    ".scripts": true,
     ".sourcemaps": true,
-    ".travis.yml": true,
-    "appveyor.yml": true,
     "build": true,
     "commitlint.*": true,
     "coverage": true,
@@ -29,18 +36,28 @@
     "logs": true,
     "out": true,
     "package-lock.json": true,
-    "packages/*/.eslint*": true,
     "packages/*/dist": true,
-    "packages/*/logs": true,
-    "packages/*/run": true,
     "rollup.*": true,
     "run": true,
     "**/*.map": true,
     "**/*.swp": true,
+    "**/.codecov.yml": true,
     "**/.DS_Store": true,
+    "**/.editorconfig": true,
+    "**/.eslintcache": true,
+    "**/.eslintrc.yml": true,
     "**/.git": true,
+    "**/.gitignore": true,
+    "**/.gitlab-ci.yml": true,
+    "**/.gitlab-cd.yml": true,
+    "**/.nycrc.json": true,
+    "**/.npmignore": true,
+    "**/.travis.yml": true,
     "**/.vscode": true,
-    "**/node_modules*": true
+    "**/appveyor.yml": true,
+    "**/jest.config.*": true,
+    "**/node_modules*": true,
+    "**/run": true
   },
   "files.insertFinalNewline": true,
   "files.watcherExclude": {
@@ -61,17 +78,29 @@
     "**/tmp/**": true
   },
   "files.trimTrailingWhitespace": true,
+  "git.autofetch": true,
+  "git.ignoreLimitWarning": true,
+  "markdown-pdf.outputDirectory": "d:/",
+  "plantuml.render": "PlantUMLServer",
+  "plantuml.server": "",
+  "plantuml.exportFormat": "png",
+  "plantuml.urlFormat": "png",
   "search.exclude": {
-    "i18n/**": true,
+    "i18n": true,
     "library/": true,
     "node_modules": true,
     "platforms/": true,
     "www/": true,
+    "**/bower_components": true,
+    "**/dist": true,
     "**/node_modules*": true,
-    "**/bower_components": true
+    "**/logs": true,
+    "**/run": true
   },
   "search.useIgnoreFiles": true,
   "telemetry.enableTelemetry": false,
+  "terminal.integrated.shell.windows": "C:\\Program Files\\Git\\bin\\bash.exe",
+  "terminal.integrated.automationShell.windows": "C:\\Program Files\\Git\\bin\\bash.exe",
   "typescript.autoClosingTags": false,
   "typescript.format.enable": true,
   "typescript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
@@ -79,16 +108,21 @@
   "typescript.format.insertSpaceAfterTypeAssertion": true,
   "typescript.format.insertSpaceBeforeAndAfterBinaryOperators": true,
   "typescript.format.semicolons": "remove",
+  "typescript.locale": "zh-CN",
   "typescript.preferences.quoteStyle": "single",
+  "typescript.tsdk": "./node_modules/typescript/lib",
   "typescript.updateImportsOnFileMove.enabled": "always",
   "[markdown]": {
+    "editor.defaultFormatter": "yzhang.markdown-all-in-one",
     "editor.formatOnPaste": true,
     "editor.formatOnSave": true,
+    "editor.quickSuggestions": true,
     "files.trimTrailingWhitespace": false
   },
   "[typescript]": {
     "editor.formatOnPaste": true,
     "editor.formatOnSave": false
   },
-  "git.ignoreLimitWarning": true
+  "workbench.editor.wrapTabs": true
 }
+

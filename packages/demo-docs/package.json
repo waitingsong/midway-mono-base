@@ -4,29 +4,35 @@
   "description": "",
   "private": true,
   "bin": {},
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.js",
+  "types": "src/index.ts",
   "dependencies": {
-    "@waiting/shared-types": "3"
+    "@midwayjs/decorator": "^2.11.0",
+    "@waiting/shared-types": "^14.4.0"
   },
   "devDependencies": { },
   "files": [
+    "src/**/*.ts",
     "dist",
     "Dockerfile",
     "package-lock.json"
   ],
   "homepage": "",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://"
   },
   "license": "",
   "scripts": {
-    "build": "npm run tsc",
+    "build": "npm run tsc && npm run rp",
     "clean": "rm -rf dist/* .vscode/.tsbuildinfo",
     "lint": "eslint --fix --cache src/**/*.ts",
     "lint:nofix": "eslint --cache src/**/*.ts",
+    "rp": "rollup -c rollup.config.js",
     "test": "npm run lint:nofix",
     "tsc": "tsc -p tsconfig.json",
     "tsc:w": "tsc -p tsconfig.json -w"
