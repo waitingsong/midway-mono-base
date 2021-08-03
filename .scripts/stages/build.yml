@@ -42,7 +42,6 @@ build_dev:
     key: cache_dev
     paths:
       - node_modules
-    policy: pull
     policy: pull-push
 
 build_rc:
@@ -55,10 +54,9 @@ build_rc:
       # no tag merging
       - $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
   cache:
-    key: cache_dev
+    key: cache_release
     paths:
       - node_modules
-    key: cache_release
     policy: pull-push
   artifacts:
     expire_in: '30 day'
