@@ -1,6 +1,4 @@
 
-
-
 .build:
   stage: build
   tags:
@@ -9,9 +7,12 @@
     GIT_DEPTH: 20
   script:
     - echo -e "\e[0Ksection_start:`date +%s`:build_section[collapsed=true]\r\e[0K Build"
-    - npm run bootstrap
+    - date
+    - npm run bootstrap -- --no-ci
+    - date
     - sh .scripts/ci/ci-commitlint.sh
     - npm run build
+    - ls -al
     - echo -e "\e[0Ksection_end:`date +%s`:build_section\r\e[0K"
     - echo -e "\e[0Ksection_start:`date +%s`:init_db_section[collapsed=true]\r\e[0K Init database"
     - sh .scripts/ci/ci-init-db.sh
@@ -35,6 +36,7 @@
 build_dev:
   extends: .build
   except:
+    - main
     - master
     - /^release.*/
     - /^v\d+(\.\d+){2}.*/
@@ -42,11 +44,13 @@ build_dev:
     key: cache_dev
     paths:
       - node_modules
+      - package-lock.json
     policy: pull-push
 
 build_rc:
   extends: .build
   only:
+    - main
     - master
     - /^release.*/
   except:
@@ -57,6 +61,7 @@ build_rc:
     key: cache_release
     paths:
       - node_modules
+      - package-lock.json
     policy: pull-push
   artifacts:
     expire_in: '30 day'

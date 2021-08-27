@@ -15,8 +15,6 @@ echo -e "-------------------------------------------"
 echo -e "           distribution process "
 echo -e "-------------------------------------------"
 
-cwd=`pwd`
-source "$cwd/.scripts/cd/cd-env.sh"
 echo -e "CI_JOB_MANUAL: $CI_JOB_MANUAL"
 
 if [ -z "$CI_COMMIT_TAG" -a -z "$CI_COMMIT_SHORT_SHA" ]; then
@@ -25,7 +23,7 @@ if [ -z "$CI_COMMIT_TAG" -a -z "$CI_COMMIT_SHORT_SHA" ]; then
 fi
 
 source "$cwd/.scripts/cd/cd-ssh-agent.sh"
-echo -e ">>> Retrieving file system disk space usage on deploy"
+echo -e ">>> Retrieving file system disk space usage on distribution"
 set -e
 ssh -p $CD_SSH_PORT admins@$CD_SSH_HOST "df -lhT"
 set +e
@@ -53,7 +51,7 @@ do
   echo -e " \n\n-------------------------------------------"
   source "${cwd}/.scripts/util/pick-pkg-env.sh"
 
-  echo -e ">>> Checking image of $pkg exists in deploy"
+  echo -e ">>> Checking image of $pkg exists in distribution"
   source "${cwd}/.scripts/util/verify-pkg-image-deploy.sh"
   if [ -n "$PKG_IMAGE_DEPLOY_EXISTS" ]; then
     echo -e "Image of $pkg exists in deploy, skip distribution."
@@ -61,12 +59,13 @@ do
   fi
 
   echo -e ">>> Pulling image of $pkg"
-  source "${cwd}/.scripts/util/verify-pkg-image.sh"
-  imgExists=$?
-  if [ $imgExists == 0 ]; then
+  set -e
+  ${cwd}/.scripts/util/info-pkg-image.sh "$imgPatch"
+  if [ $? == 0 ]; then
     echo -e "Image of $pkg NOT exists."
     exit 1
   fi
+  set +e
 
   echo -e "----------------------------"
   docker image ls "$imgPatch"
@@ -78,7 +77,7 @@ do
   time docker save "$imgPatch" | zstdmt > /tmp/$fileNameNormVer.zst
   ls -l /tmp/$fileNameNormVer.zst
 
-  if [ $imgExists == 2 ]; then
+  if [ $imgExistsRemote != 0 ]; then
     echo -e ">>> Cleaning local image of $pkg"
     docker rmi $imgPatch > /dev/null
   fi

@@ -7,7 +7,6 @@ echo -e "\n-------------------------------------------"
 echo -e "           remove local images "
 echo -e "-------------------------------------------\n"
 
-cwd=`pwd`
 source "$cwd/.scripts/cd/cd-env.sh"
 echo -e "CI_JOB_MANUAL: $CI_JOB_MANUAL"
 
@@ -43,10 +42,8 @@ do
 
   echo -e "\n>>> Cleaning local image of $pkg"
   docker rmi $imgPatch
-  docker image prune -f
-
 done
-cd $cwd
+cd "$cwd"
 
 echo -e "\n-------------------------------------------"
 echo -e "       remove local images succeeded"

@@ -20,8 +20,11 @@ if [ -n "$DOCKER_REG_SERVER" -a -n "$DOCKER_REG_PWD" ]; then
   fi
 fi
 
-jq -r '.auths."$DOCKER_REG_SERVER".auth' $DK_CONF | cut -c 1-4
-jq -r '.auths."$DOCKER_REG_SERVER".auth' $DK_CONF | cut -c 23-
+# jq -r ".auths[\"$DOCKER_REG_SERVER\"].auth" $DK_CONF | cut -c 1-6
+# jq -r ".auths[\"$DOCKER_REG_SERVER\"].auth" $DK_CONF | cut -c 21-
+_TK=$( jq -r ".auths[\"$DOCKER_REG_SERVER\"].auth" $DK_CONF )
+echo ${_TK:1:6}..${_TK:21}
+_TK=""
 
 #docker info
 

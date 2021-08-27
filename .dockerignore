@@ -10,7 +10,6 @@ Dockerfile
 log
 logs
 npm-debug.log
-package-lock.json
 run
 src
 test

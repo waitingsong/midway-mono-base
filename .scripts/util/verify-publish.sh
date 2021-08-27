@@ -15,7 +15,7 @@ if [ -z "$CI_COMMIT_SHORT_SHA" ]; then
 fi
 
 if [ -z "$CI_DEFAULT_BRANCH" ]; then
-  defaultBranch=master
+  defaultBranch=main
   # echo -e '$CI_DEFAULT_BRANCH undefined! gitlab supports since v1.24'
   # echo -e 'see: https://docs.gitlab.com/ee/ci/variables/predefined_variables.html'
   # exit 1

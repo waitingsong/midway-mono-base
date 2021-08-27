@@ -1,32 +1,23 @@
 #!/bin/bash
 # ---------------------------
-# Build images
+# Distribute Image
 #
 # Used CI Variables:
-# - DOCKER_REG_SERVER
-# - DOCKER_REG_USER
-# - DOCKER_REG_PWD
-# - NODE_BASE_IMAGE
+#   https://docs.gitlab.com/ee/ci/variables/predefined_variables.html
 # ---------------------------
 
 echo -e "-------------------------------------------"
-echo -e "      images build and push process "
+echo -e "           distribution process "
 echo -e "-------------------------------------------"
 
-# echo $authorOfTagOrCommit
 echo -e "CI_JOB_MANUAL: $CI_JOB_MANUAL"
-echo -e "base img: $NODE_BASE_IMAGE"
-echo -e "--------------\n\n"
 
 if [ -z "$CI_COMMIT_TAG" -a -z "$CI_COMMIT_SHORT_SHA" ]; then
   echo -e 'Both $CI_COMMIT_TAG and $CI_COMMIT_SHORT_SHA are empty!'
   exit 1
 fi
 
-source "$cwd/.scripts/util/login-docker-repo.sh"
-
 pkgs=`find packages -maxdepth 1 -mindepth 1`
-globalIgnoreFile="$cwd/.dockerignore"
 
 for pkg in $pkgs
 do
@@ -43,27 +34,17 @@ do
   echo -e " \n\n-------------------------------------------"
   source "${cwd}/.scripts/util/pick-pkg-env.sh"
 
-  if [ ! -f ".dockerignore" ]; then
-    cp "$globalIgnoreFile" ./.dockerignore
-  fi
-
   set -e
-  if [ -n "$CI_COMMIT_TAG" ]; then
-    ${cwd}/.scripts/ci/ci-build-image.mjs --src="$imgPatch" --ga=true
-  else
-    ${cwd}/.scripts/ci/ci-build-image.mjs --src="$imgPatch"
-  fi
+  $cwd/.scripts/trigger/trigger-ready-for-deploy.mjs --name=$pkgImgNameNorm --ver=$pkgVer
+  set +e
 
-  rm "$pkgBuildTmpDir" -rf
 done
 
 cd $cwd
 
 echo -e "-------------------------------------------"
-echo -e "      images build and push succeeded"
+echo -e "          distribution succeeded "
 echo -e "-------------------------------------------\n\n "
-
-bash "$cwd/.scripts/util/image-random-prune.sh"
 
 set -e
 

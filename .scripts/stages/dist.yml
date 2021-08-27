@@ -1,0 +1,72 @@
+
+.dist:
+  image: $NODE_DOCKER_IMAGE
+  tags:
+    - cd-worker
+  cache: {}
+  when: delayed
+  start_in: 5 seconds
+
+# Caution: not available if dist_ga completed (due to branch release deleted)
+dist_rc:
+  extends: .dist
+  stage: pre-publish
+  only:
+    refs:
+      - /^release.*/
+    variables:
+      - $PACK_RC_IMG == "yes"
+  except:
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
+  needs:
+    - image_rc
+  script:
+    - echo -e "\e[0Ksection_start:`date +%s`:dist_section[collapsed=false]\r\e[0Kdist_rc"
+    - echo -e "\e[0Ksection_end:`date +%s`:dist_section\r\e[0K"
+
+dist_ga:
+  extends: .dist
+  stage: distribute
+  only:
+    refs:
+      - /^v\d+(\.\d+){2}.*/
+    variables:
+      - $PACK_GA_IMG == "yes"
+  except:
+    refs:
+      - branches
+    variables:
+      - $CI_PUBLISH_COMPLETED != "true"
+      # /help/user/project/releases/index#prevent-unintentional-releases-by-setting-a-deploy-freeze
+      - $CI_DEPLOY_FREEZE != null
+  needs:
+    - image_ga
+  script:
+    - echo -e "\e[0Ksection_start:`date +%s`:dist_section[collapsed=false]\r\e[0Kdist_ga"
+    - source .scripts/cd/cd-env.sh
+    - .scripts/distribute-images.sh
+    - echo -e "\e[0Ksection_end:`date +%s`:dist_section\r\e[0K"
+
+# ssh_dist_ga:
+#   extends: .dist
+#   stage: distribute
+#   only:
+#     refs:
+#       - /^v\d+(\.\d+){2}.*/
+#     variables:
+#       - $PACK_GA_IMG == "yes"
+#   except:
+#     refs:
+#       - branches
+#     variables:
+#       - $CI_PUBLISH_COMPLETED != "true"
+#       # /help/user/project/releases/index#prevent-unintentional-releases-by-setting-a-deploy-freeze
+#       - $CI_DEPLOY_FREEZE != null
+#   needs:
+#     - image_ga
+#   script:
+#     - echo -e "\e[0Ksection_start:`date +%s`:dist_section[collapsed=false]\r\e[0Kdist_ga"
+#     - sh .scripts/cd-distribute-images-ssh.sh
+#     - echo -e "\e[0Ksection_end:`date +%s`:dist_section\r\e[0K"
+

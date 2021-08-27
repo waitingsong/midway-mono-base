@@ -17,7 +17,7 @@
         "cross-env"
       ],
       "npmClientArgs": [
-        "--no-package-lock"
+        "--legacy-peer-deps"
       ]
     },
     "version": {

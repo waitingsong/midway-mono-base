@@ -4,6 +4,9 @@
 
 set -e
 
+echo '>>> ci-prepack...'
+
+date
 if [ -n "$NPM_REGISTRY" ]; then
   echo -e "\$NPM_REGISTRY: $NPM_REGISTRY"
   # must rm node_modules
@@ -16,4 +19,6 @@ else
   lerna bootstrap --hoist=false --ignore-scripts -- \
     --no-audit --no-optional --prod --package-lock-only
 fi
+
+date
 

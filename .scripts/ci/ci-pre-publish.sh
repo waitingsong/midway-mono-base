@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # pre-publish
-# switch new release branch from master and push
+# switch new release branch from main and push
 
 echo -e "-------------------------------------------"
 echo -e "            pre-publish process "
@@ -15,7 +15,8 @@ if [ "$EXISTS" ]; then
   echo -e "---------------------------------- CAUTION -------------------------------------------"
   echo -e "Remote repository already contains release branch during pre-publish stage!"
   echo -e "It seems another publish process exists."
-  echo -e "Wait until another publish process completed or delete branch origin/release manually."
+  echo -e "Wait until another publish process completed or merge and delete branch origin/release manually."
+  echo -e "git fetch origin && git checkout main && git merge main origin/release"
   echo -e "--------------------------------------------------------------------------------------"
   exit 1
 fi
@@ -23,7 +24,7 @@ fi
 source .scripts/ci/ci-ssh-agent.sh
 source .scripts/util/verify-publish.sh
 
-if [ "$RELEASE_BRANCH" != "master" ]; then
+if [ "$RELEASE_BRANCH" != "main" ]; then
   echo -e ">>> Do deleting local release branch if exists..."
   git branch -a
   set +e

@@ -1,0 +1,88 @@
+# ---------------------------
+# Used work tags :
+# - `cd-worker` for image pack, distribute, deploy, restart svcs
+# ---------------------------
+
+
+.restart-services:
+  tags:
+    - cd-worker
+  variables:
+    GIT_DEPTH: 5
+  cache: {}
+  allow_failure: true
+  when: manual
+
+# restart_svcs_rc:
+#   extends: .restart-services
+#   stage: pre-publish
+#   only:
+#     refs:
+#       - /^release.*/
+#     variables:
+#       - $PACK_RC_IMG == "yes"
+#   except:
+#     variables:
+#       - $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
+#   needs:
+#     - image_rc
+#   script:
+#     - sh .scripts/cd/cd-restart-services.sh
+#   allow_failure: true
+
+# restart_svcs_ga:
+#   extends: .restart-services
+#   stage: post-deploy
+#   only:
+#     - /^v\d+(\.\d+){2}.*/
+#   except:
+#     refs:
+#       - branches
+#     variables:
+#       - $CI_PUBLISH_COMPLETED != "true"
+#   needs:
+#     - image_ga
+#   script:
+#     - sh .scripts/cd/cd-restart-services.sh
+
+.rm-images:
+  image: $NODE_DOCKER_IMAGE
+  tags:
+    # - worker
+    # should running on dedicated worker
+    - cd-worker
+  variables:
+    GIT_DEPTH: 5
+  cache: {}
+  except:
+    refs:
+      - branches
+    variables:
+      - $CI_PUBLISH_COMPLETED != "true"
+  allow_failure: true
+  when: manual
+
+rm_local_images_ga:
+  extends: .rm-images
+  stage: post-deploy
+  only:
+    - /^v\d+(\.\d+){2}.*/
+  needs:
+    - image_ga
+  script:
+    - echo -e "\e[0Ksection_start:`date +%s`:rm_images_section[collapsed=false]\r\e[0Krm_local_images"
+    - sh .scripts/cd/cd-rm-local-images.sh
+    - echo -e "\e[0Ksection_end:`date +%s`:rm_images_section\r\e[0K"
+
+# rm_remote_images_ga:
+#   extends: .rm-images
+#   stage: post-deploy
+#   only:
+#     - /^v\d+(\.\d+){2}.*/
+#   needs:
+#     - image_ga
+#   script:
+#     - echo -e "\e[0Ksection_start:`date +%s`:rm_images_section[collapsed=false]\r\e[0Krm_remote_images"
+#     - sh .scripts/cd/cd-rm-remote-images.sh
+#     - echo -e "\e[0Ksection_end:`date +%s`:rm_images_section\r\e[0K"
+

@@ -38,7 +38,7 @@ fi
 
 set -e
 echo -e "CI_COMMIT_REF_NAME:: $CI_COMMIT_REF_NAME"
-git checkout "$CI_COMMIT_REF_NAME"
+git -c core.fileMode=false checkout "$CI_COMMIT_REF_NAME"
 git log | head -n 1
 # check push to remote available
 echo -e "list branches"
@@ -47,10 +47,24 @@ git branch -a
 git push origin --no-verify
 
 
+echo -e ">>> lerna initializing..."
+#npm run clean
+date
+npm run bootstrap -- --ci
+date
+#lerna run build # not works on lerna v4
+npm run build
+
+set +e
 source .scripts/publish.sh --yes $*
+pubflag=$?
+set -e
 
 
-if [ "$RELEASE_BRANCH" == "master" ]; then
+if [ "$RELEASE_BRANCH" == "$CI_DEFAULT_BRANCH" ]; then
+  return 0
+fi
+if [ "$RELEASE_BRANCH" == "main" ]; then
   return 0
 fi
 
@@ -58,22 +72,21 @@ echo -e "-------------------------------------------"
 echo -e "            post-publish process "
 echo -e "-------------------------------------------"
 
-# merge to master
-echo -e ">>> Do Merging to master..."
+echo -e ">>> Do Merging to default branch..."
 git config pull.rebase false
-git checkout master
+git -c core.fileMode=false checkout $CI_DEFAULT_BRANCH
 git pull origin
 set +e
 git merge "$CI_COMMIT_REF_NAME" -m "Merge release branch"
 if [ "$?" -ne 0 ]; then
   echo -e "-------------------------------------------"
-  echo -e "Merge release branch to master failed!"
+  echo -e "Merge release branch to $CI_DEFAULT_BRANCH failed!"
   echo -e "Do merging manually!"
   echo -e "-------------------------------------------\n\n"
   exit 1
 fi
 
-echo -e ">>> Do pushing local master to remote master..."
+echo -e ">>> Do pushing local $CI_DEFAULT_BRANCH to remote..."
 git push --no-verify -v origin
 if [ "$?" -ne 0 ]; then
   echo -e "-------------------------------------------"
@@ -85,6 +98,7 @@ fi
 
 # valiate remote for deleting
 git checkout "$RELEASE_BRANCH"
+sh $cwd/.scripts/ci/ci-prepare.sh
 source .scripts/util/validate-head-diff.sh $RELEASE_BRANCH
 if [ "$?" -ne 0 ]; then
   echo -e "Release branch \"$RELEASE_BRANCH\" has changed after published."
@@ -97,17 +111,17 @@ fi
 # Not works since gitlab v12.4
 #echo -e ">>> Do deleting the remote release branch..."
 #git push --no-verify origin -d release
-#if [ "$?" -ne 0 ]; then
-#  echo -e "-------------------------------------------"
-#  echo -e "Delete remote release branch failed!"
-#  echo -e "Do deleting manually!"
-#  echo -e "-------------------------------------------\n\n"
-#  exit 1
-#fi
 source .scripts/ci/ci-delete-remote-branch.sh $GL_TOKEN "$CI_API_V4_URL" $CI_PROJECT_ID "$RELEASE_BRANCH"
 
+$cwd/.scripts/util/save-cache.sh
+
+if [ $pubflag != 0 ]; then
+  echo publish failed
+  exit 1
+fi
+
 #echo -e ">>> Do deleting local release branch..."
-#git checkout master
+#git checkout $CI_DEFAULT_BRANCH
 #git branch -D "$RELEASE_BRANCH"
 #git log | head -n 1
 

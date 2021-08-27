@@ -4,6 +4,7 @@ pre_release:
   tags:
     - worker
   only:
+    - main
     - master
   except:
     variables:
@@ -12,10 +13,9 @@ pre_release:
   variables:
     GIT_STRATEGY: clone
   script:
+    - .scripts/util/validate-project-changed.mjs
     - echo -e "\e[0Ksection_start:`date +%s`:pre_release_section[collapsed=true]\r\e[0K Pre Release"
-    - sh .scripts/ci/ci-pre-publish.sh
+    - .scripts/ci/ci-pre-publish.sh
     - echo -e "\e[0Ksection_end:`date +%s`:pre_release_section\r\e[0K"
-  # true for no blocked status
-  allow_failure: true
   when: manual
 

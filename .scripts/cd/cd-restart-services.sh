@@ -30,7 +30,6 @@ fi
 source .scripts/cd/cd-ssh-agent.sh
 
 pkgs=`find packages -maxdepth 1 -mindepth 1`
-cwd=`pwd`
 cmd="df -lhT && echo -e '\\n\\n'"
 
 for pkg in $pkgs
@@ -48,11 +47,11 @@ do
   echo -e "\n\n-------------------------------------------"
   source "${cwd}/.scripts/util/pick-pkg-env.sh"
 
-  echo -e "\n>>> Checking image of $pkg exists in deploy"
+  echo -e "\n>>> Checking image of $pkg exists in distribution"
   source "${cwd}/.scripts/util/verify-pkg-image-deploy.sh"
 
   if [ -z "$PKG_IMAGE_DEPLOY_EXISTS" ]; then
-    echo -e "Error: Image of $pkg NOT exists in deploy"
+    echo -e "Error: Image of $pkg NOT exists in distribution"
     exit 1
   fi
 

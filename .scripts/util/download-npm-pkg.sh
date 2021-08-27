@@ -11,7 +11,7 @@ if [ -z "$npmPkgFile" ]; then
   exit 1
 fi
 
-echo -e ">>> Downloading '$npmPkg' from Npm"
+echo -e ">>> Downloading '$npmPkg' from NPM"
 npm pack --quiet "$npmPkg"
 tar -xf "$npmPkgFile"
 ls -l package

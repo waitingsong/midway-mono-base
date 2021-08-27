@@ -98,6 +98,11 @@ npm run build @scope/demo-docs
 npm run build @scope/demo-docs @scope/demo-serivce
 ```
 
+## Add dependencies
+
+```sh
+lerna add pkg-name --scope=@scope/demo-service
+```
 
 ## Update package
 
