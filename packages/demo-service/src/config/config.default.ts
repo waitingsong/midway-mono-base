@@ -1,9 +1,12 @@
 import { readFileSync } from 'fs'
 
+import { DefaultConfig as PromConfig } from '@midwayjs/prometheus'
 import { join } from '@waiting/shared-core'
 import { EggAppInfo } from 'egg'
 
 import { DefaultConfig } from './config.types'
+
+import { NpmPkg } from '~/interface'
 
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -11,7 +14,7 @@ export default (appInfo: EggAppInfo): DefaultConfig => {
   const config = {} as DefaultConfig
 
   // add your config here
-  config.middleware = ['jwtAuthMiddleware', 'responseMimeMiddleware']
+  config.middleware = ['responseMimeMiddleware']
 
   // use for cookie sign key, should change to your own and keep security
   config.keys = `${appInfo.name}_1559532739676_8888`
@@ -38,30 +41,22 @@ export default (appInfo: EggAppInfo): DefaultConfig => {
     replaceEggLogger: true,
   }
 
-  config.svcHosts = {
-    uc: 'http://127.0.0.1:7001',
-  }
-  Object.keys(config.svcHosts).forEach((key) => {
-    const name = `SVC_HOST_${key}`
-    if (typeof process.env[name] === 'string') {
-      config.svcHosts[key] = process.env[name] as string
-    }
-  })
-
   // '2020-01-01T00:00:00Z'
   const epoch = 1577836800000
   config.koid = {
-    dataCenter: process.env.KOID_DATACENTER ? +process.env.KOID_DATACENTER : 0,
-    worker: process.env.KOID_WORKER ? +process.env.KOID_WORKER : 0,
     epoch,
   }
 
+  const nameNorm = (appInfo.pkg as NpmPkg).name.replace(/@/ug, '').replace(/\//ug, '-')
   // prometheus config
-  config.prometheus = {
+  const prometheus: PromConfig = {
     labels: {
-      APP_NAME: appInfo.name,
+      APP_NAME: (appInfo.pkg as NpmPkg).name,
+      APP_NAME_NORM: nameNorm,
+      APP_VER: (appInfo.pkg as NpmPkg).version,
     },
   }
+  config.prometheus = prometheus
 
   // 禁用 csrf 安全检测
   config.security = {

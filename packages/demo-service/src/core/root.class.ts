@@ -1,12 +1,15 @@
-import { App, Inject, Plugin } from '@midwayjs/decorator'
-// eslint-disable-next-line import/no-extraneous-dependencies
-// import { ILogger } from '@midwayjs/logger'
+import { App, Inject } from '@midwayjs/decorator'
 import { Logger } from '@mw-components/jaeger'
+import { JwtComponent } from '@mw-components/jwt'
 import { KoidComponent } from '@mw-components/koid'
-import { TaskManComponent } from '@mw-components/taskman'
-import { Jwt } from '@waiting/egg-jwt'
+// import { TaskManComponent } from '@mw-components/taskman'
 
-import { Application, Context, FetchOptions } from '~/interface'
+import {
+  Application,
+  Context,
+  DbTransaction,
+  FetchOptions,
+} from '~/interface'
 import MyError from '~/util/my-error'
 
 
@@ -20,13 +23,12 @@ export class RootClass {
    * jaeger Context SPAN 上下文日志
    */
   @Inject('jaeger:logger') readonly logger: Logger
-  // @Inject() readonly logger: ILogger
 
   @Inject() readonly koid: KoidComponent
 
-  @Inject('taskman:taskManComponent') readonly taskMan: TaskManComponent
+  // @Inject('taskman:taskManComponent') readonly taskMan: TaskManComponent
 
-  @Plugin() readonly jwt: Jwt
+  @Inject('jwt:jwtComponent') readonly jwt: JwtComponent
 
   /**
    * SnowFlake id Generatoror
@@ -62,6 +64,32 @@ export class RootClass {
 
   throwError(message: string, status?: number, errors?: unknown[]): never {
     throw new MyError(message, status, errors)
+  }
+
+  protected async commitTransaction(trx: DbTransaction): Promise<void> {
+    try {
+      if (trx.isTransaction && ! trx.isCompleted()) {
+        await trx.commit()
+      }
+    }
+    finally {
+      this._removeTransaction(trx)
+    }
+  }
+
+  protected async rollbackTransaction(trx: DbTransaction): Promise<void> {
+    try {
+      if (trx.isTransaction && ! trx.isCompleted()) {
+        await trx.rollback()
+      }
+    }
+    finally {
+      this._removeTransaction(trx)
+    }
+  }
+
+  protected _removeTransaction(trx: DbTransaction): void {
+    this.ctx.dbTransactions.delete(trx)
   }
 
 }

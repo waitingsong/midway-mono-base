@@ -84,6 +84,12 @@ async function errHandleMiddleware(ctx: Context<unknown>, next: IMidwayWebNext):
       body.data = myerr.errors ?? myerr.details // 兼容 midway 参数校验
     }
 
+    if (body.code === 500
+      && myerr.message.includes('Knex')
+      && myerr.message.includes('Timeout acquiring a connection')) {
+      body.code = 999 // db error
+    }
+
     ctx.body = body
 
     // https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status

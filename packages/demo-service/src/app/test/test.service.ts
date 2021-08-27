@@ -1,6 +1,6 @@
 import { Provide } from '@midwayjs/decorator'
 
-import { BaseService, JsonObject, JsonType } from '~/interface'
+import { BaseService, JsonObject, JwtResult } from '~/interface'
 
 
 @Provide()
@@ -11,7 +11,7 @@ export class TestService extends BaseService {
     return token
   }
 
-  jwtVerify(token: string): JsonType {
+  jwtVerify(token: string): JwtResult {
     const valid = this.jwt.verify(token)
     return valid
   }

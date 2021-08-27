@@ -1,7 +1,8 @@
-import { basename, join } from '@waiting/shared-core'
-import { JsonResp } from '@waiting/shared-types'
+import { relative } from 'path'
 
-import { testConfig } from '~/../test/test-config'
+import { JsonResp } from '@waiting/shared-types'
+import { testConfig } from 'test/root.config'
+
 import { Context } from '~/interface'
 import { ErrorHandlerMiddleware } from '~/middleware/error-handler.middleware'
 import MyError from '~/util/my-error'
@@ -10,13 +11,14 @@ import MyError from '~/util/my-error'
 import assert = require('power-assert')
 
 
-const filename = basename(__filename)
+const filename = relative(process.cwd(), __filename).replace(/\\/ug, '/')
 
 describe(filename, () => {
 
   it('should 404 work', async () => {
-    const { app } = testConfig
+    const { app, next } = testConfig
     const ctx = app.createAnonymousContext() as Context<JsonResp>
+
     ctx.status = 404
     const inst = await ctx.requestContext.getAsync(ErrorHandlerMiddleware)
     const mw = inst.resolve()
@@ -33,6 +35,7 @@ describe(filename, () => {
   it('should 422 work', async () => {
     const { app } = testConfig
     const ctx = app.createAnonymousContext() as Context<JsonResp>
+
     ctx.status = 200
     const inst = await ctx.requestContext.getAsync(ErrorHandlerMiddleware)
     const mw = inst.resolve()
@@ -46,8 +49,9 @@ describe(filename, () => {
   })
 
   it('should wrapRespForJson() work with json wrap', async () => {
-    const { app } = testConfig
+    const { app, next } = testConfig
     const ctx = app.createAnonymousContext() as Context<JsonResp<string>>
+
     ctx.status = 200
     const payload = Math.random().toString()
     // set  ctx.response.headers['content-type'] with 'application/json'
@@ -70,8 +74,9 @@ describe(filename, () => {
   })
 
   it('should wrapRespForJson() work without wrap', async () => {
-    const { app } = testConfig
+    const { app, next } = testConfig
     const ctx = app.createAnonymousContext() as Context<string>
+
     ctx.status = 200
     const payload = Math.random().toString()
     ctx.body = payload
@@ -95,10 +100,6 @@ describe(filename, () => {
 
 })
 
-
-async function next(): Promise<void> {
-  return void 0
-}
 
 async function nextThrowError(): Promise<void> {
   throw new MyError('ValidationError')

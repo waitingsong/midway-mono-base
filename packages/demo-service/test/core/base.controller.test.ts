@@ -1,20 +1,22 @@
-import { basename, join } from '@waiting/shared-core'
+import { relative } from 'path'
 
-import { testConfig } from '~/../test/test-config'
+import { testConfig } from '../root.config'
+
 import { HomeController } from '~/app/home/home.controller'
 
 // eslint-disable-next-line import/order
 import assert = require('power-assert')
 
 
-const filename = basename(__filename)
+const filename = relative(process.cwd(), __filename).replace(/\\/ug, '/')
 
 describe(filename, () => {
 
   it('should Controller ::idGenerator work', async () => {
     const { app } = testConfig
-    const inst = await app.createAnonymousContext()
-      .requestContext.getAsync(HomeController)
+    const ctx = app.createAnonymousContext()
+
+    const inst = await ctx.requestContext.getAsync(HomeController)
 
     const id = inst.idGenerator
     const id2 = inst.idGenerator
@@ -25,18 +27,11 @@ describe(filename, () => {
 
   it('should BaseController work', async () => {
     const { app } = testConfig
+    const ctx = app.createAnonymousContext()
+
     // 传入 class 获取实例
-    const inst = await app.createAnonymousContext()
-      .requestContext.getAsync(HomeController)
-
+    const inst = await ctx.requestContext.getAsync(HomeController)
     assert(inst.idGenerator)
-
-
-    // 根据依赖注入 Id 获取实例
-    const inst2 = await app.createAnonymousContext()
-      .requestContext.getAsync<HomeController>('homeController')
-    assert(inst2.idGenerator)
-
   })
 })
 

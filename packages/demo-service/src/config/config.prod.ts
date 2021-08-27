@@ -1,5 +1,10 @@
 import { TracerConfig, defaultTracerConfig } from '@mw-components/jaeger'
 import {
+  JwtConfig,
+  JwtMiddlewareConfig,
+  initialJwtMiddlewareConfig,
+} from '@mw-components/jwt'
+import {
   DbConfig,
   DbConfigs,
   postProcessResponse,
@@ -7,11 +12,11 @@ import {
 } from '@mw-components/kmore'
 import {
   initTaskManClientConfig,
+  initDbConfig,
   ServerAgent,
   TaskManClientConfig,
   TaskManServerConfig,
 } from '@mw-components/taskman'
-import { JwtEggConfig } from '@waiting/egg-jwt'
 
 import { DbReplicaKeys } from './config.types'
 import { dbDict, DbModel } from './db.model'
@@ -19,8 +24,22 @@ import { dbDict, DbModel } from './db.model'
 
 export {
   fetch,
-  jwtAuth,
+  svcHosts,
 } from './config.local'
+
+export const jwtConfig: JwtConfig = {
+  secret: process.env.JWT_SECRET,
+}
+export const jwtMiddlewareConfig: JwtMiddlewareConfig = {
+  ...initialJwtMiddlewareConfig,
+  enableMiddleware: true,
+}
+jwtMiddlewareConfig.ignore = jwtMiddlewareConfig.ignore?.concat([
+  '/hello', '/ip',
+  '/test/sign',
+  '/test/err',
+  RegExp(`${ServerAgent.base}/.*`, 'u'),
+])
 
 
 const master: DbConfig<DbModel> = {
@@ -34,7 +53,12 @@ const master: DbConfig<DbModel> = {
       user: process.env.POSTGRES_USER ? process.env.POSTGRES_USER : '',
       password: process.env.POSTGRES_PASSWORD ? process.env.POSTGRES_PASSWORD : '',
     },
-    acquireConnectionTimeout: 10000,
+    pool: {
+      min: 2,
+      max: 20,
+      // propagateCreateError: false,
+    },
+    acquireConnectionTimeout: 30000,
     postProcessResponse,
     wrapIdentifier,
   },
@@ -47,30 +71,19 @@ export const dbConfigs: DbConfigs<DbReplicaKeys> = {
   master,
 }
 
-export const jwt = {
-  enable: true, // enable middleware
-  client: {
-    authOpts: {
-      cookie: 'access_token',
-      passthrough: false,
-    },
-    secret: '123456abc', // 生产更新!!
-  },
-  ignore: [
-    /^\/$/u, '/login', '/hello', '/ip', '/ping',
-    '/test/sign',
-    '/test/err',
-    `${ServerAgent.base}/${ServerAgent.hello}`,
-  ],
-} as JwtEggConfig
-// jwt token 校验中间件(需配合jwt使用, ignore的配置与jwt一致)
 
 export const tracer: TracerConfig = {
   ...defaultTracerConfig,
+  whiteList: [
+    '/favicon.ico',
+    '/favicon.png',
+    '/ping',
+    '/metrics',
+  ],
   tracingConfig: {
     sampler: {
       type: 'probabilistic',
-      param: 0.0001,
+      param: process.env.JAEGER_SAMPLE_RATIO ? +process.env.JAEGER_SAMPLE_RATIO : 0.001,
     },
     reporter: {
       agentHost: process.env.JAEGER_AGENT_HOST ?? '127.0.0.1',
@@ -85,6 +98,7 @@ export const tracer: TracerConfig = {
 export const taskManServerConfig: TaskManServerConfig = {
   expInterval: '30min',
   dbConfigs: {
+    ...initDbConfig,
     connection: {
       host: process.env.POSTGRES_HOST ?? '',
       port: process.env.POSTGRES_PORT ? +process.env.POSTGRES_PORT : 5432,
@@ -92,10 +106,8 @@ export const taskManServerConfig: TaskManServerConfig = {
       user: process.env.POSTGRES_USER ?? '',
       password: process.env.POSTGRES_PASSWORD ?? '',
     },
-    pool: {
-      min: 2,
-      max: 6,
-    },
+    enableTracing: false,
+    tracingResponse: false,
   },
 }
 export const taskManClientConfig: TaskManClientConfig = {

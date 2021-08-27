@@ -1,3 +1,5 @@
+import { relative } from 'path'
+
 import { createHttpRequest } from '@midwayjs/mock'
 import {
   ServerAgent,
@@ -5,23 +7,32 @@ import {
   TaskDTO,
   TaskFullDTO,
   initTaskDTO,
+  TaskAgentController,
 } from '@mw-components/taskman'
-import { basename, join } from '@waiting/shared-core'
 
+import { testConfig } from '../../root.config'
 
-import { testConfig } from '~/../test/test-config'
 import { JsonResp } from '~/interface'
 
 // eslint-disable-next-line import/order
 import assert = require('power-assert')
 
 
-const filename = basename(__filename)
+const filename = relative(process.cwd(), __filename).replace(/\\/ug, '/')
 
 describe(filename, () => {
 
   it(ServerAgent.hello, async () => {
     const { app } = testConfig
+    const container = app.getApplicationContext()
+    try {
+      await container.getAsync(TaskAgentController)
+    }
+    catch (ex) {
+      console.info('skip test due to instance of TaskAgentController undefined')
+      return
+    }
+
     const url = `${ServerAgent.base}/${ServerAgent.hello}`
     const res = await createHttpRequest(app)
       .get(url)
@@ -32,6 +43,15 @@ describe(filename, () => {
 
   it(ServerAgent.create, async () => {
     const { app } = testConfig
+    const container = app.getApplicationContext()
+    try {
+      await container.getAsync(TaskAgentController)
+    }
+    catch (ex) {
+      console.info('skip test due to instance of TaskAgentController undefined')
+      return
+    }
+
     const input: CreateTaskDTO = {
       json: {
         url: `http://localhost:7001${ServerAgent.base}/${ServerAgent.hello}`,

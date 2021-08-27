@@ -12,6 +12,11 @@ export enum ErrorCode {
    */
   E_Internal_Server = 500,
   /**
+   * 服务内部异常
+   * @description Knex 连接数据库超时
+   */
+  E_Db_Acq_Connection_Timeout = 999,
+  /**
    * 无效的应用
    * @description 在应用列表中没有对应的 appId 记录
    */

@@ -27,7 +27,7 @@ export class HomeController extends BaseController {
     const { reqId } = this.ctx
     let body = `${this.welcomeMsg} - ${this.ctx.api.reqTimeStr}`
     body += `\npkgName: "${this.pkgJson.name}"\npkgVer: "${this.pkgJson.version ?? 'n/a'}"`
-    body += `\nreqId: "${reqId}"`
+    body += `\nreqId: "${reqId}"\n`
     return body
   }
 
@@ -41,7 +41,7 @@ export class HomeController extends BaseController {
   @Get('/hello', { middleware: ['apiMiddleware'] })
   hello(): string {
     let msg = `${this.welcomeMsg} - ${this.ctx.api.reqTimeStr}`
-    msg += `\npkgName: "${this.pkgJson.name}"\npkgVer: "${this.pkgJson.version ?? 'n/a'}"`
+    msg += `\npkgName: "${this.pkgJson.name}"\npkgVer: "${this.pkgJson.version ?? 'n/a'}"\n`
     return msg
   }
 

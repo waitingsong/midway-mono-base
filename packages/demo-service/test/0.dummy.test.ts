@@ -1,16 +1,14 @@
-import { TaskManClientConfig } from '@mw-components/taskman'
-import {
-  basename,
-  join,
-} from '@waiting/shared-core'
+import { relative } from 'path'
 
-import { testConfig } from './test-config'
+import { TaskManClientConfig } from '@mw-components/taskman'
+
+import { testConfig } from './root.config'
 
 // eslint-disable-next-line import/order
 import assert = require('power-assert')
 
 
-const filename = basename(__filename)
+const filename = relative(process.cwd(), __filename).replace(/\\/ug, '/')
 
 describe(filename, () => {
 

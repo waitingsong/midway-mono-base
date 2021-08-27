@@ -2,6 +2,11 @@
 import { FetchComponentConfig, defaultFetchComponentConfig } from '@mw-components/fetch'
 import { TracerConfig, defaultTracerConfig } from '@mw-components/jaeger'
 import {
+  JwtConfig,
+  JwtMiddlewareConfig,
+  initialJwtMiddlewareConfig,
+} from '@mw-components/jwt'
+import {
   DbConfig,
   DbConfigs,
   postProcessResponse,
@@ -9,16 +14,41 @@ import {
 } from '@mw-components/kmore'
 import {
   initTaskManClientConfig,
+  initDbConfig,
   ServerAgent,
   TaskManClientConfig,
   TaskManServerConfig,
 } from '@mw-components/taskman'
-import { JwtEggConfig } from '@waiting/egg-jwt'
 
-import { DbReplicaKeys, JwtAuthMiddlewareConfig } from './config.types'
+import {
+  DbReplicaKeys,
+  SvcHosts,
+} from './config.types'
 import { dbDict, DbModel } from './db.model'
-import { testJumpTo } from './helper'
 
+
+export const jwtConfig: JwtConfig = {
+  secret: '123456abc', // 默认密钥，生产环境一定要更改!
+}
+export const jwtMiddlewareConfig: JwtMiddlewareConfig = {
+  ...initialJwtMiddlewareConfig,
+  enableMiddleware: true,
+}
+jwtMiddlewareConfig.ignore = jwtMiddlewareConfig.ignore?.concat([
+  '/hello', '/ip',
+  '/test/err',
+  '/test/array',
+  '/test/blank',
+  '/test/empty',
+  '/test/no_output',
+  '/test/sign',
+  RegExp(`${ServerAgent.base}/.*`, 'u'),
+])
+
+
+export const fetch: FetchComponentConfig = {
+  ...defaultFetchComponentConfig,
+}
 
 const master: DbConfig<DbModel> = {
   autoConnect: true,
@@ -31,7 +61,13 @@ const master: DbConfig<DbModel> = {
       user: process.env.POSTGRES_USER ? process.env.POSTGRES_USER : 'postgres',
       password: process.env.POSTGRES_PASSWORD ? process.env.POSTGRES_PASSWORD : 'postgres',
     },
-    acquireConnectionTimeout: 10000,
+    pool: {
+      min: 0,
+      max: 20,
+      /** @link https://stackoverflow.com/a/67621567 */
+      // propagateCreateError: false,
+    },
+    acquireConnectionTimeout: 50000,
     postProcessResponse,
     wrapIdentifier,
   },
@@ -44,35 +80,15 @@ export const dbConfigs: DbConfigs<DbReplicaKeys> = {
   master,
 }
 
-export const jwt = {
-  enable: false, // disable middleware
-  client: {
-    authOpts: {
-      cookie: 'access_token',
-      passthrough: testJumpTo,
-    },
-    secret: '123456abc',
-  },
-  ignore: [
-    /^\/$/u, '/login', '/hello', '/ip', '/ping',
-    '/test/err',
-    '/test/array',
-    '/test/blank',
-    '/test/empty',
-    '/test/no_output',
-    '/test/sign',
-    `${ServerAgent.base}/*`,
-  ],
-} as JwtEggConfig
-// jwt token 校验中间件(需配合jwt使用, ignore的配置与jwt一致)
-export const jwtAuth: JwtAuthMiddlewareConfig = {
-  ignore: jwt.ignore,
-  redisScope: 'admin', // redis的作用域前缀
-  accessTokenExpiresIn: 60 * 60 * 24 * 3, // 签名过期时间也可写
-}
 
 export const tracer: TracerConfig = {
   ...defaultTracerConfig,
+  whiteList: [
+    '/favicon.ico',
+    '/favicon.png',
+    '/ping',
+    '/metrics',
+  ],
   tracingConfig: {
     sampler: {
       type: 'probabilistic',
@@ -84,17 +100,13 @@ export const tracer: TracerConfig = {
   },
 }
 
-export const fetch: FetchComponentConfig = {
-  ...defaultFetchComponentConfig,
-}
-
-
 /**
  * Remove this variable if running as client
  */
 export const taskManServerConfig: TaskManServerConfig = {
   expInterval: '30min',
   dbConfigs: {
+    ...initDbConfig,
     connection: {
       host: process.env.POSTGRES_HOST ? process.env.POSTGRES_HOST : 'localhost',
       port: process.env.POSTGRES_PORT ? +process.env.POSTGRES_PORT : 5432,
@@ -102,10 +114,7 @@ export const taskManServerConfig: TaskManServerConfig = {
       user: process.env.POSTGRES_USER ? process.env.POSTGRES_USER : 'postgres',
       password: process.env.POSTGRES_PASSWORD ? process.env.POSTGRES_PASSWORD : 'postgres',
     },
-    pool: {
-      min: 2,
-      max: 6,
-    },
+    tracingResponse: true,
   },
 }
 export const taskManClientConfig: TaskManClientConfig = {
@@ -127,4 +136,14 @@ export const development = {
   ],
   overrideDefault: true,
 }
+
+export const svcHosts: SvcHosts = {
+  uc: 'http://127.0.0.1:7001',
+}
+Object.keys(svcHosts).forEach((key) => {
+  const name = `SVC_HOST_${key}`
+  if (typeof process.env[name] === 'string') {
+    svcHosts[key] = process.env[name] as string
+  }
+})
 

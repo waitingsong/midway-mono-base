@@ -1,21 +1,25 @@
 // config for `npm run cov|ci`
 import { TracerConfig, defaultTracerConfig } from '@mw-components/jaeger'
 import {
+  JwtConfig,
+  JwtMiddlewareConfig,
+  initialJwtMiddlewareConfig,
+} from '@mw-components/jwt'
+import {
   DbConfig,
   DbConfigs,
   postProcessResponse,
   wrapIdentifier,
 } from '@mw-components/kmore'
 import { ServerAgent } from '@mw-components/taskman'
-import { JwtEggConfig } from '@waiting/egg-jwt'
 
 import { DbReplicaKeys } from './config.types'
 import { DbModel, dbDict } from './db.model'
-import { testJumpTo } from './helper'
 
 
 export {
   fetch,
+  svcHosts,
   taskManClientConfig,
   taskManServerConfig,
 } from './config.local'
@@ -29,27 +33,24 @@ export const logger = {
   disableConsoleAfterReady: true,
 }
 
-export const jwt: JwtEggConfig = {
-  enable: true, // enable middleware
-  client: {
-    authOpts: {
-      cookie: 'access_token',
-      // @ts-expect-error
-      passthrough: testJumpTo,
-    },
-    secret: '123456abc',
-  },
-  ignore: [
-    /^\/$/u, '/login', '/hello', '/ip', '/ping',
-    '/test/err',
-    '/test/array',
-    '/test/blank',
-    '/test/empty',
-    '/test/no_output',
-    '/test/sign',
-    `${ServerAgent.base}/*`,
-  ],
+export const jwtConfig: JwtConfig = {
+  secret: '123456abc', // 默认密钥，生产环境一定要更改!
 }
+export const jwtMiddlewareConfig: JwtMiddlewareConfig = {
+  ...initialJwtMiddlewareConfig,
+  enableMiddleware: true,
+}
+jwtMiddlewareConfig.ignore = jwtMiddlewareConfig.ignore?.concat([
+  '/hello', '/ip',
+  '/test/err',
+  '/test/array',
+  '/test/blank',
+  '/test/empty',
+  '/test/no_output',
+  '/test/sign',
+  RegExp(`${ServerAgent.base}/.*`, 'u'),
+])
+
 
 const master: DbConfig<DbModel> = {
   autoConnect: true,
@@ -62,7 +63,12 @@ const master: DbConfig<DbModel> = {
       user: process.env.POSTGRES_USER ? process.env.POSTGRES_USER : 'postgres',
       password: process.env.POSTGRES_PASSWORD ? process.env.POSTGRES_PASSWORD : 'postgres',
     },
-    acquireConnectionTimeout: 10000,
+    pool: {
+      min: 0,
+      max: 20,
+      // propagateCreateError: false,
+    },
+    acquireConnectionTimeout: 50000,
     postProcessResponse,
     wrapIdentifier,
   },
@@ -80,8 +86,9 @@ export const tracer: TracerConfig = {
   whiteList: [
     '/favicon.ico',
     '/favicon.png',
+    '/ping',
+    '/metrics',
     '/untracedPath',
-    '',
     /\/unitTest[\d.]+/u,
   ],
   tracingConfig: {

@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { IncomingHttpHeaders } from 'http'
+
 import { Inject } from '@midwayjs/decorator'
 import {
+  Node_Headers,
   FetchComponent,
   FetchResponse,
 } from '@mw-components/fetch'
@@ -65,6 +68,16 @@ export class BaseController extends RootClass {
     }
     const ret = this.fetch.get<T>(url, opts)
     return ret as Promise<T>
+  }
+
+  /**
+   * 根据输入 http headers 生成 Headers,
+   * @returns Headers 不包括 'host' 字段
+   */
+  genFetchHeaders(headers?: HeadersInit | IncomingHttpHeaders): Headers {
+    const ret = new Node_Headers(headers as HeadersInit)
+    ret.delete('host')
+    return ret
   }
 
 }

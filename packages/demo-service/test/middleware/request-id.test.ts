@@ -1,7 +1,8 @@
-import { KoidComponent } from '@mw-components/koid'
-import { basename, join } from '@waiting/shared-core'
+import { relative } from 'path'
 
-import { testConfig } from '~/../test/test-config'
+import { KoidComponent } from '@mw-components/koid'
+import { testConfig } from 'test/root.config'
+
 import { HeadersKey } from '~/constant'
 import { RequestIdMiddleware } from '~/middleware/request-id.middleware'
 
@@ -9,12 +10,12 @@ import { RequestIdMiddleware } from '~/middleware/request-id.middleware'
 import assert = require('power-assert')
 
 
-const filename = basename(__filename)
+const filename = relative(process.cwd(), __filename).replace(/\\/ug, '/')
 
 describe(filename, () => {
 
   it('should work', async () => {
-    const { app } = testConfig
+    const { app, next } = testConfig
     const key = HeadersKey.reqId
     const ctx = app.createAnonymousContext()
     ctx.status = 200
@@ -38,7 +39,7 @@ describe(filename, () => {
   })
 
   it('should work with existing x-request-id header', async () => {
-    const { app } = testConfig
+    const { app, next } = testConfig
     const key = HeadersKey.reqId
     const ctx = app.createAnonymousContext()
     ctx.status = 200
@@ -69,9 +70,4 @@ describe(filename, () => {
   })
 
 })
-
-
-async function next(): Promise<void> {
-  return void 0
-}
 

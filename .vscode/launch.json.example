@@ -48,7 +48,7 @@
         "POSTGRES_HOST": "",
         "POSTGRES_PORT": "5432",
         "POSTGRES_DB": "",
-        "POSTGRES_USER": "postgres",
+        "POSTGRES_USER": "",
         "POSTGRES_PASSWORD": "",
       },
       "port": 9229,

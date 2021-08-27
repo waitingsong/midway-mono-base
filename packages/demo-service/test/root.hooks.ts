@@ -5,9 +5,12 @@ import 'tsconfig-paths/register'
 
 import { createApp, close, createHttpRequest } from '@midwayjs/mock'
 import { Framework } from '@midwayjs/web'
+import { JwtComponent } from '@mw-components/jwt'
 import { initTaskManClientConfig, TaskManClientConfig } from '@mw-components/taskman'
 
-import { testConfig } from './test-config'
+import { testConfig } from './root.config'
+
+import { NpmPkg } from '~/interface'
 
 
 /**
@@ -27,11 +30,16 @@ export const mochaHooks = async () => {
   return {
     beforeAll: async () => {
       const app = await createApp<Framework>()
+      const container = app.getApplicationContext()
       testConfig.app = app
-      const httpRequest = createHttpRequest(app)
-      testConfig.httpRequest = httpRequest
+      testConfig.container = container
+      testConfig.httpRequest = createHttpRequest(app)
+      testConfig.jwt = await testConfig.container.getAsync(JwtComponent)
+      testConfig.pkg = app.getConfig('pkg') as NpmPkg
 
-      const { url } = httpRequest.get('/')
+      const { url } = testConfig.httpRequest.get('/')
+      testConfig.host = url
+
       app.addConfigObject({
         taskManClientConfig: {
           ...initTaskManClientConfig,
