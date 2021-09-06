@@ -26,6 +26,8 @@ import {
 } from './config.types'
 import { dbDict, DbModel } from './db.model'
 
+import { HeadersKey } from '~/interface'
+
 
 export const jwtConfig: JwtConfig = {
   secret: '123456abc', // 默认密钥，生产环境一定要更改!
@@ -49,6 +51,8 @@ jwtMiddlewareConfig.ignore = jwtMiddlewareConfig.ignore?.concat([
 export const fetch: FetchComponentConfig = {
   ...defaultFetchComponentConfig,
 }
+fetch.traceLoggingReqHeaders.push(HeadersKey.traceId)
+fetch.traceLoggingRespHeaders.push(HeadersKey.traceId)
 
 const master: DbConfig<DbModel> = {
   autoConnect: true,

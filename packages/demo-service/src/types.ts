@@ -7,4 +7,7 @@ export {
   TbMemberDO,
 } from '@scope/docs'
 
+export interface JwtUser {
+  uid: string
+}
 

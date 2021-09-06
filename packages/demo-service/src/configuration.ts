@@ -19,7 +19,7 @@ import * as db from '@mw-components/kmore'
 // eslint-disable-next-line no-duplicate-imports
 import { DbConfigs, DbManager } from '@mw-components/kmore'
 import * as koid from '@mw-components/koid'
-// import * as tm from '@mw-components/taskman'
+import * as tm from '@mw-components/taskman'
 
 import { DbReplicaKeys } from '~/config/config.types'
 import { Application, NpmPkg } from '~/interface'
@@ -36,7 +36,7 @@ process.env.UV_THREADPOOL_SIZE = '96'
     koid,
     fetch,
     db,
-    // tm,
+    tm,
   ],
   importConfigs: [join(__dirname, 'config')],
 })

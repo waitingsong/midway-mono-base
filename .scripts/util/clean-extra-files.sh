@@ -5,13 +5,12 @@
 
 echo -e ">>> Purging extra files"
 
+find $(find . -type d -iname "@mw-components") -maxdepth 3 -type d -iname "database" -print0 | xargs -0i rm -rf {}
+
 find $(find $(find . -type d -iname "@waiting") -mindepth 2 -maxdepth 2 -type d -name "dist") \
   -maxdepth 1 -type f -iname "*.esm.*" -print0 | xargs -0i rm -f {}
 find $(find $(find . -type d -iname "@waiting") -mindepth 2 -maxdepth 2 -type d -name "dist") \
   -maxdepth 1 -type f -iname "*.umd.*" -print0 | xargs -0i rm -f {}
-
-# Delete all .d.ts files
-# find . -type f -iname "*.d.ts" -print0 | xargs -0i rm -f {}
 
 find $(find . -type d -iname "ajv") -maxdepth 1 -type d -iname "dist" -print0 | xargs -0i rm -rf {}
 find $(find . -type d -iname "ajv") -maxdepth 1 -type d -iname "scripts" -print0 | xargs -0i rm -rf {}

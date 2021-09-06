@@ -6,7 +6,7 @@
   "devDependencies": {
     "@commitlint/cli": "13",
     "@commitlint/config-conventional": "13",
-    "@midwayjs/cli": "^1.2.80",
+    "@midwayjs/cli": "^1.2.82",
     "@midwayjs/egg-ts-helper": "1",
     "@rollup/plugin-commonjs": "20",
     "@rollup/plugin-node-resolve": "13",
@@ -34,7 +34,7 @@
     "rxrunscript": "6",
     "ts-node": "10",
     "tsconfig-paths": "3",
-    "typescript": "4",
+    "typescript": "4.3",
     "yargs": "17"
   },
   "engines": {
@@ -44,7 +44,7 @@
     "add:types": "sh .scripts/add-types.sh",
     "add:svc": "sh .scripts/add-service.sh",
     "bp:add": "git remote add bp https://github.com.cnpmjs.org/waitingsong/midway-mono-base",
-    "bp:sync": "git fetch --all -v && git pull origin && git merge bp/main -m \"Merge remote-tracking branch 'bp/main'\"",
+    "bp:sync": "git fetch --all -v && git pull origin && git merge bp/main -m \"Merge remote-tracking branch 'bp/main'\" -Xours",
     "bootstrap": "lerna bootstrap --loglevel notice",
     "postbootstrap": "npm run repo:init",
     "build": "sh .scripts/build.sh",

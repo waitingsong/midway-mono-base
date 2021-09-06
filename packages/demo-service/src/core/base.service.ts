@@ -71,11 +71,16 @@ export class BaseService extends RootClass {
 
   /**
    * 根据输入 http headers 生成 Headers,
-   * @returns Headers 不包括 'host' 字段
+   * @returns Headers 默认不包括 'host' 字段
    */
-  genFetchHeaders(headers?: HeadersInit | IncomingHttpHeaders): Headers {
+  genFetchHeaders(
+    headers?: HeadersInit | IncomingHttpHeaders,
+    excludes: string[] = ['host'],
+  ): Headers {
     const ret = new Node_Headers(headers as HeadersInit)
-    ret.delete('host')
+    if (Array.isArray(excludes)) {
+      excludes.forEach(key => ret.delete(key))
+    }
     return ret
   }
 
