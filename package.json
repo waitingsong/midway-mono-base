@@ -69,33 +69,5 @@
     "tar": "sh .scripts/tar.sh",
     "test": "lerna run test",
     "ptest": "sh .scripts/test.sh"
-  },
-  "nyc": {
-    "include": [
-      "packages/*/src/*.ts",
-      "packages/*/src/**/*.ts"
-    ],
-    "exclude": [
-      ".githooks",
-      "node_modules*",
-      "**/src/bin",
-      "**/src/domain.ts",
-      "**/src/interface.ts",
-      "**/dist",
-      "**/node_modules*",
-      "**/test",
-      "**/test*",
-      "**/*.d.ts",
-      "**/*.js"
-    ],
-    "extension": [
-      ".ts"
-    ],
-    "reporter": [
-      "html",
-      "json",
-      "text-summary"
-    ],
-    "all": true
   }
 }
