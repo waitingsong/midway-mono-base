@@ -12,6 +12,8 @@ pre_release:
   cache: {}
   variables:
     GIT_STRATEGY: clone
+  needs:
+    - build_rc
   script:
     - .scripts/util/validate-project-changed.mjs
     - echo -e "\e[0Ksection_start:`date +%s`:pre_release_section[collapsed=true]\r\e[0K Pre Release"

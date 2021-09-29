@@ -1,4 +1,4 @@
-import { TracerConfig, defaultTracerConfig } from '@mw-components/jaeger'
+import { TracerConfig, defaultTracerConfig, TracerTag } from '@mw-components/jaeger'
 import {
   JwtConfig,
   JwtMiddlewareConfig,
@@ -90,6 +90,8 @@ export const tracer: TracerConfig = {
     },
   },
 }
+tracer.loggingReqHeaders.push(TracerTag.svcName)
+tracer.loggingReqHeaders.push(TracerTag.svcVer)
 
 
 /**

@@ -1,14 +1,24 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { IncomingHttpHeaders } from 'http'
+
 import { App, Inject } from '@midwayjs/decorator'
+import {
+  Node_Headers,
+  FetchComponent,
+  FetchResponse,
+} from '@mw-components/fetch'
 import { Logger } from '@mw-components/jaeger'
 import { JwtComponent } from '@mw-components/jwt'
 import { KoidComponent } from '@mw-components/koid'
 import { TaskManComponent } from '@mw-components/taskman'
+import { OverwriteAnyToUnknown } from '@waiting/shared-types'
 
 import {
   Application,
   Context,
   DbTransaction,
   FetchOptions,
+  JsonResp,
   JwtUser,
   NpmPkg,
   TracerTag,
@@ -21,6 +31,7 @@ export class RootClass {
   @App() protected readonly app: Application
 
   @Inject() readonly ctx: Context
+  @Inject('fetch:fetchComponent') private readonly fetchService: FetchComponent
 
   /**
    * jaeger Context SPAN 上下文日志
@@ -59,7 +70,7 @@ export class RootClass {
    */
   get initFetchOptions(): FetchOptions {
     const pkg = this.app.getConfig('pkgJson') as NpmPkg
-    const headers = {
+    const headers: HeadersInit = {
       [TracerTag.svcName]: pkg.name,
       [TracerTag.svcVer]: pkg.version ?? '',
     }
@@ -72,6 +83,149 @@ export class RootClass {
       headers,
     }
     return args
+  }
+
+
+  /**
+   * 请求和返回类型都是 JSON 格式，
+   * 返回类型为 `JsonResp` 结构
+   */
+  fetch<T extends FetchResponse = any>(
+    options: FetchOptions,
+  ): Promise<JsonResp<OverwriteAnyToUnknown<T>>> {
+
+    const opts: FetchOptions = {
+      ...this.initFetchOptions,
+      ...options,
+      headers: this.genFetchHeaders(options.headers),
+    }
+    return this.fetchService.fetch(opts) as Promise<JsonResp<OverwriteAnyToUnknown<T>>>
+  }
+
+  /**
+   * 请求和返回类型都是 JSON 格式，
+   * 返回类型为 `JsonResp` 结构
+   */
+  getJson<T extends FetchResponse = any>(
+    url: string,
+    options?: FetchOptions,
+  ): Promise<JsonResp<OverwriteAnyToUnknown<T>>> {
+
+    const opts: FetchOptions = {
+      ...this.initFetchOptions,
+      ...options,
+      headers: this.genFetchHeaders(options?.headers),
+    }
+    return this.fetchService.get(url, opts) as Promise<JsonResp<OverwriteAnyToUnknown<T>>>
+  }
+
+  /**
+   * 请求和返回类型都是 JSON 格式，
+   * 返回类型为 `JsonResp` 结构
+   */
+  postJson<T extends FetchResponse = any>(
+    url: string,
+    options?: FetchOptions,
+  ): Promise<JsonResp<OverwriteAnyToUnknown<T>>> {
+
+    const opts: FetchOptions = {
+      ...this.initFetchOptions,
+      ...options,
+      headers: this.genFetchHeaders(options?.headers),
+    }
+    return this.fetchService.post(url, opts) as Promise<JsonResp<OverwriteAnyToUnknown<T>>>
+  }
+
+
+  /**
+   * 请求和返回类型都是 JSON 格式，
+   * 返回类型为自定义结构
+   */
+  fetchCustom<T>(
+    options: FetchOptions,
+  ): Promise<OverwriteAnyToUnknown<T>> {
+
+    const opts: FetchOptions = {
+      ...this.initFetchOptions,
+      ...options,
+      headers: this.genFetchHeaders(options.headers),
+    }
+    return this.fetchService.fetch(opts) as Promise<OverwriteAnyToUnknown<T>>
+  }
+
+  /**
+   * 请求和返回类型都是 JSON 格式，
+   * 返回类型为自定义结构
+   */
+  getCustomJson<T>(
+    url: string,
+    options?: FetchOptions,
+  ): Promise<OverwriteAnyToUnknown<T>> {
+
+    const opts: FetchOptions = {
+      ...this.initFetchOptions,
+      ...options,
+      headers: this.genFetchHeaders(options?.headers),
+    }
+    return this.fetchService.get(url, opts) as Promise<OverwriteAnyToUnknown<T>>
+  }
+
+  /**
+   * 请求和返回类型都是 JSON 格式，
+   * 返回类型为自定义结构
+   */
+  postCustomJson<T>(
+    url: string,
+    options?: FetchOptions,
+  ): Promise<OverwriteAnyToUnknown<T>> {
+
+    const opts: FetchOptions = {
+      ...this.initFetchOptions,
+      ...options,
+      headers: this.genFetchHeaders(options?.headers),
+    }
+    return this.fetchService.post(url, opts) as Promise<OverwriteAnyToUnknown<T>>
+  }
+
+
+  /**
+   * 返回类型为字符串
+   */
+  getText<T extends string = string>(
+    url: string,
+    options?: FetchOptions,
+  ): Promise<T> {
+
+    const opts: FetchOptions = {
+      ...this.initFetchOptions,
+      ...options,
+      headers: this.genFetchHeaders(options?.headers),
+      dataType: 'text',
+    }
+    const ret = this.fetchService.get<T>(url, opts)
+    return ret as Promise<T>
+  }
+
+  /**
+   * 根据输入 http headers 生成 Headers,
+   * @returns Headers 默认不包括 'host' 字段
+   */
+  genFetchHeaders(
+    headers?: HeadersInit | IncomingHttpHeaders | undefined,
+    excludes: string[] = ['host'],
+  ): Headers {
+
+    const ret = new Node_Headers(this.initFetchOptions.headers)
+    const inputHeaders = new Node_Headers(headers as HeadersInit)
+
+    inputHeaders.forEach((val, key) => {
+      if (Array.isArray(excludes) && excludes.includes(key)) {
+        return
+      }
+      ret.set(key, val)
+    })
+
+    return ret
   }
 
   get jwtPayload(): JwtUser {

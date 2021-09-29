@@ -43,6 +43,7 @@ dist_ga:
   needs:
     - image_ga
   script:
+    - date
     - echo -e "\e[0Ksection_start:`date +%s`:dist_section[collapsed=false]\r\e[0Kdist_ga"
     - source .scripts/cd/cd-env.sh
     - .scripts/distribute-images.sh

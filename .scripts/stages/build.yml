@@ -6,26 +6,40 @@
   variables:
     GIT_DEPTH: 20
   script:
-    - echo -e "\e[0Ksection_start:`date +%s`:build_section[collapsed=true]\r\e[0K Build"
     - date
+    - echo -e "\e[0Ksection_start:`date +%s`:deps_section[collapsed=true]\r\e[0K Install Deps"
     - npm run bootstrap -- --no-ci
+    - echo -e "\e[0Ksection_end:`date +%s`:deps_section\r\e[0K"
+
     - date
-    - sh .scripts/ci/ci-commitlint.sh
+    - echo -e "\e[0Ksection_start:`date +%s`:build_section[collapsed=true]\r\e[0K Build"
     - npm run build
     - ls -al
     - echo -e "\e[0Ksection_end:`date +%s`:build_section\r\e[0K"
+
+    - sh .scripts/ci/ci-commitlint.sh
+
+    - date
     - echo -e "\e[0Ksection_start:`date +%s`:init_db_section[collapsed=true]\r\e[0K Init database"
     - sh .scripts/ci/ci-init-db.sh
     - echo -e "\e[0Ksection_end:`date +%s`:init_db_section\r\e[0K"
-    - echo -e "\e[0Ksection_start:`date +%s`:ci_section[collapsed=true]\r\e[0K CI"
-    # lint must after build for mono-repo
+
+    - date
+    - echo -e "\e[0Ksection_start:`date +%s`:lint_section[collapsed=true]\r\e[0K Lint"
     #- lerna run lint:nofix # will fail under lerna4
     - npm run lint:nofix
+    - echo -e "\e[0Ksection_end:`date +%s`:lint_section\r\e[0K"
+
+    - date
+    - echo -e "\e[0Ksection_start:`date +%s`:test_section[collapsed=true]\r\e[0K Testing"
     - npm run ci
-    - echo -e "\e[0Ksection_end:`date +%s`:ci_section\r\e[0K"
+    - echo -e "\e[0Ksection_end:`date +%s`:test_section\r\e[0K"
+
+    - date
     - echo -e "\e[0Ksection_start:`date +%s`:cov_section[collapsed=true]\r\e[0K Coverage"
     - sh .scripts/collect-coverages.sh
     - echo -e "\e[0Ksection_end:`date +%s`:cov_section\r\e[0K"
+    - date
   artifacts:
     expire_in: '14 day'
     reports:
@@ -45,6 +59,20 @@ build_dev:
     paths:
       - node_modules
       - package-lock.json
+
+      - packages/demo-docs/.eslintcache
+
+      - packages/demo-service/.eslintcache
+      - packages/demo-service/.vscode/.tsbuildinfo
+      - packages/demo-service/dist
+
+      - packages/types/.eslintcache
+      - packages/types/.vscode/.tsbuildinfo
+      - packages/types/dist
+
+      - packages/svc/.eslintcache
+      - packages/svc/.vscode/.tsbuildinfo
+      - packages/svc/dist
     policy: pull-push
 
 build_rc:
@@ -62,6 +90,10 @@ build_rc:
     paths:
       - node_modules
       - package-lock.json
+      - packages/demo-docs/.eslintcache
+      - packages/demo-service/.eslintcache
+      - packages/types/.eslintcache
+      - packages/svc/.eslintcache
     policy: pull-push
   artifacts:
     expire_in: '30 day'

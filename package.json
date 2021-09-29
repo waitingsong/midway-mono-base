@@ -6,7 +6,7 @@
   "devDependencies": {
     "@commitlint/cli": "13",
     "@commitlint/config-conventional": "13",
-    "@midwayjs/cli": "^1.2.82",
+    "@midwayjs/cli": "^1.2.83",
     "@midwayjs/egg-ts-helper": "1",
     "@rollup/plugin-commonjs": "20",
     "@rollup/plugin-node-resolve": "13",

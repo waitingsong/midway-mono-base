@@ -14,7 +14,7 @@ export default (appInfo: EggAppInfo): DefaultConfig => {
   const config = {} as DefaultConfig
 
   // add your config here
-  config.middleware = ['responseMimeMiddleware']
+  config.middleware = ['responseMimeMiddleware', 'responseHeadersMiddleware']
 
   // use for cookie sign key, should change to your own and keep security
   config.keys = `${appInfo.name}_1559532739676_8888`

@@ -1,6 +1,6 @@
 // config for `npm run test` in vscode F5
 import { FetchComponentConfig, defaultFetchComponentConfig } from '@mw-components/fetch'
-import { TracerConfig, defaultTracerConfig } from '@mw-components/jaeger'
+import { TracerConfig, defaultTracerConfig, TracerTag } from '@mw-components/jaeger'
 import {
   JwtConfig,
   JwtMiddlewareConfig,
@@ -42,6 +42,8 @@ jwtMiddlewareConfig.ignore = jwtMiddlewareConfig.ignore?.concat([
   '/test/array',
   '/test/blank',
   '/test/empty',
+  '/test/fetch',
+  '/test/_fetch_target',
   '/test/no_output',
   '/test/sign',
   RegExp(`${ServerAgent.base}/.*`, 'u'),
@@ -52,7 +54,13 @@ export const fetch: FetchComponentConfig = {
   ...defaultFetchComponentConfig,
 }
 fetch.traceLoggingReqHeaders.push(HeadersKey.traceId)
+fetch.traceLoggingReqHeaders.push(TracerTag.svcName)
+fetch.traceLoggingReqHeaders.push(TracerTag.svcVer)
+
 fetch.traceLoggingRespHeaders.push(HeadersKey.traceId)
+fetch.traceLoggingRespHeaders.push(TracerTag.svcName)
+fetch.traceLoggingRespHeaders.push(TracerTag.svcVer)
+
 
 const master: DbConfig<DbModel> = {
   autoConnect: true,
@@ -103,6 +111,8 @@ export const tracer: TracerConfig = {
     },
   },
 }
+tracer.loggingReqHeaders.push(TracerTag.svcName)
+tracer.loggingReqHeaders.push(TracerTag.svcVer)
 
 /**
  * Remove this variable if running as client

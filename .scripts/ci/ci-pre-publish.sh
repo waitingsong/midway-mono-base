@@ -7,6 +7,7 @@ echo -e "-------------------------------------------"
 echo -e "            pre-publish process "
 echo -e "-------------------------------------------"
 
+set +e
 # https://stackoverflow.com/a/54533010
 # git fetch origin
 EXISTS=`git ls-remote --exit-code --heads origin $RELEASE_BRANCH`
@@ -20,6 +21,7 @@ if [ "$EXISTS" ]; then
   echo -e "--------------------------------------------------------------------------------------"
   exit 1
 fi
+set -e
 
 source .scripts/ci/ci-ssh-agent.sh
 source .scripts/util/verify-publish.sh

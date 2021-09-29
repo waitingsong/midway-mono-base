@@ -6,32 +6,32 @@
   "bin": {},
   "dependencies": {
     "@scope/docs": "^0.0.0",
-    "@midwayjs/bootstrap": "^2.12.0",
-    "@midwayjs/decorator": "^2.12.0",
-    "@midwayjs/prometheus": "^2.12.0",
+    "@midwayjs/bootstrap": "^2.13.0",
+    "@midwayjs/decorator": "^2.13.0",
+    "@midwayjs/prometheus": "^2.13.0",
     "@midwayjs/swagger": "^1.0.7",
-    "@midwayjs/web": "^2.12.0",
-    "@mw-components/fetch": "^15.0.0",
-    "@mw-components/jaeger": "^9.0.0",
+    "@midwayjs/web": "^2.13.0",
+    "@mw-components/fetch": "^15.0.2",
+    "@mw-components/jaeger": "^9.0.1",
     "@mw-components/jwt": "^9.2.0",
     "@mw-components/kmore": "^22.6.1",
     "@mw-components/koid": "^5.0.0",
-    "@mw-components/taskman": "^13.0.2",
+    "@mw-components/taskman": "^13.0.3",
     "@waiting/base64": "^4.2.9",
     "@waiting/shared-core": "^14.4.0",
     "@waiting/shared-types": "^14.4.0",
     "egg": "^2.30.0",
     "egg-cors": "^2.2.3",
     "egg-redis": "^2.4.0",
-    "egg-scripts": "^2.14.0",
+    "egg-scripts": "^2.15.0",
     "pg": "^8.7.1",
     "rxjs": "^7.3.0",
     "tsconfig-paths": "3"
   },
   "devDependencies": {
-    "@midwayjs/cli": "^1.2.82",
-    "@midwayjs/koa": "^2.12.0",
-    "@midwayjs/mock": "^2.12.0",
+    "@midwayjs/cli": "^1.2.83",
+    "@midwayjs/koa": "^2.13.0",
+    "@midwayjs/mock": "^2.13.0",
     "@types/rewire": "2",
     "@types/supertest": "^2.0.11",
     "cross-env": "7",
@@ -95,31 +95,5 @@
       "app/public",
       "app/view"
     ]
-  },
-  "nyc": {
-    "include": [
-      "src/**/*.ts"
-    ],
-    "exclude": [
-      ".githooks",
-      "dist",
-      "node_modules*",
-      "src/bin",
-      "src/domain.ts",
-      "src/interface.ts",
-      "test*",
-      "**/node_modules*",
-      "**/*.d.ts",
-      "**/*.js"
-    ],
-    "extension": [
-      ".ts"
-    ],
-    "reporter": [
-      "html",
-      "json",
-      "text-summary"
-    ],
-    "all": true
   }
 }
