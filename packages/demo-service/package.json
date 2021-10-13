@@ -60,7 +60,7 @@
   },
   "license": "",
   "scripts": {
-    "build": "midway-bin build -c && npm run db:gen",
+    "build": "midway-bin build && npm run db:gen",
     "clean": "npm run clean:cache & npm run clean:mw",
     "clean:cache": "rm .eslintcache -f",
     "clean:lock": "rm package-lock.json -f",
