@@ -51,32 +51,32 @@ jobs:
           # update again for pg13
           apt-get -qq -y update > /dev/null
           apt-get -qq -y install postgresql-client > /dev/null
-          psql -V
           netstat -tunpl
-          dig postgres
-          echo "\l" | psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U$POSTGRES_USER -d postgres
-          psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U$POSTGRES_USER -d $POSTGRES_DB -1 -bq -f ./packages/demo-service/src/database/init.sql
-          psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U$POSTGRES_USER -d $POSTGRES_DB -c "\d+"
-          psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U$POSTGRES_USER -d $POSTGRES_DB -c "SELECT * FROM tb_user"
         env:
           CI: true
-          # use `localhost` if running the job on the VM
-          # use `postgres` if running the job on in a container
+      - name: npm build
+        run: |
+          export cwd=`pwd`
+          openssl version
+          node -v
+          npm i -g c8 lerna rollup
+          npm run bootstrap
+          npm run build --if-present
+      - name: Init Database
+        run: |
+          export cwd=`pwd`
+          sh .scripts/ci/ci-init-db.sh
+        env:
+          CI: true
           POSTGRES_HOST: postgres
           POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
           POSTGRES_DB: db_ci_test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           PGPASSWORD: postgres
-      - name: npm build
-        run: |
-          openssl version
-          node -v
-          npm i -g c8 lerna rollup
-          npm run bootstrap
-          npm run build --if-present
       - name: npm ci
         run: |
+          export cwd=`pwd`
           # lint must after build
           npm run lint:s
           npm run ci
