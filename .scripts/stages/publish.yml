@@ -3,12 +3,7 @@
   stage: publish
   tags:
     - cd-worker
-  cache:
-    key: cache_release
-    paths:
-      - node_modules
-      - package-lock.json
-    policy: pull
+  cache: {}
   needs:
     - build_rc
   variables:

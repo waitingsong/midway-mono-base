@@ -3,8 +3,7 @@
   stage: build
   tags:
     - worker
-  variables:
-    GIT_DEPTH: 20
+  cache: {}
   script:
     - date
     - echo -e "\e[0Ksection_start:`date +%s`:deps_section[collapsed=true]\r\e[0K Install Deps"
@@ -54,26 +53,6 @@ build_dev:
     - master
     - /^release.*/
     - /^v\d+(\.\d+){2}.*/
-  cache:
-    key: cache_dev
-    paths:
-      - node_modules
-      - package-lock.json
-
-      - packages/demo-docs/.eslintcache
-
-      - packages/demo-service/.eslintcache
-      - packages/demo-service/.vscode/.tsbuildinfo
-      - packages/demo-service/dist
-
-      - packages/types/.eslintcache
-      - packages/types/.vscode/.tsbuildinfo
-      - packages/types/dist
-
-      - packages/svc/.eslintcache
-      - packages/svc/.vscode/.tsbuildinfo
-      - packages/svc/dist
-    policy: pull-push
 
 build_rc:
   extends: .build
@@ -85,16 +64,6 @@ build_rc:
     variables:
       # no tag merging
       - $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
-  cache:
-    key: cache_release
-    paths:
-      - node_modules
-      - package-lock.json
-      - packages/demo-docs/.eslintcache
-      - packages/demo-service/.eslintcache
-      - packages/types/.eslintcache
-      - packages/svc/.eslintcache
-    policy: pull-push
   artifacts:
     expire_in: '30 day'
     reports:
