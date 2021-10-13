@@ -3,25 +3,25 @@
     "scope": "javascript,typescript",
     "prefix": "cov.ignore-whole-file",
     "body": [
-      "/* istanbul ignore file */",
+      "/* c8 ignore file */",
     ],
-    "description": "istanbul ignore whole file"
+    "description": "c8 ignore whole file"
   },
 
   "istanbul ignore next": {
     "scope": "javascript,typescript",
     "prefix": "cov.ignore-next",
     "body": [
-      "/* istanbul ignore next */",
+      "/* c8 ignore next */",
     ],
-    "description": "istanbul ignore next"
+    "description": "c8 ignore next"
   },
 
   "istanbul ignore if": {
     "scope": "javascript,typescript",
     "prefix": "cov.ignore-if",
     "body": [
-      "/* istanbul ignore if */",
+      "/* c8 ignore if */",
     ],
     "description": ""
   },
@@ -30,7 +30,7 @@
     "scope": "javascript,typescript",
     "prefix": "cov.ignore-else",
     "body": [
-      "/* istanbul ignore else */",
+      "/* c8 ignore else */",
     ],
     "description": ""
   },

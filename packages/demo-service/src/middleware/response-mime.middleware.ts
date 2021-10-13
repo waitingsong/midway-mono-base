@@ -24,7 +24,7 @@ async function responseMimeMiddleware(ctx: Context, next: IMidwayWebNext): Promi
   const key = 'content-type'
   const mime = ctx.response.headers[key]
 
-  /* istanbul ignore else */
+  /* c8 ignore next 3 */
   if (! mime) {
     ctx.set(key, 'application/json')
   }

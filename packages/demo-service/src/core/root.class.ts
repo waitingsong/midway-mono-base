@@ -57,7 +57,7 @@ export class RootClass {
     return this.koid.idGenerator
   }
 
-  /* istanbul ignore next */
+  /* c8 ignore next */
   /**
    * Generate an RxRequestInit variable,
    * @default
@@ -85,6 +85,7 @@ export class RootClass {
     return args
   }
 
+  /* c8 ignore start */
 
   /**
    * 请求和返回类型都是 JSON 格式，
@@ -187,6 +188,7 @@ export class RootClass {
     return this.fetchService.post(url, opts) as Promise<OverwriteAnyToUnknown<T>>
   }
 
+  /* c8 ignore start */
 
   /**
    * 返回类型为字符串

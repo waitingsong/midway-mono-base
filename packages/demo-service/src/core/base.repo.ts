@@ -20,6 +20,7 @@ export class BaseRepo extends RootClass {
 
   @Init()
   async init(): Promise<void> {
+    /* c8 ignore next 3 */
     if (! this.ctx) {
       this.throwError('Value of this.ctx is undefined during Repo init')
     }
@@ -38,6 +39,7 @@ export class BaseRepo extends RootClass {
    */
   async startTransaction(dbhInstance?: Knex): Promise<DbTransaction> {
     const dbh = dbhInstance ?? this.db.dbh
+    /* c8 ignore next 3 */
     if (! dbh) {
       this.throwError('dbh undefined', 999)
     }
@@ -46,6 +48,7 @@ export class BaseRepo extends RootClass {
       this.ctx.dbTransactions.add(ret)
       return ret
     }
+    /* c8 ignore next 4 */
     catch (ex) {
       this.logger.error((ex as Error).message)
       this.throwError('start transaction failed', 999)

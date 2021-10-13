@@ -12,7 +12,7 @@ import {
 export function retrieveExternalNetWorkInfo(): NetworkInterfaceInfo[] {
   const ret = Object.entries(networkInterfaces()).reduce((acc: NetworkInterfaceInfo[], curr) => {
     const [, nets] = curr
-    /* istanbul ignore if */
+    /* c8 ignore next 3 */
     if (! nets) {
       return acc
     }

@@ -21,7 +21,7 @@ export class ErrorHandlerMiddleware implements IWebMiddleware {
 async function errHandleMiddleware(ctx: Context<unknown>, next: IMidwayWebNext): Promise<void> {
   try {
     await next()
-    /* istanbul ignore next */
+    /* c8 ignore next */
     if (ctx.status === 404) {
       const { reqId } = ctx
       ctx.body = { code: 404, reqId, msg: 'Not Found' }
@@ -39,15 +39,15 @@ async function errHandleMiddleware(ctx: Context<unknown>, next: IMidwayWebNext):
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     let status: number = typeof myerr.status === 'number'
       ? myerr.status
-      /* istanbul ignore next */
+      /* c8 ignore next */
       : messageStatus ? parseInt(messageStatus, 10) : 0
 
-    /* istanbul ignore next */
+    /* c8 ignore next 3 */
     if (status === 0 || Number.isNaN(status)) {
       status = 500
     }
 
-    /* istanbul ignore else */
+    /* c8 ignore next 3 */
     if ((message === 'ValidationError' || myerr.name === 'ValidationError') && status < 600) {
       status = 422
     }
@@ -56,7 +56,7 @@ async function errHandleMiddleware(ctx: Context<unknown>, next: IMidwayWebNext):
 
     // 生产环境时 500 错误的详细错误内容不返回给客户端，因为可能包含敏感信息
     const msg = status === 500 && ctx.app.config.env === 'prod'
-      /* istanbul ignore next */
+      /* c8 ignore next */
       ? 'Internal Server Error'
       : message
 
@@ -69,7 +69,7 @@ async function errHandleMiddleware(ctx: Context<unknown>, next: IMidwayWebNext):
       reqId,
     }
 
-    /* istanbul ignore else */
+    /* c8 ignore start */
     if (typeof ErrorCode === 'object') {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       if (typeof ErrorCode[status] === 'string') {
@@ -79,7 +79,6 @@ async function errHandleMiddleware(ctx: Context<unknown>, next: IMidwayWebNext):
       }
     }
 
-    /* istanbul ignore else */
     if (status === 422) {
       body.data = myerr.errors ?? myerr.details // 兼容 midway 参数校验
     }
@@ -89,6 +88,8 @@ async function errHandleMiddleware(ctx: Context<unknown>, next: IMidwayWebNext):
       && myerr.message.includes('Timeout acquiring a connection')) {
       body.code = 999 // db error
     }
+
+    /* c8 ignore stop */
 
     ctx.body = body
 
@@ -107,7 +108,6 @@ async function errHandleMiddleware(ctx: Context<unknown>, next: IMidwayWebNext):
  */
 function wrapRespForJson(ctx: Context<unknown>): void {
   const contentType: string | number | string[] | undefined = ctx.response.header['content-type']
-  /* istanbul ignore else */
   if (! contentType || typeof contentType === 'number') {
     return
   }
@@ -121,9 +121,7 @@ function wrapRespForJson(ctx: Context<unknown>): void {
   const { status } = ctx
   const body = ctx.body as JsonResp | void
 
-  /* istanbul ignore else */
   if (body && typeof body === 'object' && typeof body.code === 'number') {
-    /* istanbul ignore else */
     if (body.code === status) {
       return
     }
@@ -140,7 +138,6 @@ function wrapRespForJson(ctx: Context<unknown>): void {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function wrap(ctx: Context, payload: JsonResp | void): JsonResp {
-  /* istanbul ignore else */
   if (ctx.status === 204) {
     ctx.status = 200 // force return JsonResp<T> structure
   }
@@ -151,17 +148,14 @@ function wrap(ctx: Context, payload: JsonResp | void): JsonResp {
     reqId,
   }
 
-  /* istanbul ignore else */
   if (Array.isArray(payload)) {
     body.data = payload
   }
   else if (payload && typeof payload === 'object' && Object.keys(payload).length > 0) {
     const { codeKey, ...data } = payload
-    /* istanbul ignore else */
     if (typeof data !== 'undefined') {
       body.data = data
     }
-    /* istanbul ignore else */
     if (typeof codeKey === 'string') {
       body.codeKey = codeKey
     }

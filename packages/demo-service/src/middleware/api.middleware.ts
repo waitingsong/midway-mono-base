@@ -13,7 +13,6 @@ export class ApiMiddleware implements IWebMiddleware {
 }
 
 async function apiMiddleware(ctx: Context, next: IMidwayWebNext): Promise<void> {
-  /* istanbul ignore else */
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (! ctx.api) {
     ctx.api = {
