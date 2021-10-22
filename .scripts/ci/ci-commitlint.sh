@@ -6,5 +6,9 @@ if [[ "$T1" == "Merge" || "$T1" == "Rvert" ]]; then
   exit 0
 fi
 
-echo "$CI_COMMIT_MESSAGE" | /usr/local/bin/commitlint
+if [ -f "/usr/local/bin/commitlint" ]; then
+  echo "$CI_COMMIT_MESSAGE" | /usr/local/bin/commitlint
+else
+  echo "$CI_COMMIT_MESSAGE" | commitlint
+fi
 

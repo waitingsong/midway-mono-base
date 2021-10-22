@@ -62,7 +62,6 @@ build_rc:
     - /^release.*/
   except:
     variables:
-      # no tag merging
       - $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
   artifacts:
     expire_in: '30 day'
