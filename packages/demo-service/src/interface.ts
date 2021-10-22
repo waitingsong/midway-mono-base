@@ -46,6 +46,16 @@ declare module '@midwayjs/core' {
     dbTransactions: Set<DbTransaction>
   }
 }
+export interface AppInfomation {
+  pkgName: string
+  pkgVer: string
+  pid: number
+  ppid: number
+  ip: string
+  reqId: string
+  [key: string]: string | number
+}
+
 
 export type MiddlewarePathPattern = (string | RegExp | PathPatternFunc)[]
 export type PathPatternFunc = (ctx: Context) => boolean

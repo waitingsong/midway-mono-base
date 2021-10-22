@@ -7,6 +7,19 @@ import {
 
 
 /**
+ *
+ * 获取第一个网络信息，不包括回环地址信息
+ */
+export function retrieveIp(family: NetworkInterfaceInfo['family'] = 'IPv4'): NetworkInterfaceInfo | undefined {
+  const ips = retrieveExternalNetWorkInfo()
+  for (const info of ips) {
+    if (info.family === family) {
+      return info
+    }
+  }
+}
+
+/**
  * 获取网络信息，不包括回环地址信息
  */
 export function retrieveExternalNetWorkInfo(): NetworkInterfaceInfo[] {

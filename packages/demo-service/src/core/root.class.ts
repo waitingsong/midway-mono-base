@@ -188,7 +188,7 @@ export class RootClass {
     return this.fetchService.post(url, opts) as Promise<OverwriteAnyToUnknown<T>>
   }
 
-  /* c8 ignore start */
+  /* c8 ignore stop */
 
   /**
    * 返回类型为字符串

@@ -7,6 +7,7 @@ import { EggAppInfo } from 'egg'
 import { DefaultConfig } from './config.types'
 
 import { NpmPkg } from '~/interface'
+import { retrieveIp } from '~/util/common'
 
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -47,6 +48,7 @@ export default (appInfo: EggAppInfo): DefaultConfig => {
     epoch,
   }
 
+  const ip = retrieveIp()
   const nameNorm = (appInfo.pkg as NpmPkg).name.replace(/@/ug, '').replace(/\//ug, '-')
   // prometheus config
   const prometheus: PromConfig = {
@@ -54,6 +56,9 @@ export default (appInfo: EggAppInfo): DefaultConfig => {
       APP_NAME: (appInfo.pkg as NpmPkg).name,
       APP_NAME_NORM: nameNorm,
       APP_VER: (appInfo.pkg as NpmPkg).version,
+      APP_PID: process.pid,
+      APP_PPID: process.ppid,
+      APP_IPs: ip ? ip.address : 'n/a',
     },
   }
   config.prometheus = prometheus

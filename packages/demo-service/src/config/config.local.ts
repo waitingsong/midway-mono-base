@@ -46,6 +46,7 @@ jwtMiddlewareConfig.ignore = jwtMiddlewareConfig.ignore?.concat([
   '/test/_fetch_target',
   '/test/no_output',
   '/test/sign',
+  /test\/dump\/.*/u,
   RegExp(`${ServerAgent.base}/.*`, 'u'),
 ])
 

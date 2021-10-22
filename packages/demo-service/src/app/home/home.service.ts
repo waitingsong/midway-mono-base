@@ -1,10 +1,36 @@
-import { Provide } from '@midwayjs/decorator'
+import {
+  Config,
+  Provide,
+} from '@midwayjs/decorator'
 
-import { BaseService } from '~/interface'
+import {
+  AppInfomation,
+  BaseService,
+  NpmPkg,
+} from '~/interface'
+import { retrieveIp } from '~/util/common'
 
 
 @Provide()
 export class HomeService extends BaseService {
+
+  @Config() readonly pkgJson: NpmPkg
+
+  appInfo(): AppInfomation {
+    const { reqId } = this.ctx
+    const ip = retrieveIp()
+    const ret: AppInfomation = {
+      pkgName: this.pkgJson.name,
+      pkgVer: this.pkgJson.version ?? 'n/a',
+      pid: process.pid,
+      ppid: process.ppid,
+      ip: ip ? ip.address : 'n/a',
+      reqId,
+    }
+
+    return ret
+  }
+
 
   /**
    * 获取网关 IP
