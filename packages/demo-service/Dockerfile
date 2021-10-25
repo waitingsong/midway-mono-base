@@ -22,6 +22,9 @@ HEALTHCHECK \
   --timeout=3s \
   CMD curl -fs http://localhost:7001/ping || exit 1
 
+
+
 # CMD ["npm", "run", "start_docker", "--", "--workers=$cpus"]
-CMD ["./node_modules/.bin/egg-scripts", "start", "--framework=@midwayjs/web", "--workers=$cpus"]
+CMD ./node_modules/.bin/egg-scripts start --framework=@midwayjs/web --workers=$cpus
+# CMD ["./node_modules/.bin/egg-scripts", "start", "--framework=@midwayjs/web", "--workers=1"]
 
