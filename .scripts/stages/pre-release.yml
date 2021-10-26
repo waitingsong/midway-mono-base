@@ -2,7 +2,7 @@
 pre_release:
   stage: pre-release
   tags:
-    - worker
+    - cd-worker
   only:
     - main
     - master

@@ -2,7 +2,7 @@
 .dist:
   image: $NODE_DOCKER_IMAGE
   tags:
-    - cd-worker
+    - worker
   cache: {}
   when: delayed
   start_in: 5 seconds

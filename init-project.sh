@@ -93,7 +93,7 @@ git commit -nm "docs: clean and update README"
 # sed -i 's#\(lerna run test\)#\1 --ignore @scope/*#g' .scripts/test.sh
 # sed -i 's#\(lerna run cov\)#\1 --ignore @scope/*#g' .scripts/cov.sh
 
-sed -i 's#\("ignore": \)""#\1"demo-*"#' lerna.json
+sed -i 's#\("ignore": \)""#\1["@scope/demo-*"]#' lerna.json
 
 git add -- \
   .scripts/build.sh \

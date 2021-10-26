@@ -1,8 +1,3 @@
-# ---------------------------
-# Used work tags :
-# - `cd-worker` for image pack, distribute, deploy, restart svcs
-# ---------------------------
-
 
 .restart-services:
   tags:
@@ -12,23 +7,6 @@
   cache: {}
   allow_failure: true
   when: manual
-
-# restart_svcs_rc:
-#   extends: .restart-services
-#   stage: pre-publish
-#   only:
-#     refs:
-#       - /^release.*/
-#     variables:
-#       - $PACK_RC_IMG == "yes"
-#   except:
-#     variables:
-#       - $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
-#   needs:
-#     - image_rc
-#   script:
-#     - sh .scripts/cd/cd-restart-services.sh
-#   allow_failure: true
 
 # restart_svcs_ga:
 #   extends: .restart-services
@@ -48,9 +26,7 @@
 .rm-images:
   image: $NODE_DOCKER_IMAGE
   tags:
-    # - worker
-    # should running on dedicated worker
-    - cd-worker
+    - worker
   variables:
     GIT_DEPTH: 5
   cache: {}

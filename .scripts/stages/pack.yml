@@ -38,7 +38,7 @@
   variables:
     GIT_DEPTH: 5
   tags:
-    - cd-worker
+    - worker
   cache:
     key: cache_img
     paths:
