@@ -70,7 +70,7 @@ describe(filename, () => {
         .get('/test/token')
         .set('authorization', `${schemePrefix} ${token1}  \v`)
     }
-    catch (ex) {
+    catch (ex: any) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       assert(ex && ex.message.includes('Invalid character in header content'))
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access

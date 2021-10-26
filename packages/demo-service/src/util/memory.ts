@@ -3,13 +3,17 @@ import v8 from 'v8'
 
 import { join, genISO8601String } from '@waiting/shared-core'
 
+import { retrieveIp } from './common'
+
 
 export function createHeapSnapshot(dir = ''): string {
   const dd = genISO8601String().replace(/:/ug, '')
+  const ip = retrieveIp()
+  const ipadd = ip ? ip.address : 'ip'
   // It's important that the filename end with `.heapsnapshot`,
   // otherwise Chrome DevTools won't open it.
   const { pid, ppid } = process
-  const fileName = `${ppid}-${pid}-${dd}.heapsnapshot`
+  const fileName = `${ipadd}-${ppid}-${pid}-${dd}.heapsnapshot`
   let path = fileName
   if (dir) {
     try {

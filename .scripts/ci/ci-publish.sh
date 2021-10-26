@@ -48,7 +48,8 @@ git push origin --no-verify
 
 
 echo -e ">>> lerna initializing..."
-#npm run clean
+# npm run clean
+npm run clean:dist
 date
 npm run bootstrap -- --ci
 date

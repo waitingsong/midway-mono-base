@@ -1,4 +1,4 @@
-import { basename, join } from '@waiting/shared-core'
+import { relative } from 'path'
 
 import { retrieveExternalNetWorkInfo } from '~/util/common'
 
@@ -6,7 +6,7 @@ import { retrieveExternalNetWorkInfo } from '~/util/common'
 import assert = require('power-assert')
 
 
-const filename = basename(__filename)
+const filename = relative(process.cwd(), __filename).replace(/\\/ug, '/')
 
 describe(filename, () => {
 

@@ -7,7 +7,6 @@ import {
   Controller,
   Get,
   Inject,
-  Param,
   Provide,
 } from '@midwayjs/decorator'
 
@@ -16,7 +15,6 @@ import { TestService } from './test.service'
 import { HeadersKey } from '~/constant'
 import {
   BaseController,
-  JsonObject,
   NpmPkg,
 } from '~/interface'
 
@@ -29,35 +27,6 @@ export class TestController extends BaseController {
   @Config() readonly welcomeMsg: string
 
   @Inject() readonly svc: TestService
-
-  @Get('/dump/:id')
-  heapdump(@Param() id: string): JsonObject {
-    const { pid, ppid } = process
-    const body = {
-      ppid,
-      pid,
-      path: '',
-      costSec: 0,
-    }
-
-    const start = Date.now()
-    if (id === '0') {
-      void 0
-    }
-    else if (id === '1') {
-      body.path = this.svc.heapdump()
-    }
-    else if (pid.toString() === id) {
-      body.path = this.svc.heapdump()
-    }
-    else {
-      void 0
-    }
-    const delta = Date.now() - start
-    body.costSec = delta
-
-    return body
-  }
 
   @ContentType('text')
   @Get('/token')

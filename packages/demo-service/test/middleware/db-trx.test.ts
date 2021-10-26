@@ -28,7 +28,7 @@ describe(filename, () => {
       assert(ctx.dbTransactions.size === 0)
     })
 
-    it.only('rollback', async () => {
+    it('rollback', async () => {
       const { app, next } = testConfig
       const ctx = app.createAnonymousContext()
       assert(typeof ctx.dbTransactions === 'undefined')

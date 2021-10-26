@@ -1,8 +1,10 @@
+import { relative } from 'path'
+
 import {
   clearAllLoggers,
   createFileLogger,
 } from '@midwayjs/logger'
-import { basename, join } from '@waiting/shared-core'
+import { join } from '@waiting/shared-core'
 
 import { removeFileOrDir, sleep, matchISO8601ContentTimes, getCurrentDateString } from './util'
 
@@ -12,7 +14,7 @@ import { updateTransformableInfo } from '~/util/custom-logger'
 import assert = require('power-assert')
 
 
-const filename = basename(__filename)
+const filename = relative(process.cwd(), __filename).replace(/\\/ug, '/')
 
 describe(filename, () => {
   const logsDir = join(__dirname, 'logs')

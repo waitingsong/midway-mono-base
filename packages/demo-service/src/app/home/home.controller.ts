@@ -9,7 +9,7 @@ import {
 
 import { HomeService } from './home.service'
 
-import { BaseController } from '~/interface'
+import { AppInfomation, BaseController } from '~/interface'
 
 
 @Provide()
@@ -24,7 +24,7 @@ export class HomeController extends BaseController {
   @Get('/', { middleware: ['apiMiddleware'] })
   index(): string {
     let body = `${this.welcomeMsg} - ${this.ctx.api.reqTimeStr}`
-    const info = this.svc.appInfo()
+    const info: AppInfomation = this.svc.appInfo()
     Object.entries(info).forEach(([key, val]) => {
       body += `\n${key}: "${val}"`
     })
