@@ -15,11 +15,11 @@ on:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
-    container: node:14-buster
+    container: node:16-bullseye
 
     strategy:
       matrix:
-        node: [14]
+        node: [14, 16]
         os: [ubuntu-latest]
 
     steps:
@@ -42,7 +42,7 @@ jobs:
         run: |
           export DEBIAN_FRONTEND=noninteractive
           apt-get -qq -y update > /dev/null
-          apt-get -qq -y install dnsutils jq net-tools > /dev/null
+          apt-get -qq -y install dnsutils jq net-tools wget > /dev/null
           uname -a
           apt-get -qq -y install lsb-release > /dev/null
           lsb_release -cs
@@ -57,10 +57,16 @@ jobs:
       - name: npm build
         run: |
           export cwd=`pwd`
+          cat /etc/*release
+          whoami
+          export cwd=`pwd`
           openssl version
           node -v
+          sh .github/workflows/fix.sh
           npm i -g c8 lerna rollup
+          sh .github/workflows/fix.sh
           npm run bootstrap
+          sh .github/workflows/fix.sh
           npm run build --if-present
       - name: Init Database
         run: |
@@ -82,6 +88,8 @@ jobs:
           npm run ci
         env:
           CI: true
+          # for node16
+          MOCK_HOME_DIR: ~/
           # pgsql
           # use `localhost` if running the job on the VM
           # use `postgres` if running the job on in a container

@@ -13,7 +13,7 @@ import assert = require('power-assert')
 
 const filename = relative(process.cwd(), __filename).replace(/\\/ug, '/')
 
-describe.only(filename, () => {
+describe(filename, () => {
 
   it('Should GET /debug/dump 401', async () => {
     const { httpRequest } = testConfig
