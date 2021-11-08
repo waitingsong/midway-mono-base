@@ -5,6 +5,7 @@
 # Used CI Variables:
 #   https://docs.gitlab.com/ee/ci/variables/predefined_variables.html
 # ---------------------------
+set -e
 
 echo -e "-------------------------------------------"
 echo -e "           distribution process "
@@ -17,6 +18,7 @@ if [ -z "$CI_COMMIT_TAG" -a -z "$CI_COMMIT_SHORT_SHA" ]; then
   exit 1
 fi
 
+# BusyBox not support execdir 
 pkgs=`find packages -maxdepth 1 -mindepth 1`
 
 for pkg in $pkgs
@@ -34,9 +36,7 @@ do
   echo -e " \n\n-------------------------------------------"
   source "${cwd}/.scripts/util/pick-pkg-env.sh"
 
-  set -e
   $cwd/.scripts/trigger/trigger-ready-for-deploy.mjs --name=$pkgImgNameNorm --ver=$pkgVer
-  set +e
 
 done
 
@@ -46,5 +46,4 @@ echo -e "-------------------------------------------"
 echo -e "          distribution succeeded "
 echo -e "-------------------------------------------\n\n "
 
-set -e
 

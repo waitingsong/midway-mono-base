@@ -8,6 +8,7 @@
 # - DOCKER_REG_PWD
 # - NODE_BASE_IMAGE
 # ---------------------------
+set -e
 
 echo -e "-------------------------------------------"
 echo -e "      images build and push process "
@@ -25,6 +26,8 @@ fi
 
 source "$cwd/.scripts/util/login-docker-repo.sh"
 
+# BusyBox not support execdir 
+#pkgs=`find packages -maxdepth 1 -mindepth 1 -execdir basename {} .json ;`
 pkgs=`find packages -maxdepth 1 -mindepth 1`
 globalIgnoreFile="$cwd/.dockerignore"
 
@@ -65,5 +68,4 @@ echo -e "-------------------------------------------\n\n "
 
 bash "$cwd/.scripts/util/image-random-prune.sh"
 
-set -e
 
