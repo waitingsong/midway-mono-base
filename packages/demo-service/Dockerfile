@@ -5,7 +5,7 @@ FROM $baseImage
 # RUN addgroup -g 1000 node && adduser -u 1000 -G node -s /bin/sh -D node 
 
 WORKDIR /app
-RUN chown node /app
+RUN chown node /app && mkdir -p /app/run && chown node /app/run
 COPY --chown=node node_modules-ext-0 ./node_modules
 COPY --chown=node node_modules-ext-1 ./node_modules
 COPY --chown=node node_modules-ext-2 ./node_modules
