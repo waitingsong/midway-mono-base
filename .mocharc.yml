@@ -1,6 +1,7 @@
 
 bail: true
 full-trace: true
+enable-source-maps: true
 require:
   - intelli-espower-loader
   - espower-typescript/guess
