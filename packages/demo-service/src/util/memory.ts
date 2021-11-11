@@ -17,7 +17,8 @@ export function createHeapSnapshot(dir = ''): string {
   let path = fileName
   if (dir) {
     try {
-      fs.accessSync(dir, fs.constants.R_OK)
+      // eslint-disable-next-line no-bitwise
+      fs.accessSync(dir, fs.constants.R_OK | fs.constants.W_OK)
     }
     catch (ex) {
       fs.mkdirSync(dir)

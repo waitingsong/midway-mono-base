@@ -29,7 +29,7 @@ export class DebugController extends BaseController {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (debugPwd === 'debug123456') {
+    if (debugPwd + '' === 'debug123456') {
       this.logger.warn('Value of DebugController.pwd should be update for prod')
     }
 
