@@ -114,7 +114,7 @@ fi
 #git push --no-verify origin -d release
 source .scripts/ci/ci-delete-remote-branch.sh $GL_TOKEN "$CI_API_V4_URL" $CI_PROJECT_ID "$RELEASE_BRANCH"
 
-$cwd/.scripts/util/save-cache.sh
+$cwd/.scripts/util/save-cache.mjs
 
 if [ $pubflag != 0 ]; then
   echo publish failed
