@@ -23,6 +23,15 @@ jobs:
         os: [ubuntu-latest]
 
     steps:
+      - name: Prepare
+        run: |
+          uname -a
+          apt-get update -qq --yes > /dev/null
+          apt-get upgrade -qq --yes > /dev/null
+          apt-get install -qq --yes --no-install-recommends bash dnsutils git jq net-tools postgresql-client wget > /dev/null
+          npm -v && node -v
+          git --version
+          uname -a
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node }}
         uses: actions/setup-node@v2
@@ -41,22 +50,27 @@ jobs:
       - name: Verify
         run: |
           export DEBIAN_FRONTEND=noninteractive
-          apt-get -qq -y update > /dev/null
-          apt-get -qq -y install dnsutils jq net-tools wget > /dev/null
-          uname -a
           apt-get -qq -y install lsb-release > /dev/null
           lsb_release -cs
           sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
           wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
-          # update again for pg13
-          apt-get -qq -y update > /dev/null
-          apt-get -qq -y install postgresql-client > /dev/null
+          apt-get -qq -y update > /dev/null && apt-get -qq -y install postgresql-client > /dev/null
           netstat -tunpl
+          psql -V
+          dig postgres
+          echo "\l" | psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U$POSTGRES_USER -d postgres
+          psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U$POSTGRES_USER -d $POSTGRES_DB -c "\d+"
         env:
           CI: true
+          POSTGRES_HOST: postgres
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
+          POSTGRES_DB: db_ci_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          PGPASSWORD: postgres
+
       - name: npm build
         run: |
-          export cwd=`pwd`
           cat /etc/*release
           whoami
           export cwd=`pwd`
