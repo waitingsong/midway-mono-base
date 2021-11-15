@@ -65,7 +65,7 @@ const master: DbConfig<DbModel> = {
   },
   dict: dbDict,
   sampleThrottleMs: 500,
-  enableTracing: true,
+  enableTracing: false,
   tracingResponse: true,
 }
 export const dbConfigs: DbConfigs<DbReplicaKeys> = {
