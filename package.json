@@ -38,7 +38,7 @@
     "yargs": "17"
   },
   "engines": {
-    "node": ">=14.15.0"
+    "node": ">=16.13.0"
   },
   "scripts": {
     "add:types": "sh .scripts/add-types.sh",
