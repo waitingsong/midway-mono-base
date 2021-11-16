@@ -3,6 +3,7 @@ export const mods = [
   [
     "bintrees",
     "braces",
+    "bufrw",
     "busboy",
     "crc",
     "esm",
