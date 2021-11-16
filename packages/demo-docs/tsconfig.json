@@ -18,9 +18,9 @@
     "sourceMap": true,
     "strict": true,
     "strictPropertyInitialization": false,
-    "target": "ES2020",
+    "target": "ES2021",
     "tsBuildInfoFile": ".vscode/.tsbuildinfo",
-    "types" : ["jest", "node"]
+    "types" : ["mocha", "node"]
   },
   "include": [
     "src/**/*.ts"
