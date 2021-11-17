@@ -6,7 +6,7 @@
     "noImplicitAny": false,
     "noImplicitThis": false,
     "noUnusedLocals": false,
-    "target": "ESNEXT"
+    "target": "ESNext"
   },
   "include": [
     "**/*.ts"

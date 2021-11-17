@@ -35,7 +35,7 @@ describe(filename, () => {
       fileLogName,
     })
 
-    // @ts-expect-error
+    // @ts-ignore
     logger.updateTransformableInfo(updateTransformableInfo)
     logger.info('file logger')
     logger.warn('file logger1')

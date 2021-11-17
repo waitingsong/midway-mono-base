@@ -1,7 +1,6 @@
 import { relative } from 'path'
 
-import { testConfig } from 'test/root.config'
-
+import { testConfig } from '@/root.config'
 import { UserRepo } from '~/app/user/user.repo'
 import { DbTrxMiddleware } from '~/middleware/db-trx.middleware'
 
@@ -22,7 +21,7 @@ describe(filename, () => {
       ctx.status = 200
       const inst = await ctx.requestContext.getAsync(DbTrxMiddleware)
       const mw = inst.resolve()
-      // @ts-expect-error
+      // @ts-ignore
       await mw(ctx, next)
 
       assert(ctx.dbTransactions.size === 0)
@@ -46,7 +45,7 @@ describe(filename, () => {
 
       ctx.status = 200
       const mw = inst.resolve()
-      // @ts-expect-error
+      // @ts-ignore
       await mw(ctx, next)
 
       assert(dbTransactions.size === 0)

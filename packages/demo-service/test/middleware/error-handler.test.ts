@@ -1,8 +1,8 @@
 import { relative } from 'path'
 
 import { JsonResp } from '@waiting/shared-types'
-import { testConfig } from 'test/root.config'
 
+import { testConfig } from '@/root.config'
 import { Context } from '~/interface'
 import { ErrorHandlerMiddleware } from '~/middleware/error-handler.middleware'
 import MyError from '~/util/my-error'
@@ -22,7 +22,7 @@ describe(filename, () => {
     ctx.status = 404
     const inst = await ctx.requestContext.getAsync(ErrorHandlerMiddleware)
     const mw = inst.resolve()
-    // @ts-expect-error
+    // @ts-ignore
     await mw(ctx, next)
 
     const { body, status } = ctx
@@ -39,7 +39,7 @@ describe(filename, () => {
     ctx.status = 200
     const inst = await ctx.requestContext.getAsync(ErrorHandlerMiddleware)
     const mw = inst.resolve()
-    // @ts-expect-error
+    // @ts-ignore
     await mw(ctx, nextThrowError)
 
     const { status, body } = ctx
@@ -55,16 +55,16 @@ describe(filename, () => {
     ctx.status = 200
     const payload = Math.random().toString()
     // set  ctx.response.headers['content-type'] with 'application/json'
-    // @ts-expect-error
+    // @ts-ignore
     ctx.body = {
       data: payload,
     }
-    // @ts-expect-error
+    // @ts-ignore
     ctx.body = payload
 
     const inst = await ctx.requestContext.getAsync(ErrorHandlerMiddleware)
     const mw = inst.resolve()
-    // @ts-expect-error
+    // @ts-ignore
     await mw(ctx, next)
 
     const { body, status } = ctx
@@ -83,17 +83,17 @@ describe(filename, () => {
 
     const inst = await ctx.requestContext.getAsync(ErrorHandlerMiddleware)
     const mw = inst.resolve()
-    // @ts-expect-error
+    // @ts-ignore
     await mw(ctx, next)
 
     const { body, status } = ctx
     assert(status === 200)
 
-    // @ts-expect-error
+    // @ts-ignore
     assert(typeof body.reqId === 'undefined')
-    // @ts-expect-error
+    // @ts-ignore
     assert(typeof body.code === 'undefined')
-    // @ts-expect-error
+    // @ts-ignore
     assert(typeof body.data === 'undefined')
     assert(body === payload)
   })

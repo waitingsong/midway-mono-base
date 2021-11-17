@@ -3,7 +3,7 @@ import { relative } from 'path'
 import { createHttpRequest } from '@midwayjs/mock'
 import { Jwt, JwtConfig, JwtMsg, schemePrefix } from '@mw-components/jwt'
 
-import { testConfig } from '../../../root.config'
+import { testConfig } from '@/root.config'
 
 // eslint-disable-next-line import/order
 import assert = require('power-assert')

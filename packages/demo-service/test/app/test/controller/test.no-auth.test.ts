@@ -2,8 +2,7 @@ import { relative } from 'path'
 
 import { createHttpRequest } from '@midwayjs/mock'
 
-import { testConfig } from '../../../root.config'
-
+import { testConfig } from '@/root.config'
 import { JsonResp } from '~/interface'
 
 // eslint-disable-next-line import/order

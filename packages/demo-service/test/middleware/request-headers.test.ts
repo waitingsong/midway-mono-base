@@ -1,8 +1,6 @@
 import { relative } from 'path'
 
-import { KoidComponent } from '@mw-components/koid'
-import { testConfig } from 'test/root.config'
-
+import { testConfig } from '@/root.config'
 import { HeadersKey } from '~/constant'
 import { NpmPkg, TracerTag } from '~/interface'
 import { ResponseHeadersMiddleware } from '~/middleware/response-headers.middleware'
@@ -22,7 +20,7 @@ describe(filename, () => {
     ctx.status = 200
     const inst = await ctx.requestContext.getAsync(ResponseHeadersMiddleware)
     const mw = inst.resolve()
-    // @ts-expect-error
+    // @ts-ignore
     await mw(ctx, next)
 
     const pkg = ctx.app.getConfig('pkgJson') as NpmPkg
@@ -41,7 +39,7 @@ describe(filename, () => {
 
     const inst = await ctx.requestContext.getAsync(ResponseHeadersMiddleware)
     const mw = inst.resolve()
-    // @ts-expect-error
+    // @ts-ignore
     await mw(ctx, next)
 
     const pkg = ctx.app.getConfig('pkgJson') as NpmPkg

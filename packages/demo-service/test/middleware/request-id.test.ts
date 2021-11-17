@@ -1,8 +1,8 @@
 import { relative } from 'path'
 
 import { KoidComponent } from '@mw-components/koid'
-import { testConfig } from 'test/root.config'
 
+import { testConfig } from '@/root.config'
 import { HeadersKey } from '~/constant'
 import { RequestIdMiddleware } from '~/middleware/request-id.middleware'
 
@@ -21,7 +21,7 @@ describe(filename, () => {
     ctx.status = 200
     const inst = await ctx.requestContext.getAsync(RequestIdMiddleware)
     const mw = inst.resolve()
-    // @ts-expect-error
+    // @ts-ignore
     await mw(ctx, next)
 
     const { status, reqId } = ctx
@@ -58,7 +58,7 @@ describe(filename, () => {
 
     const inst = await ctx.requestContext.getAsync(RequestIdMiddleware)
     const mw = inst.resolve()
-    // @ts-expect-error
+    // @ts-ignore
     await mw(ctx, next)
 
     const { status, reqId } = ctx

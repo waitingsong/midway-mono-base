@@ -14,7 +14,8 @@
     "noUnusedParameters": true,
     "outDir": "dist",
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": ["./src/*"],
+      "@/*": ["./test/*"]
     },
     "pretty": true,
     "skipLibCheck": true,
