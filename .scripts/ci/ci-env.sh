@@ -1,12 +1,14 @@
 #!/bin/bash
 set -e
 
-# nodejs
-if [ -n "$CI_COMMIT_TAG" ]; then
-  export authorOfTagOrCommit="$(git rev-list -n 1 --pretty=short $CI_COMMIT_TAG | grep Author | cut -d ' ' -f2-)"
-else
-  export authorOfTagOrCommit="$(git rev-list -n 1 --pretty=short $CI_COMMIT_SHA | grep Author | cut -d ' ' -f2-)"
-fi
+
+export LANG="en_US.UTF-8"
+#export LANGUAGE="en_US.UTF-8"
+#export LC_ALL="en_US.UTF-8"
+
+export TIMEZ=Asia/Chongqing
+export PGTZ=$TIMEZ
+export MOCK_HOME_DIR=~/
 
 
 # android

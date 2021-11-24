@@ -9,7 +9,7 @@
   "types": "src/index.ts",
   "dependencies": {
     "@midwayjs/decorator": "^2.13.0",
-    "@waiting/shared-types": "^14.4.0"
+    "@waiting/shared-types": "^15.1.0"
   },
   "devDependencies": { },
   "files": [
