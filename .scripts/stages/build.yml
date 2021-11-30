@@ -16,11 +16,11 @@
     - ls -al
     - echo -e "\e[0Ksection_end:`date +%s`:build_section\r\e[0K"
 
-    - sh .scripts/ci/ci-commitlint.sh
+    - .scripts/ci/ci-commitlint.sh
 
     - date
     - echo -e "\e[0Ksection_start:`date +%s`:init_db_section[collapsed=true]\r\e[0K Init database"
-    - sh .scripts/ci/ci-init-db.sh
+    - .scripts/ci/ci-init-db.sh
     - echo -e "\e[0Ksection_end:`date +%s`:init_db_section\r\e[0K"
 
     - date
@@ -36,7 +36,7 @@
 
     - date
     - echo -e "\e[0Ksection_start:`date +%s`:cov_section[collapsed=true]\r\e[0K Coverage"
-    - sh .scripts/collect-coverages.sh
+    - .scripts/collect-coverages.sh
     - echo -e "\e[0Ksection_end:`date +%s`:cov_section\r\e[0K"
     - date
   artifacts:

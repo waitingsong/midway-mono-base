@@ -68,6 +68,6 @@ dist_ga:
 #     - image_ga
 #   script:
 #     - echo -e "\e[0Ksection_start:`date +%s`:dist_section[collapsed=false]\r\e[0Kdist_ga"
-#     - sh .scripts/cd-distribute-images-ssh.sh
+#     - .scripts/cd-distribute-images-ssh.sh
 #     - echo -e "\e[0Ksection_end:`date +%s`:dist_section\r\e[0K"
 

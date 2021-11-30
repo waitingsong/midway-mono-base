@@ -21,7 +21,7 @@
 #   needs:
 #     - image_ga
 #   script:
-#     - sh .scripts/cd/cd-restart-services.sh
+#     - .scripts/cd/cd-restart-services.sh
 
 .rm-images:
   image: $NODE_DOCKER_IMAGE
@@ -47,7 +47,7 @@ rm_local_images_ga:
     - image_ga
   script:
     - echo -e "\e[0Ksection_start:`date +%s`:rm_images_section[collapsed=false]\r\e[0Krm_local_images"
-    - sh .scripts/cd/cd-rm-local-images.sh
+    - .scripts/cd/cd-rm-local-images.sh
     - echo -e "\e[0Ksection_end:`date +%s`:rm_images_section\r\e[0K"
 
 # rm_remote_images_ga:
@@ -59,6 +59,6 @@ rm_local_images_ga:
 #     - image_ga
 #   script:
 #     - echo -e "\e[0Ksection_start:`date +%s`:rm_images_section[collapsed=false]\r\e[0Krm_remote_images"
-#     - sh .scripts/cd/cd-rm-remote-images.sh
+#     - .scripts/cd/cd-rm-remote-images.sh
 #     - echo -e "\e[0Ksection_end:`date +%s`:rm_images_section\r\e[0K"
 

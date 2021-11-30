@@ -19,7 +19,7 @@ default:
     - echo -e "\e[0Ksection_end:`date +%s`:before_script_section\r\e[0K"
   after_script:
     - export cwd=`pwd`
-    - sh .scripts/ci/after_script.sh
+    - .scripts/ci/after_script.sh
   # cache: &global_cache
   #   key: cache_dev
   #   paths:
