@@ -1,6 +1,7 @@
 #!/bin/bash
 
 
+shopt -s expand_aliases
 
 # no indent
 export iifmt="Id:{{.Id}} {{println}}\
