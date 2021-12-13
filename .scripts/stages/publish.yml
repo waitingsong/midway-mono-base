@@ -16,13 +16,13 @@
 publish_latest:
   extends: .publish
   rules:
-    - if: $CI_COMMIT_REF_NAME != $RELEASE_BRANCH || $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
+    - if: $CI_COMMIT_BRANCH != $RELEASE_BRANCH || $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
       when: never
     - if: $PUB_AS_LATEST_MAJOR == "yes"
       when: manual
     - if: $PUB_AS_LATEST == "yes"
       when: on_success
-    - if: $CI_COMMIT_REF_NAME == $RELEASE_BRANCH
+    - if: $CI_COMMIT_BRANCH == $RELEASE_BRANCH
       when: manual
   script:
     - echo -e "\e[0Ksection_start:`date +%s`:publish_section[collapsed=true]\r\e[0K Publish Latest"
@@ -35,7 +35,7 @@ publish_latest:
 publish_latest_major:
   extends: .publish
   rules:
-    - if: $CI_COMMIT_REF_NAME != $RELEASE_BRANCH || $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
+    - if: $CI_COMMIT_BRANCH != $RELEASE_BRANCH || $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
       when: never
     - if: $PUB_AS_LATEST_MAJOR == "yes"
       when: manual

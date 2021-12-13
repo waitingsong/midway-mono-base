@@ -8,11 +8,16 @@ default:
     - echo $CI_SERVER_VERSION
     - echo $CI_PIPELINE_SOURCE
     - echo $CI_PROJECT_URL
+    - echo $CI_PIPELINE_URL
+    - echo $CI_JOB_URL
     - echo "$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/$CI_COMMIT_REF_NAME"
     - echo $CI_COMMIT_REF_SLUG
     - echo $CI_COMMIT_BRANCH
+    - echo $CI_COMMIT_BEFORE_SHA
     - echo "$CI_COMMIT_TAG-$CI_COMMIT_SHORT_SHA"
     - echo "$CI_PIPELINE_ID:$CI_JOB_ID"
+    - echo $CI_CONCURRENT_ID
+    - echo $CI_CONCURRENT_PROJECT_ID
     - echo $GITLAB_USER_LOGIN
     - export cwd=`pwd`
     - source .scripts/ci/before_script.sh
