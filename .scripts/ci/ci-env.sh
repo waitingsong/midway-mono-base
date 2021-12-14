@@ -17,4 +17,5 @@ export GRADLE_USER_HOME=.gradle-bin
 
 # flutter
 export PUB_CACHE="$CI_PROJECT_DIR/.pub-cache"
+export PATH="$PATH":"$PUB_CACHE/bin"
 

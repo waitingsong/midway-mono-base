@@ -141,7 +141,7 @@ UserInterfaceState.xcuserstate
 *.suo
 *.[Cc]ache
 *.ncb
-[Tt]humbs.db 
+[Tt]humbs.db
 Ankh.NoLoad
 
 *_i.c
@@ -281,6 +281,7 @@ hs_err_pid*
 .packages
 .pub-cache/
 .pub/
+/pubspec.lock
 
 # Web related
 */lib/generated_plugin_registrant.dart
