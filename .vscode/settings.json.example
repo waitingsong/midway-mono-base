@@ -86,6 +86,8 @@
   "plantuml.exportFormat": "png",
   "plantuml.urlFormat": "png",
   "search.exclude": {
+    ".gitlab": false,
+    ".scripts": false,
     "i18n": true,
     "library/": true,
     "node_modules": true,

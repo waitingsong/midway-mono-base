@@ -11,6 +11,19 @@ variables:
     -e packages/*/.eslintcache
     -e packages/*/.vscode
     -e packages/*/dist
+    -e .!!next---------flutter
+    -e .dart_tool
+    -e .dartServer
+    -e .flutter-plugins
+    -e .flutter-plugins-dependencies
+    -e .pub-cache
+    -e android/local.properties
+    -e pubspec.lock
+    -e .!!next---------android
+    -e .gradle
+    -e .gradle-bin
+    -e build-cache
+    -e build
 
   # for branches except version tag
   PACK_DEV_IMG: ""
@@ -18,8 +31,6 @@ variables:
   PACK_RC_IMG: ""
   # only for version tag
   PACK_GA_IMG: "yes"
-  TAR_COMPRESSION_LEVEL: 7
-  IMG_COMPRESSION_LEVEL: 4
   ZSTD_CLEVEL: 11
 
   PUB_AS_BETA: ""
@@ -31,9 +42,9 @@ variables:
   PUB_AS_NEXT_MAJOR: ""
 
   # for pull
-  #NPM_REGISTRY: https://nexus.foo.com/repository/npm-central/
+  # NPM_REGISTRY: https://nexus.foo.com/repository/npm-central/
   # for npm publish, equal to version.registry of lerna.json (if exists)
-  #NPM_VERSION_REGISTRY: https://nexus.foo.com/repository/mynpm/
+  # NPM_VERSION_REGISTRY: https://nexus.foo.com/repository/mynpm/
   NPM_DIST: https://npmmirror.com/dist/
   # restrict branch for version, equal to  version.allowBranch of lerna.json
   RELEASE_BRANCH: release
