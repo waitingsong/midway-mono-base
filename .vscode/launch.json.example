@@ -44,7 +44,7 @@
       "autoAttachChildProcesses": true,
       "console": "integratedTerminal",
       "env": {
-        "NODE_ENV": "local",
+        "NODE_ENV": "unittest",
         "POSTGRES_HOST": "",
         "POSTGRES_PORT": "5432",
         "POSTGRES_DB": "",
