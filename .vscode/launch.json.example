@@ -28,6 +28,7 @@
         "run",
         "debug",
         "--",
+        "--preserve-symlinks",
         "--inspect-brk"
       ],
       "runtimeExecutable": "npm",
@@ -61,6 +62,7 @@
         "test:local",
         "--",
         "--runInBand",
+        "--preserve-symlinks",
         "--inspect-brk"
       ],
       "runtimeExecutable": "npm",
