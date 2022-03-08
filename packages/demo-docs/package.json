@@ -8,8 +8,8 @@
   "module": "dist/index.js",
   "types": "src/index.ts",
   "dependencies": {
-    "@midwayjs/decorator": "^2.14.0",
-    "@waiting/shared-types": "^15.1.0"
+    "@midwayjs/decorator": "^3.0.10",
+    "@waiting/shared-types": "^15.2.0"
   },
   "devDependencies": { },
   "files": [
