@@ -19,9 +19,6 @@
         "POSTGRES_USER": "",
         "POSTGRES_PASSWORD": "",
       },
-      "port": 9229,
-      // "preLaunchTask": "TypeScript compile",
-      "protocol": "auto",
       "request": "launch",
       "restart": true,
       "runtimeArgs": [
@@ -33,8 +30,8 @@
       ],
       "runtimeExecutable": "npm",
       "skipFiles": [
-        "${workspaceFolder}/../../node_modules/rxjs/**/*.js",
-        "${workspaceFolder}/node_modules/rxjs/**/*.js",
+        "**/node_modules/**",
+        "**/node_modules/rxjs/**",
         "<node_internals>/**",
         "<node_internals>/**/*.js"
       ],
@@ -53,9 +50,6 @@
         "POSTGRES_USER": "",
         "POSTGRES_PASSWORD": "",
       },
-      "port": 9229,
-      // "preLaunchTask": "TypeScript compile",
-      "protocol": "auto",
       "request": "launch",
       "restart": true,
       "runtimeArgs": [
