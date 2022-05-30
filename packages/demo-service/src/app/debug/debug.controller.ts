@@ -22,7 +22,7 @@ export class DebugController extends BaseController {
   @Inject() readonly svc: DebugService
 
   @Get('/dump/:id/:hash')
-  heapdump(@Param() id: string, @Param() hash: string): HeapDumpRet | void {
+  async heapdump(@Param('id') id: string, @Param('hash') hash: string): Promise<HeapDumpRet | void> {
     if (! hash || hash !== debugPwd) {
       this.ctx.status = 401
       return

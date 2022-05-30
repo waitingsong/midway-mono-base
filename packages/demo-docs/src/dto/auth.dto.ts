@@ -1,4 +1,4 @@
-import { Rule } from '@midwayjs/decorator'
+import { Rule } from '@midwayjs/validate'
 
 import { userValidSchemas } from '../validation-schema/index.schema'
 

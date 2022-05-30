@@ -1,3 +1,4 @@
+import assert from 'assert/strict'
 import { relative } from 'path'
 
 import {
@@ -9,9 +10,6 @@ import { join } from '@waiting/shared-core'
 import { removeFileOrDir, sleep, matchISO8601ContentTimes, getCurrentDateString } from './util'
 
 import { updateTransformableInfo } from '~/util/custom-logger'
-
-// eslint-disable-next-line import/order
-import assert = require('power-assert')
 
 
 const filename = relative(process.cwd(), __filename).replace(/\\/ug, '/')

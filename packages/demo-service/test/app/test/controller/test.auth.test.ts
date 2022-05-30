@@ -1,12 +1,10 @@
+import assert from 'assert/strict'
 import { relative } from 'path'
 
 import { createHttpRequest } from '@midwayjs/mock'
-import { Jwt, JwtConfig, JwtMsg, schemePrefix } from '@mw-components/jwt'
+import { JwtMsg, schemePrefix } from '@mw-components/jwt'
 
 import { testConfig } from '@/root.config'
-
-// eslint-disable-next-line import/order
-import assert = require('power-assert')
 
 
 const filename = relative(process.cwd(), __filename).replace(/\\/ug, '/')
@@ -17,6 +15,7 @@ const header1 = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.'
 const token1 = header1
   + 'eyJmb28iOiJiYXIiLCJpYXQiOjE1NjY2Mjk5MTl9.'
   + signature1
+
 
 describe(filename, () => {
 

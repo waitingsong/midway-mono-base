@@ -1,18 +1,8 @@
-import { DefaultConfig as PrometheusConfig } from '@midwayjs/prometheus'
-import { NpmPkg } from '@waiting/shared-types'
-import { EggAppConfig, PowerPartial } from 'egg'
 
-
-export interface DefaultConfig extends PowerPartial<EggAppConfig> {
-  welcomeMsg: string
-  svcHosts: SvcHosts
-}
-
-declare module 'egg' {
-  interface EggAppConfig {
-    coreMiddleware: string[]
-    pkgJson: NpmPkg
-    prometheus: PrometheusConfig
+declare module '@midwayjs/core/dist/interface' {
+  interface MidwayConfig {
+    welcomeMsg: string
+    svcHosts: SvcHosts
   }
 }
 

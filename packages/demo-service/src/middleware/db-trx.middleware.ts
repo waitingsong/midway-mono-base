@@ -1,15 +1,24 @@
-import { Provide } from '@midwayjs/decorator'
-import { IWebMiddleware, IMidwayWebNext, MidwayWebMiddleware } from '@midwayjs/web'
+import { Middleware } from '@midwayjs/decorator'
 
-import { Context } from '~/interface'
+import { Context, IMiddleware, NextFunction } from '~/interface'
 import { rollbackAndCleanCtxTransactions } from '~/util/database'
 
 
-@Provide()
-export class DbTrxMiddleware implements IWebMiddleware {
+@Middleware()
+export class DbTrxMiddleware implements IMiddleware<Context, NextFunction> {
 
-  resolve(): MidwayWebMiddleware {
-    return dbTrxMiddleware
+  static getName(): string {
+    const name = 'dbTrxMiddleware'
+    return name
+  }
+
+  match(ctx?: Context) {
+    const flag = !! ctx
+    return flag
+  }
+
+  resolve() {
+    return middleware
   }
 
 }
@@ -17,7 +26,11 @@ export class DbTrxMiddleware implements IWebMiddleware {
 /**
  * Rollback all uncommitted transaction stored on ctx.dbTransactions
  */
-async function dbTrxMiddleware(ctx: Context, next: IMidwayWebNext): Promise<void> {
+async function middleware(
+  ctx: Context,
+  next: NextFunction,
+): Promise<void> {
+
   if (typeof ctx.dbTransactions === 'undefined') {
     ctx.dbTransactions = new Set()
   }

@@ -1,15 +1,12 @@
+import assert from 'assert/strict'
 import { relative } from 'path'
 
 import { createHttpRequest } from '@midwayjs/mock'
 import { JwtMsg, schemePrefix } from '@mw-components/jwt'
 
-import { testConfig } from '../../../root.config'
-
+import { testConfig } from '@/root.config'
 import { UserDetailDTO } from '~/app/user/user.types'
 import { JsonResp } from '~/interface'
-
-// eslint-disable-next-line import/order
-import assert = require('power-assert')
 
 
 const filename = relative(process.cwd(), __filename).replace(/\\/ug, '/')

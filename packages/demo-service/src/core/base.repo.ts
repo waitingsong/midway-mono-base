@@ -29,7 +29,7 @@ export class BaseRepo extends RootClass {
     }
 
     const container = this.app.getApplicationContext()
-    const dbManager = await container.getAsync(DbManager) as DbManager<DbReplicaKeys>
+    const dbManager = await container.getAsync<DbManager<DbReplicaKeys>>(DbManager)
     this.db = await dbManager.create<DbModel>(this.ctx, DbReplica.master, unsubscribeEventFuncOnResFinish)
   }
 

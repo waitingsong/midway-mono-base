@@ -9,7 +9,8 @@ import {
 
 import { HomeService } from './home.service'
 
-import { AppInfomation, BaseController } from '~/interface'
+import { BaseController } from '~/interface'
+import { AppInfomation } from '~/types'
 
 
 @Provide()
@@ -21,9 +22,9 @@ export class HomeController extends BaseController {
   @Inject() readonly svc: HomeService
 
   @ContentType('text')
-  @Get('/', { middleware: ['apiMiddleware'] })
+  @Get('/')
   index(): string {
-    let body = `${this.welcomeMsg} - ${this.ctx.api.reqTimeStr}`
+    let body = this.welcomeMsg
     const info: AppInfomation = this.svc.appInfo()
     Object.entries(info).forEach(([key, val]) => {
       body += `\n${key}: "${val}"`
@@ -39,9 +40,9 @@ export class HomeController extends BaseController {
   }
 
   @ContentType('text')
-  @Get('/hello', { middleware: ['apiMiddleware'] })
+  @Get('/hello')
   hello(): string {
-    let body = `${this.welcomeMsg} - ${this.ctx.api.reqTimeStr}`
+    let body = this.welcomeMsg
     const info = this.svc.appInfo()
     Object.entries(info).forEach(([key, val]) => {
       body += `\n${key}: "${val}"`
@@ -53,7 +54,7 @@ export class HomeController extends BaseController {
   @ContentType('text')
   @Get('/ip')
   async ip(): Promise<string> {
-    const body = this.svc.retrieveGatewayIp()
+    const body = await this.svc.retrieveGatewayIp()
     return body
   }
 

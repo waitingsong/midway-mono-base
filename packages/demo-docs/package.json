@@ -8,8 +8,8 @@
   "module": "dist/index.js",
   "types": "src/index.ts",
   "dependencies": {
-    "@midwayjs/decorator": "^3.0.10",
-    "@waiting/shared-types": "^15.2.0"
+    "@midwayjs/validate": "^3.3.0",
+    "@waiting/shared-types": "^18.0.0"
   },
   "devDependencies": { },
   "files": [
@@ -33,7 +33,7 @@
     "clean": "rm -rf dist/* .vscode/.tsbuildinfo",
     "lint": "eslint --fix --cache src/**/*.ts",
     "lint:nofix": "eslint --cache src/**/*.ts",
-    "rp": "rollup -c rollup.config.js",
+    "rp": "rollup -c rollup.config.js --context this",
     "test": "npm run lint:nofix",
     "tsc": "tsc -p tsconfig.json",
     "tsc:w": "tsc -p tsconfig.json -w"

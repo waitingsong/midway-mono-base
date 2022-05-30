@@ -31,7 +31,7 @@ const banner = `
  * @license ${pkg.license}
  * @link ${pkg.homepage}
  */
-`.trimLeft()
+`.trimStart()
 const uglifyOpts = {
   mangle:   true,
   compress: {

@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { IMidwayLogger, MidwayContextLogger, MidwayTransformableInfo } from '@midwayjs/logger'
 
-import { Application, Context } from '~/interface'
+import type { Application, Context } from '~/interface'
 import { genISO8601String } from '~/util/ext'
 
 
@@ -43,13 +43,4 @@ export function updateTransformableInfo(info: MidwayTransformableInfo): MidwayTr
   return ret
 }
 
-
-declare module 'egg' {
-  interface Application {
-    // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
-    // @ts-ignore
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    setContextLoggerClass: (BaseContextLoggerClass: any) => void
-  }
-}
 

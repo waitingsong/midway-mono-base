@@ -1,24 +1,39 @@
-import { Provide } from '@midwayjs/decorator'
-import { IWebMiddleware, IMidwayWebNext, MidwayWebMiddleware } from '@midwayjs/web'
+import { Middleware } from '@midwayjs/decorator'
 
 import {
   Context,
-  ErrorCode,
+  IMiddleware,
+  NextFunction,
   JsonResp,
 } from '~/interface'
+import { ErrorCode } from '~/types'
 import MyError from '~/util/my-error'
 
 
-@Provide()
-export class ErrorHandlerMiddleware implements IWebMiddleware {
+@Middleware()
+export class ErrorHandlerMiddleware implements IMiddleware<Context, NextFunction> {
 
-  resolve(): MidwayWebMiddleware {
-    return errHandleMiddleware
+  static getName(): string {
+    const name = 'errorHandlerMiddleware'
+    return name
+  }
+
+  match(ctx?: Context) {
+    const flag = !! ctx
+    return flag
+  }
+
+  resolve() {
+    return middleware
   }
 
 }
 
-async function errHandleMiddleware(ctx: Context<unknown>, next: IMidwayWebNext): Promise<void> {
+async function middleware(
+  ctx: Context,
+  next: NextFunction,
+): Promise<void> {
+
   try {
     await next()
     /* c8 ignore next */
@@ -55,7 +70,8 @@ async function errHandleMiddleware(ctx: Context<unknown>, next: IMidwayWebNext):
     ctx._internalError = myerr
 
     // 生产环境时 500 错误的详细错误内容不返回给客户端，因为可能包含敏感信息
-    const msg = status === 500 && ctx.app.config.env === 'prod'
+    const env = ctx.app.getConfig('env') as string
+    const msg = status === 500 && env === 'prod'
       /* c8 ignore next */
       ? 'Internal Server Error'
       : message
@@ -106,7 +122,7 @@ async function errHandleMiddleware(ctx: Context<unknown>, next: IMidwayWebNext):
 /**
  * 对于 `application/json` 相应类型，包裹成 JsonResp 格式数据
  */
-function wrapRespForJson(ctx: Context<unknown>): void {
+function wrapRespForJson(ctx: Context): void {
   const contentType: string | number | string[] | undefined = ctx.response.header['content-type']
   if (! contentType || typeof contentType === 'number') {
     return

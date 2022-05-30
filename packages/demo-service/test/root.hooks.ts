@@ -1,16 +1,19 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import 'tsconfig-paths/register'
+import assert from 'node:assert/strict'
+import { join } from 'node:path'
 
+import * as WEB from '@midwayjs/koa'
 import { createApp, close, createHttpRequest } from '@midwayjs/mock'
-import { Framework } from '@midwayjs/web'
 import { JwtComponent } from '@mw-components/jwt'
-import { initTaskManClientConfig, TaskManClientConfig } from '@mw-components/taskman'
+import { DbManager } from '@mw-components/kmore'
+import {
+  TaskClientConfig,
+  ConfigKey as TCK,
+} from '@mw-components/taskman'
 
 import { testConfig } from './root.config'
 
-import { NpmPkg } from '~/interface'
+import { Application, NpmPkg } from '~/interface'
 
 
 /**
@@ -29,32 +32,47 @@ export const mochaHooks = async () => {
 
   return {
     beforeAll: async () => {
-      const app = await createApp<Framework>()
-      const container = app.getApplicationContext()
+      const globalConfig = {
+        keys: Math.random().toString(),
+      }
+      const opts = {
+        imports: [WEB],
+        globalConfig,
+      }
+      // const app = await createApp(join(__dirname, 'fixtures', 'base-app'), opts) as Application
+      const app = await createApp(join(__dirname, '..'), opts) as Application
+      app.addConfigObject(globalConfig)
       testConfig.app = app
-      testConfig.container = container
       testConfig.httpRequest = createHttpRequest(app)
-      testConfig.jwt = await testConfig.container.getAsync(JwtComponent)
-      testConfig.pkg = app.getConfig('pkg') as NpmPkg
-
       const { url } = testConfig.httpRequest.get('/')
       testConfig.host = url
 
+      const container = app.getApplicationContext()
+      testConfig.container = container
+
+      testConfig.jwt = await container.getAsync(JwtComponent)
+      testConfig.pkg = app.getConfig('pkg') as NpmPkg
+
       app.addConfigObject({
-        taskManClientConfig: {
-          ...initTaskManClientConfig,
+        [TCK.clientConfig]: {
           host: url.slice(0, -1),
         },
       })
-      const tmcConfig = app.getConfig('taskManClientConfig') as TaskManClientConfig
+      const tmcConfig = app.getConfig(TCK.clientConfig) as TaskClientConfig
       const host = tmcConfig.host
-      console.info('taskManClientConfig.host', host)
+      console.info('taskClientConfig.host', host)
+
+      const dbManager = await container.getAsync<DbManager>(DbManager)
+      assert(dbManager)
+
     },
 
     beforeEach: async () => {
+      return
     },
 
     afterEach: async () => {
+      return
     },
 
     afterAll: async () => {

@@ -1,47 +1,48 @@
 // config for `npm run cov|ci`
-import { TracerConfig, defaultTracerConfig, TracerTag } from '@mw-components/jaeger'
-import {
-  JwtConfig,
-  JwtMiddlewareConfig,
-  initialJwtMiddlewareConfig,
-} from '@mw-components/jwt'
+import { initialConfig as initTracerConfig, TracerTag } from '@mw-components/jaeger'
+import { initialMiddlewareConfig as initialJwtMiddlewareConfig } from '@mw-components/jwt'
 import {
   DbConfig,
   DbConfigs,
   postProcessResponse,
   wrapIdentifier,
 } from '@mw-components/kmore'
-import { ServerAgent } from '@mw-components/taskman'
+import { ClientURL, ServerURL } from '@mw-components/taskman'
 
 import { DbReplicaKeys } from './config.types'
 import { DbModel, dbDict } from './db.model'
 
+import { AppConfig } from '~/interface'
 
-export {
-  fetch,
-  svcHosts,
-  taskManClientConfig,
-  taskManServerConfig,
-} from './config.local'
 
 export const security = {
   csrf: false,
 }
+
+
+// 复用 local 的配置
+export { svcHosts } from './config.local'
+
 
 // 建议跑测试的时候关闭日志(true)，这样手动故意触发的错误，都不会显示处理。如果想看则打开(false)
 export const logger = {
   disableConsoleAfterReady: true,
 }
 
-export const jwtConfig: JwtConfig = {
+
+export const jwtConfig: AppConfig['jwtConfig'] = {
   secret: '123456abc', // 默认密钥，生产环境一定要更改!
 }
-export const jwtMiddlewareConfig: JwtMiddlewareConfig = {
+export const jwtMiddlewareConfig: AppConfig['jwtMiddlewareConfig'] = {
   ...initialJwtMiddlewareConfig,
   enableMiddleware: true,
 }
-jwtMiddlewareConfig.ignore = jwtMiddlewareConfig.ignore?.concat([
-  '/hello', '/ip',
+const jwtIgnoreArr = [
+  '/',
+  '/hello',
+  '/ip',
+  '/ping',
+  '/taskman/hello',
   '/test/err',
   '/test/array',
   '/test/blank',
@@ -49,8 +50,13 @@ jwtMiddlewareConfig.ignore = jwtMiddlewareConfig.ignore?.concat([
   '/test/no_output',
   '/test/sign',
   /debug\/dump\/.*/u,
-  RegExp(`${ServerAgent.base}/.*`, 'u'),
-])
+  /unittest/u,
+  RegExp(`${ClientURL.base}/.*`, 'u'),
+  RegExp(`${ServerURL.base}/.*`, 'u'),
+]
+jwtMiddlewareConfig.ignore = jwtMiddlewareConfig.ignore
+  ? jwtMiddlewareConfig.ignore.concat(jwtIgnoreArr)
+  : jwtIgnoreArr
 
 
 const master: DbConfig<DbModel> = {
@@ -82,16 +88,9 @@ export const dbConfigs: DbConfigs<DbReplicaKeys> = {
   master,
 }
 
-export const tracer: TracerConfig = {
-  ...defaultTracerConfig,
-  whiteList: [
-    '/favicon.ico',
-    '/favicon.png',
-    '/ping',
-    '/metrics',
-    '/untracedPath',
-    /\/unitTest[\d.]+/u,
-  ],
+
+export const tracerConfig: AppConfig['tracerConfig'] = {
+  ...initTracerConfig,
   tracingConfig: {
     sampler: {
       type: 'const',
@@ -102,6 +101,17 @@ export const tracer: TracerConfig = {
     },
   },
 }
-tracer.loggingReqHeaders.push(TracerTag.svcName)
-tracer.loggingReqHeaders.push(TracerTag.svcVer)
+tracerConfig.loggingReqHeaders?.push(TracerTag.svcName)
+tracerConfig.loggingReqHeaders?.push(TracerTag.svcVer)
+
+export const tracerMiddlewareConfig: AppConfig['tracerMiddlewareConfig'] = {
+  ignore: [
+    '/favicon.ico',
+    '/favicon.png',
+    '/ping',
+    '/metrics',
+    '/untracedPath',
+    /\/unitTest[\d.]+/u,
+  ],
+}
 

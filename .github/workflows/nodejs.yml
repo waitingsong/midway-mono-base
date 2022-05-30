@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
 
@@ -36,6 +36,7 @@ jobs:
             packages/*/dist
             packages/*/node_modules
             packages/*/package-lock.json
+            /usr/bin/ossutil
           key: ${{ runner.OS }}-build-${{ env.cache-name }}-${{ github.ref }}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.OS }}-build-${{ env.cache-name }}-${{ github.ref }}-
@@ -80,7 +81,7 @@ jobs:
           . .scripts/ci/ci-env.sh
           .scripts/ci/ci-prepare.sh
           .github/workflows/fix.sh
-          npm i -g c8 lerna rollup
+          npm i -g c8 lerna rollup zx
           .github/workflows/fix.sh
           npm run bootstrap
           .github/workflows/fix.sh
@@ -117,6 +118,7 @@ jobs:
           export cwd=`pwd`
           . .scripts/ci/ci-env.sh
           .scripts/ci/ci-prepare.sh
+          .scripts/init.mjs
           npm run ci
         env:
           CI: true
@@ -131,6 +133,20 @@ jobs:
           # redis
           REDIS_HOST: redis
           REDIS_PORT: 6379
+
+          ALI_ALB_IPS: ${{ secrets.ALI_ALB_IPS }}
+          ALI_ALB_GROUPID: ${{ secrets.ALI_ALB_GROUPID }}
+
+          ALI_ECS_AID: ${{ secrets.ALI_ECS_AID }}
+          ALI_ECS_ASECRET: ${{ secrets.ALI_ECS_ASECRET }}
+          ALI_ECS_IDS: ${{ secrets.ALI_ECS_IDS }}
+          ALI_ECS_IPS: ${{ secrets.ALI_ECS_IPS }}
+
+          ALI_OSS_AID: ${{ secrets.ALI_OSS_AID }}
+          ALI_OSS_ASECRET: ${{ secrets.ALI_OSS_ASECRET }}
+          ALI_OSS_ENDPOINT: ${{ secrets.ALI_OSS_ENDPOINT }}
+          ALI_OSS_BUCKET: ${{ secrets.ALI_OSS_BUCKET }}
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
 

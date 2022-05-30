@@ -2,7 +2,7 @@
 ARG baseImage
 FROM $baseImage
 
-# RUN addgroup -g 1000 node && adduser -u 1000 -G node -s /bin/sh -D node 
+# RUN addgroup -g 1000 node && adduser -u 1000 -G node -s /bin/sh -D node
 
 WORKDIR /app
 RUN chown node /app && mkdir -p /app/run && chown node /app/run
@@ -15,7 +15,7 @@ COPY --chown=node node_modules-ext-5 ./node_modules
 COPY --chown=node node_modules ./node_modules
 COPY --chown=node node_modules-ext-99 ./node_modules
 COPY --chown=node dist ./dist
-COPY --chown=node package.json README.md tsconfig.json tsconfig.cjs.json ./
+COPY --chown=node package.json README.md tsconfig.json tsconfig.cjs.json bootstrap.js ./
 
 EXPOSE 7001
 HEALTHCHECK \
@@ -26,5 +26,6 @@ HEALTHCHECK \
   CMD curl -fs http://localhost:7001/ping || exit 1
 
 USER node
-CMD ./node_modules/.bin/egg-scripts start --framework=@midwayjs/web --workers=$cpus
+# CMD ./node_modules/.bin/egg-scripts start --framework=@midwayjs/web --workers=$cpus
+CMD ["node", "bootstrap.js"]
 

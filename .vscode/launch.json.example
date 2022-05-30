@@ -5,6 +5,43 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Midway TEST",
+      "type": "node",
+      "console": "internalConsole",
+      "env": {
+        "NODE_ENV": "unittest",
+        "POSTGRES_HOST": "",
+        "POSTGRES_PORT": "5432",
+        "POSTGRES_DB": "",
+        "POSTGRES_USER": "postgres",
+        "POSTGRES_PASSWORD": "",
+      },
+      "request": "launch",
+      "restart": false,
+      "runtimeArgs": [
+        "run",
+        "test:local",
+        "--",
+        "--runInBand",
+        "--preserve-symlinks",
+        "--inspect-brk"
+      ],
+      "runtimeExecutable": "npm",
+      "skipFiles": [
+        "**/node_modules/rxjs/**",
+        "**/node_modules/mocha/**",
+        "**/async_hooks.js",
+        "**/*async_hook*.js",
+        "**/node_modules/@midwayjs/core/dist/service/middlewareService.js",
+        "<node_internals>/**",
+        "<node_internals>/async_hooks",
+        "<node_internals>/internal/async_hooks.js",
+        "<node_internals>/**/*.js"
+      ],
+      "smartStep": false,
+      "timeout": 30000
+    },
+    {
       "name": "Midway Debug",
       "type": "node",
       "autoAttachChildProcesses": true,
@@ -32,42 +69,12 @@
       "skipFiles": [
         "**/node_modules/**",
         "**/node_modules/rxjs/**",
+        "**/async_hooks.js",
         "<node_internals>/**",
         "<node_internals>/**/*.js"
       ],
+      "smartStep": true,
       "timeout": 30000
-    },
-    {
-      "name": "Midway TEST",
-      "type": "node",
-      "autoAttachChildProcesses": true,
-      "console": "integratedTerminal",
-      "env": {
-        "NODE_ENV": "unittest",
-        "POSTGRES_HOST": "",
-        "POSTGRES_PORT": "5432",
-        "POSTGRES_DB": "",
-        "POSTGRES_USER": "",
-        "POSTGRES_PASSWORD": "",
-      },
-      "request": "launch",
-      "restart": true,
-      "runtimeArgs": [
-        "run",
-        "test:local",
-        "--",
-        "--runInBand",
-        "--preserve-symlinks",
-        "--inspect-brk"
-      ],
-      "runtimeExecutable": "npm",
-      "skipFiles": [
-        "${workspaceFolder}/../../node_modules/rxjs/**/*.js",
-        "${workspaceFolder}/node_modules/rxjs/**/*.js",
-        "<node_internals>/**",
-        "<node_internals>/**/*.js"
-      ],
-      "timeout": 30000
-    },
+    }
   ]
 }

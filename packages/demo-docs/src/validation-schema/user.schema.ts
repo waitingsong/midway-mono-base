@@ -1,4 +1,4 @@
-import { RuleType } from '@midwayjs/decorator'
+import { RuleType } from '@midwayjs/validate'
 
 
 export const userValidSchemas = {

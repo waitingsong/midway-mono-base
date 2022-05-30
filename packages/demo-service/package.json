@@ -6,41 +6,34 @@
   "bin": {},
   "dependencies": {
     "@scope/docs": "^0.0.0",
-    "@midwayjs/bootstrap": "^3.1.0",
-    "@midwayjs/decorator": "^3.0.10",
-    "@midwayjs/prometheus": "^3.1.0",
-    "@midwayjs/redis": "^3.1.0",
-    "@midwayjs/swagger": "^3.1.0",
-    "@mw-components/fetch": "^17.0.1",
-    "@mw-components/jaeger": "^10.0.1",
-    "@mw-components/jwt": "^10.0.1",
-    "@mw-components/kmore": "^25.0.1",
-    "@mw-components/koid": "^6.0.0",
-    "@mw-components/taskman": "^14.0.1",
+    "@midwayjs/bootstrap": "^3.3.0",
+    "@midwayjs/decorator": "^3.3.0",
+    "@midwayjs/koa": "^3.3.0",
+    "@midwayjs/prometheus": "^3.3.0",
+    "@midwayjs/redis": "^3.3.0",
+    "@midwayjs/swagger": "^3.3.0",
+    "@midwayjs/validate": "^3.3.0",
+    "@mw-components/fetch": "^19.0.1",
+    "@mw-components/jaeger": "^11.0.8",
+    "@mw-components/jwt": "^11.0.10",
+    "@mw-components/kmore": "^26.0.0",
+    "@mw-components/koid": "^9.0.0",
+    "@mw-components/taskman": "^16.4.2",
     "@waiting/base64": "^4.2.9",
-    "@waiting/shared-core": "^15.2.0",
-    "@waiting/shared-types": "^15.2.0",
+    "@waiting/shared-core": "^18.0.0",
+    "@waiting/shared-types": "^18.0.0",
     "pg": "^8.7.3",
-    "rxjs": "^7.4.0",
-    "tsconfig-paths": "3"
+    "rxjs": "^7.5.0"
   },
   "devDependencies": {
-    "@midwayjs/koa": "^3.1.0",
-    "@midwayjs/mock": "^3.1.0",
-    "@midwayjs/web": "^3.1.0",
-    "@types/rewire": "2",
-    "@types/supertest": "^2.0.11",
-    "cross-env": "7",
-    "kmore-types": "^25.0.1",
-    "rewire": "5",
-    "supertest": "^6.2.2",
-    "swagger-ui-dist": "^4.5.0"
+    "cross-env": "7"
   },
   "engines": {
     "node": ">=16.13.0"
   },
   "files": [
     "dist",
+    "bootstrap.js",
     "Dockerfile",
     "tsconfig.json",
     "tsconfig.cjs.json"
@@ -64,14 +57,13 @@
     "cov:local": "cross-env MIDWAY_SERVER_ENV=unittest TS_NODE_TYPE_CHECK=false TS_NODE_TRANSPILE_ONLY=true TS_NODE_PROJECT=test/tsconfig.json c8 ../../node_modules/.bin/mocha --parallel=false",
     "db:gen": "kmore gen --project tsconfig.cjs.json --path ./src",
     "debug": "cross-env NODE_ENV=local ../../node_modules/.bin/midway-bin dev --debug --ts",
-    "dev": "cross-env NODE_ENV=local TS_NODE_TYPE_CHECK=false TS_NODE_TRANSPILE_ONLY=true ../../node_modules/.bin/midway-bin dev --ts --port=7001",
-    "dev:debug": "cross-env NODE_ENV=local TS_NODE_TYPE_CHECK=false TS_NODE_TRANSPILE_ONLY=true NODE_DEBUG=midway* ../../node_modules/.bin/midway-bin dev --ts",
+    "dev": "cross-env NODE_ENV=local ../../node_modules/.bin/midway-bin dev --ts --fast --port=7001",
+    "dev:debug": "cross-env NODE_ENV=local NODE_DEBUG=midway* ../../node_modules/.bin/midway-bin dev --ts",
     "lint": "eslint --fix --cache {src,test}/**/*.ts",
     "lint:nofix": "eslint --cache {src,test}/**/*.ts",
     "purge": "npm run clean && rm node_modules -rf",
-    "start": "egg-scripts start --daemon --framework=@midwayjs/web --title=midway-server-svc --workers=4",
+    "start": "node bootstrap.js",
     "start_build": "npm run clean && npm run build && cross-env NODE_ENV=development midway-bin dev --ts",
-    "start_docker": "egg-scripts start --framework=@midwayjs/web --title=midway-server-svc",
     "stop": "egg-scripts stop --title=midway-server-svc",
     "test": "cross-env MIDWAY_SERVER_ENV=unittest TS_NODE_PROJECT=test/tsconfig.json mocha --parallel=false",
     "test:local": "cross-env MIDWAY_SERVER_ENV=unittest TS_NODE_PROJECT=test/tsconfig.json ../../node_modules/.bin/mocha --parallel=false",
@@ -85,6 +77,11 @@
     "logs",
     "run"
   ],
+  "midway-cli": {
+    "experimentalFeatures": {
+      "ignoreTsError": true
+    }
+  },
   "midway-bin-build": {
     "include": [
       "app/public",

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { IncomingHttpHeaders } from 'http'
 
-import { App, Inject } from '@midwayjs/decorator'
+import { App, Config, Inject } from '@midwayjs/decorator'
 import {
   Node_Headers,
   FetchComponent,
@@ -10,7 +10,7 @@ import {
 import { Logger } from '@mw-components/jaeger'
 import { JwtComponent } from '@mw-components/jwt'
 import { KoidComponent } from '@mw-components/koid'
-import { TaskManComponent } from '@mw-components/taskman'
+import { ClientService } from '@mw-components/taskman'
 import { OverwriteAnyToUnknown } from '@waiting/shared-types'
 
 import {
@@ -19,11 +19,11 @@ import {
   DbTransaction,
   FetchOptions,
   JsonResp,
-  JwtUser,
   NpmPkg,
   TracerTag,
-} from '~/interface'
-import MyError from '~/util/my-error'
+} from '../interface'
+import { JwtUser } from '../types'
+import MyError from '../util/my-error'
 
 
 export class RootClass {
@@ -31,7 +31,8 @@ export class RootClass {
   @App() protected readonly app: Application
 
   @Inject() readonly ctx: Context
-  @Inject('fetch:fetchComponent') private readonly fetchService: FetchComponent
+
+  @Inject() private readonly fetchService: FetchComponent
 
   /**
    * jaeger Context SPAN 上下文日志
@@ -40,9 +41,11 @@ export class RootClass {
 
   @Inject() readonly koid: KoidComponent
 
-  @Inject('jwt:jwtComponent') readonly jwt: JwtComponent
+  @Inject() readonly jwt: JwtComponent
 
-  @Inject('taskman:taskManComponent') readonly taskMan: TaskManComponent
+  @Inject() readonly taskMan: ClientService
+
+  @Config() readonly pkg: NpmPkg
 
   /**
    * SnowFlake id Generatoror
@@ -69,7 +72,7 @@ export class RootClass {
    *     - svc.ver
    */
   get initFetchOptions(): FetchOptions {
-    const pkg = this.app.getConfig('pkgJson') as NpmPkg
+    const { pkg } = this
     const headers: HeadersInit = {
       [TracerTag.svcName]: pkg.name,
       [TracerTag.svcVer]: pkg.version ?? '',
@@ -193,7 +196,7 @@ export class RootClass {
   /**
    * 返回类型为字符串
    */
-  getText<T extends string = string>(
+  async getText<T extends string = string>(
     url: string,
     options?: FetchOptions,
   ): Promise<T> {
@@ -204,8 +207,8 @@ export class RootClass {
       headers: this.genFetchHeaders(options?.headers),
       dataType: 'text',
     }
-    const ret = this.fetchService.get<T>(url, opts)
-    return ret as Promise<T>
+    const ret = await this.fetchService.get<T>(url, opts)
+    return ret as T
   }
 
   /**

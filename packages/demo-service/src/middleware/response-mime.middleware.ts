@@ -1,16 +1,25 @@
-import { Provide } from '@midwayjs/decorator'
-import { IWebMiddleware, IMidwayWebNext, MidwayWebMiddleware } from '@midwayjs/web'
+import { Middleware } from '@midwayjs/decorator'
 
-import { Context } from '~/interface'
+import { Context, IMiddleware, NextFunction } from '~/interface'
 
 /**
  * 设置默认响应 ContentType
  */
-@Provide()
-export class ResponseMimeMiddleware implements IWebMiddleware {
+@Middleware()
+export class ResponseMimeMiddleware implements IMiddleware<Context, NextFunction> {
 
-  resolve(): MidwayWebMiddleware {
-    return responseMimeMiddleware
+  static getName(): string {
+    const name = 'responseMimeMiddleware'
+    return name
+  }
+
+  match(ctx?: Context) {
+    const flag = !! ctx
+    return flag
+  }
+
+  resolve() {
+    return middleware
   }
 
 }
@@ -18,7 +27,11 @@ export class ResponseMimeMiddleware implements IWebMiddleware {
 /**
  * 若未通过 `@ContentType(string)` 显式设置头部，则设置默认为 `application/json`
  */
-async function responseMimeMiddleware(ctx: Context, next: IMidwayWebNext): Promise<void> {
+async function middleware(
+  ctx: Context,
+  next: NextFunction,
+): Promise<void> {
+
   await next()
 
   const key = 'content-type'

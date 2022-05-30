@@ -1,4 +1,4 @@
-import assert from 'assert'
+import assert from 'assert/strict'
 import { IncomingHttpHeaders } from 'http'
 
 import {
@@ -9,21 +9,18 @@ import {
   Inject,
   Provide,
 } from '@midwayjs/decorator'
+import { TracerManager } from '@mw-components/jaeger'
 
 import { TestService } from './test.service'
 
 import { HeadersKey } from '~/constant'
-import {
-  BaseController,
-  NpmPkg,
-} from '~/interface'
+import { BaseController } from '~/interface'
 
 
 @Provide()
 @Controller('/test')
 export class TestController extends BaseController {
 
-  @Config() readonly pkgJson: NpmPkg
   @Config() readonly welcomeMsg: string
 
   @Inject() readonly svc: TestService
@@ -85,7 +82,8 @@ export class TestController extends BaseController {
     const { headers } = this.ctx.request
     assert(typeof headers[HeadersKey.traceId] === 'undefined')
 
-    const spanHeader = this.ctx.tracerManager.headerOfCurrentSpan()
+    const tracerManager = await this.ctx.requestContext.getAsync(TracerManager)
+    const spanHeader = tracerManager.headerOfCurrentSpan()
     assert(spanHeader)
     const expect = {
       reqId: this.ctx.reqId,
@@ -120,13 +118,14 @@ export class TestController extends BaseController {
   }
 
   @Get('/_fetch_target')
-  fetchTarget(): TestData {
+  async fetchTarget(): Promise<TestData> {
     const { headers } = this.ctx.request
     const traceId = headers[HeadersKey.traceId]
     this.logger.log({ traceId })
     assert(typeof traceId === 'string' && traceId.length, 'Should accese path: \'/test/fetch\' for test')
 
-    const spanHeader = this.ctx.tracerManager.headerOfCurrentSpan()
+    const tracerManager = await this.ctx.requestContext.getAsync(TracerManager)
+    const spanHeader = tracerManager.headerOfCurrentSpan()
     assert(spanHeader)
     const nextTraceId: string = spanHeader[HeadersKey.traceId]
     const body = {

@@ -1,11 +1,7 @@
 // config for `npm run test` in vscode F5
-import { FetchComponentConfig, defaultFetchComponentConfig } from '@mw-components/fetch'
-import { TracerConfig, defaultTracerConfig, TracerTag } from '@mw-components/jaeger'
-import {
-  JwtConfig,
-  JwtMiddlewareConfig,
-  initialJwtMiddlewareConfig,
-} from '@mw-components/jwt'
+import { initialConfig as initFetchConfig } from '@mw-components/fetch'
+import { initialConfig as initTracerConfig, TracerTag } from '@mw-components/jaeger'
+import { initialMiddlewareConfig as initialJwtMiddlewareConfig } from '@mw-components/jwt'
 import {
   DbConfig,
   DbConfigs,
@@ -13,11 +9,9 @@ import {
   wrapIdentifier,
 } from '@mw-components/kmore'
 import {
-  initTaskManClientConfig,
   initDbConfig,
-  ServerAgent,
-  TaskManClientConfig,
-  TaskManServerConfig,
+  ClientURL,
+  ServerURL,
 } from '@mw-components/taskman'
 
 import {
@@ -26,18 +20,21 @@ import {
 } from './config.types'
 import { dbDict, DbModel } from './db.model'
 
-import { HeadersKey } from '~/interface'
+import { HeadersKey, AppConfig } from '~/interface'
 
 
-export const jwtConfig: JwtConfig = {
+export const jwtConfig: AppConfig['jwtConfig'] = {
   secret: '123456abc', // 默认密钥，生产环境一定要更改!
 }
-export const jwtMiddlewareConfig: JwtMiddlewareConfig = {
+export const jwtMiddlewareConfig: AppConfig['jwtMiddlewareConfig'] = {
   ...initialJwtMiddlewareConfig,
   enableMiddleware: true,
 }
-jwtMiddlewareConfig.ignore = jwtMiddlewareConfig.ignore?.concat([
-  '/hello', '/ip',
+const jwtIgnoreArr = [
+  '/',
+  '/hello',
+  '/ip',
+  '/ping',
   '/test/err',
   '/test/array',
   '/test/blank',
@@ -47,20 +44,25 @@ jwtMiddlewareConfig.ignore = jwtMiddlewareConfig.ignore?.concat([
   '/test/no_output',
   '/test/sign',
   /debug\/dump\/.*/u,
-  RegExp(`${ServerAgent.base}/.*`, 'u'),
-])
+  /unittest/u,
+  RegExp(`${ClientURL.base}/.*`, 'u'),
+  RegExp(`${ServerURL.base}/.*`, 'u'),
+]
+jwtMiddlewareConfig.ignore = jwtMiddlewareConfig.ignore
+  ? jwtMiddlewareConfig.ignore.concat(jwtIgnoreArr)
+  : jwtIgnoreArr
 
 
-export const fetch: FetchComponentConfig = {
-  ...defaultFetchComponentConfig,
+export const fetchConfig: AppConfig['fetchConfig'] = {
+  ...initFetchConfig,
 }
-fetch.traceLoggingReqHeaders.push(HeadersKey.traceId)
-fetch.traceLoggingReqHeaders.push(TracerTag.svcName)
-fetch.traceLoggingReqHeaders.push(TracerTag.svcVer)
+fetchConfig.traceLoggingReqHeaders?.push(HeadersKey.traceId)
+fetchConfig.traceLoggingReqHeaders?.push(TracerTag.svcName)
+fetchConfig.traceLoggingReqHeaders?.push(TracerTag.svcVer)
 
-fetch.traceLoggingRespHeaders.push(HeadersKey.traceId)
-fetch.traceLoggingRespHeaders.push(TracerTag.svcName)
-fetch.traceLoggingRespHeaders.push(TracerTag.svcVer)
+fetchConfig.traceLoggingRespHeaders?.push(HeadersKey.traceId)
+fetchConfig.traceLoggingRespHeaders?.push(TracerTag.svcName)
+fetchConfig.traceLoggingRespHeaders?.push(TracerTag.svcVer)
 
 
 const master: DbConfig<DbModel> = {
@@ -94,14 +96,8 @@ export const dbConfigs: DbConfigs<DbReplicaKeys> = {
 }
 
 
-export const tracer: TracerConfig = {
-  ...defaultTracerConfig,
-  whiteList: [
-    '/favicon.ico',
-    '/favicon.png',
-    '/ping',
-    '/metrics',
-  ],
+export const tracerConfig: AppConfig['tracerConfig'] = {
+  ...initTracerConfig,
   tracingConfig: {
     sampler: {
       type: 'probabilistic',
@@ -112,13 +108,11 @@ export const tracer: TracerConfig = {
     },
   },
 }
-tracer.loggingReqHeaders.push(TracerTag.svcName)
-tracer.loggingReqHeaders.push(TracerTag.svcVer)
+tracerConfig.loggingReqHeaders?.push(TracerTag.svcName)
+tracerConfig.loggingReqHeaders?.push(TracerTag.svcVer)
 
-/**
- * Remove this variable if running as client
- */
-export const taskManServerConfig: TaskManServerConfig = {
+
+export const taskServerConfig: AppConfig['taskServerConfig'] = {
   expInterval: '30min',
   dbConfigs: {
     ...initDbConfig,
@@ -132,11 +126,15 @@ export const taskManServerConfig: TaskManServerConfig = {
     tracingResponse: true,
   },
 }
-export const taskManClientConfig: TaskManClientConfig = {
-  ...initTaskManClientConfig,
+
+export const taskClientConfig: AppConfig['taskClientConfig'] = {
   host: process.env.TASK_AGENT_HOST ? process.env.TASK_AGENT_HOST : 'http://127.0.0.1:7001',
 }
 
+export const taskMiddlewareConfig: AppConfig['taskMiddlewareConfig'] = {
+  enableMiddleware: true,
+  ignore: ['/'],
+}
 
 export const development = {
   watchDirs: [

@@ -8,7 +8,7 @@ require:
   - test/root.hooks.ts
 spec:
   - test/**/*.test.ts
-timeout: 60000
+timeout: 360000
 ui: bdd
 parallel: true
 exit: true

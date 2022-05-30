@@ -1,39 +1,37 @@
+import assert from 'assert/strict'
 import { relative } from 'path'
 
 import { createHttpRequest } from '@midwayjs/mock'
 import {
-  ServerAgent,
+  ClientURL,
+  ServerURL,
   CreateTaskDTO,
   TaskDTO,
   TaskFullDTO,
   initTaskDTO,
-  TaskAgentController,
+  AgentController,
 } from '@mw-components/taskman'
 
-import { testConfig } from '../../root.config'
-
+import { testConfig } from '@/root.config'
 import { JsonResp } from '~/interface'
-
-// eslint-disable-next-line import/order
-import assert = require('power-assert')
 
 
 const filename = relative(process.cwd(), __filename).replace(/\\/ug, '/')
 
 describe(filename, () => {
 
-  it(ServerAgent.hello, async () => {
+  it(ClientURL.hello, async () => {
     const { app } = testConfig
     const container = app.getApplicationContext()
     try {
-      await container.getAsync(TaskAgentController)
+      await container.getAsync(AgentController)
     }
     catch (ex) {
-      console.info('skip test due to instance of TaskAgentController undefined')
+      console.info('skip test due to instance of AgentController undefined')
       return
     }
 
-    const url = `${ServerAgent.base}/${ServerAgent.hello}`
+    const url = `${ClientURL.base}/${ClientURL.hello}`
     const res = await createHttpRequest(app)
       .get(url)
 
@@ -41,20 +39,20 @@ describe(filename, () => {
     assert(res.text === 'OK')
   })
 
-  it(ServerAgent.create, async () => {
+  it(ServerURL.create, async () => {
     const { app } = testConfig
     const container = app.getApplicationContext()
     try {
-      await container.getAsync(TaskAgentController)
+      await container.getAsync(AgentController)
     }
     catch (ex) {
-      console.info('skip test due to instance of TaskAgentController undefined')
+      console.info('skip test due to instance of AgentController undefined')
       return
     }
 
     const input: CreateTaskDTO = {
       json: {
-        url: `http://localhost:7001${ServerAgent.base}/${ServerAgent.hello}`,
+        url: `http://localhost:7001${ServerURL.base}/${ServerURL.hello}`,
         method: 'GET',
         headers: {
           f2: Math.random().toString(),
@@ -65,7 +63,7 @@ describe(filename, () => {
         },
       },
     }
-    const url = `${ServerAgent.base}/${ServerAgent.create}`
+    const url = `${ServerURL.base}/${ServerURL.create}`
     const res = await createHttpRequest(app)
       .post(url)
       .send(input)

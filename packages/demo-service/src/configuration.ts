@@ -1,8 +1,10 @@
+/* eslint-disable import/max-dependencies */
 /* eslint-disable import/no-extraneous-dependencies */
 import 'tsconfig-paths/register'
-import { join } from 'path'
+import assert from 'node:assert/strict'
+import { join } from 'node:path'
 
-import { ILifeCycle } from '@midwayjs/core'
+import { ILifeCycle, MidwayInformationService } from '@midwayjs/core'
 import {
   App,
   Config,
@@ -10,8 +12,10 @@ import {
   Inject,
   Logger,
 } from '@midwayjs/decorator'
+import * as koa from '@midwayjs/koa'
 import { IMidwayLogger } from '@midwayjs/logger'
 import * as prometheus from '@midwayjs/prometheus'
+import * as validate from '@midwayjs/validate'
 import * as fetch from '@mw-components/fetch'
 import * as jaeger from '@mw-components/jaeger'
 import * as jwt from '@mw-components/jwt'
@@ -21,15 +25,23 @@ import { DbConfigs, DbManager } from '@mw-components/kmore'
 import * as koid from '@mw-components/koid'
 import * as tm from '@mw-components/taskman'
 
-import { DbReplicaKeys } from '~/config/config.types'
-import { Application, NpmPkg } from '~/interface'
-import { customLogger } from '~/util/custom-logger'
+import { DbReplicaKeys } from './config/config.types'
+import { DbTrxMiddleware } from './middleware/db-trx.middleware'
+import { ErrorHandlerMiddleware } from './middleware/error-handler.middleware'
+import { RequestIdMiddleware } from './middleware/request-id.middleware'
+import { ResponseHeadersMiddleware } from './middleware/response-headers.middleware'
+import { ResponseMimeMiddleware } from './middleware/response-mime.middleware'
+// import { customLogger } from './util/custom-logger'
+
+import type { Application, NpmPkg } from '~/interface'
 
 
 process.env.UV_THREADPOOL_SIZE = '96'
 
 @Configuration({
   imports: [
+    koa,
+    validate,
     jaeger,
     prometheus,
     jwt,
@@ -46,43 +58,55 @@ export class ContainerConfiguration implements ILifeCycle {
 
   @Logger() readonly logger: IMidwayLogger
 
-  @Inject('kmore:dbManager') readonly dbManager: DbManager<DbReplicaKeys> | undefined
+  @Inject() readonly informationService: MidwayInformationService
+
+  @Inject() readonly dbManager: DbManager<DbReplicaKeys> | undefined
 
   @Config() readonly dbConfigs: DbConfigs<DbReplicaKeys> | undefined
 
+
   // 启动前处理
   async onReady(): Promise<void> {
-    this.app.config.pkgJson = this.app.config.pkg as NpmPkg
 
     // 定制化日志
-    customLogger(this.logger, this.app)
-
-    // const coreMiddlewareArr = this.app.getConfig('coreMiddleware') as string[]
-    const coreMiddlewareArr = this.app.config.coreMiddleware as string[]
-
-    // 全局错误处理中间件（确保在最前）
-    coreMiddlewareArr.splice(0, 0, 'errorHandlerMiddleware')
+    // customLogger(this.logger, this.app)
 
     // 全局x-request-id处理中间件
-    coreMiddlewareArr.splice(1, 0, 'requestIdMiddleware')
+    // @ts-expect-error
+    this.app.getMiddleware().insertFirst(RequestIdMiddleware)
 
-    // 全局db处理中间件，请求结束时回滚所有本次请求未提交事务
-    coreMiddlewareArr.splice(1, 0, 'dbTrxMiddleware')
+    // 全局错误处理中间件（确保在最前）
+    // @ts-expect-error
+    this.app.getMiddleware().insertFirst(ErrorHandlerMiddleware)
+
+    const mws = [
+      ResponseMimeMiddleware,
+      ResponseHeadersMiddleware,
+      DbTrxMiddleware, // 全局db处理中间件，请求结束时回滚所有本次请求未提交事务
+    ]
+    this.app.useMiddleware(mws)
+
+    const mwNames = this.app.getMiddleware().getNames()
+    console.info({ mwNames })
 
     // 初始化数据库连接
     await this.initDbs()
 
-    const { pkgJson } = this.app.config
+    const pkg = this.informationService.getPkg() as NpmPkg
+    assert(pkg, 'retrieve package.json failed')
+    this.app.addConfigObject({ pkg })
     const info = {
-      pkgName: pkgJson.name,
-      pkgVersion: pkgJson.version,
+      pkgName: pkg.name,
+      pkgVersion: pkg.version,
     }
+
     // eslint-disable-next-line no-console
     console.log('✅ Your APP launched', info)
   }
 
-  // async onStop(): Promise<void> {
-  // }
+  async onStop(): Promise<void> {
+    return
+  }
 
   async initDbs(): Promise<void> {
     const { dbManager } = this

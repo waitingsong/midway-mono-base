@@ -1,4 +1,5 @@
-import { IMidwayKoaNext } from '@midwayjs/koa'
+import { IncomingHttpHeaders } from 'http'
+
 import { JwtComponent } from '@mw-components/jwt'
 import supertest, { SuperTest } from 'supertest'
 
@@ -9,19 +10,28 @@ import {
 } from '~/interface'
 
 
+export type TestResponse = supertest.Response
+export interface TestRespBody {
+  header: IncomingHttpHeaders
+  url: string
+}
+
 export interface TestConfig {
-  /** host of test process */
-  host: string
   app: Application
   container: IMidwayContainer
   httpRequest: SuperTest<supertest.Test>
+  host: string
   jwt: JwtComponent
   pkg: NpmPkg
-  next: IMidwayKoaNext
-  // svc: TaskQueueService
+  token: string
 }
-const next: IMidwayKoaNext = async () => { return }
+const jwt = `
+Bearer
+eyJhbGciOiJIUzI1NiJ9.eyJ
+`
+
 export const testConfig = {
-  next,
+  host: '',
+  token: jwt.trim().replace(/\n/ug, ' '),
 } as TestConfig
 

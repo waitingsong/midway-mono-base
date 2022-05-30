@@ -7,8 +7,7 @@ import { Context } from '~/interface'
 export async function rollbackAndCleanCtxTransactions(ctx: Context): Promise<void> {
   const pms: Promise<unknown>[] = []
 
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (! ctx || ! ctx.dbTransactions || ! ctx.dbTransactions.size) {
+  if (! ctx.dbTransactions.size) {
     return
   }
 

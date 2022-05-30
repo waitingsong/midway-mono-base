@@ -1,21 +1,36 @@
-import { Provide } from '@midwayjs/decorator'
-import { IWebMiddleware, IMidwayWebNext, MidwayWebMiddleware } from '@midwayjs/web'
+import { Middleware } from '@midwayjs/decorator'
 import { KoidComponent } from '@mw-components/koid'
 
+
 import { HeadersKey } from '~/constant'
-import { Context } from '~/interface'
+import { Context, IMiddleware, NextFunction } from '~/interface'
 
 
-@Provide()
-export class RequestIdMiddleware implements IWebMiddleware {
+@Middleware()
+export class RequestIdMiddleware implements IMiddleware<Context, NextFunction> {
 
-  resolve(): MidwayWebMiddleware {
-    return requestIdMiddleware
+  static getName(): string {
+    const name = 'requestIdMiddleware'
+    return name
+  }
+
+  match(ctx?: Context) {
+    const flag = !! ctx
+    return flag
+  }
+
+  resolve() {
+    return middleware
   }
 
 }
 
-async function requestIdMiddleware(ctx: Context, next: IMidwayWebNext): Promise<unknown> {
+
+async function middleware(
+  ctx: Context,
+  next: NextFunction,
+): Promise<unknown> {
+
   const key = HeadersKey.reqId
   let reqId = ctx.get(key)
 
@@ -33,3 +48,9 @@ async function requestIdMiddleware(ctx: Context, next: IMidwayWebNext): Promise<
   return next()
 }
 
+
+declare module '@midwayjs/core/dist/interface' {
+  interface Context {
+    reqId: string
+  }
+}

@@ -1,11 +1,8 @@
+import assert from 'assert/strict'
 import { relative } from 'path'
 
-import { testConfig } from '../../../root.config'
-
+import { testConfig } from '@/root.config'
 import { HomeController } from '~/app/home/home.controller'
-
-// eslint-disable-next-line import/order
-import assert = require('power-assert')
 
 
 const filename = relative(process.cwd(), __filename).replace(/\\/ug, '/')

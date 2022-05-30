@@ -60,6 +60,7 @@
     "**/run": true
   },
   "files.insertFinalNewline": true,
+  "files.refactoring.autoSave": true,
   "files.watcherExclude": {
     "coverage/**": true,
     "dist/**": true,

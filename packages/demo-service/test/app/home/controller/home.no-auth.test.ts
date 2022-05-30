@@ -1,19 +1,16 @@
+import assert from 'assert/strict'
 import { relative } from 'path'
 
 import { createHttpRequest } from '@midwayjs/mock'
 
 import { testConfig } from '../../../root.config'
 
-// eslint-disable-next-line import/order
-import assert = require('power-assert')
-
 
 const filename = relative(process.cwd(), __filename).replace(/\\/ug, '/')
 
 describe(filename, () => {
   it('should assert', async () => {
-    const { app, pkg } = testConfig
-    assert(app.config.keys.startsWith(pkg.name))
+    // const { app, pkg } = testConfig
     // const ctx = app.mockContext({})
   })
 

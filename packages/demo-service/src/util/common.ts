@@ -1,9 +1,44 @@
 import { NetworkInterfaceInfo, networkInterfaces } from 'os'
 
-import {
-  Context,
-  MiddlewarePathPattern,
-} from '~/interface'
+import { isPathMatchRules } from '@waiting/shared-core'
+import { MiddlewareConfig } from '@waiting/shared-types'
+
+import { Context } from '~/interface'
+
+
+/**
+ * Return true if rules of match and ignore empty
+ */
+export function matchFunc(
+  ctx?: Context,
+  mwConfig?: MiddlewareConfig,
+): boolean {
+
+  if (! ctx) {
+    return false
+  }
+  if (! mwConfig) {
+    return false
+  }
+
+  const { enableMiddleware, match, ignore } = mwConfig
+
+  if (! enableMiddleware) {
+    return false
+  }
+
+  if (Array.isArray(ignore) && ignore.length) {
+    const matched = isPathMatchRules(ctx.path, ignore)
+    return ! matched
+  }
+  else if (Array.isArray(match) && match.length) {
+    const matched = isPathMatchRules(ctx.path, ignore)
+    return matched
+  }
+  else {
+    return true
+  }
+}
 
 
 /**
@@ -45,37 +80,6 @@ export async function sleep(timeout = 1000): Promise<void> {
   return new Promise<void>((resolve) => {
     setTimeout(resolve, timeout)
   })
-}
-
-export function reqestPathMatched(
-  ctx: Context,
-  rules?: MiddlewarePathPattern,
-): boolean {
-
-  if (! rules) {
-    return false
-  }
-
-  const { path } = ctx
-
-  const ret = rules.some((rule) => {
-    if (! rule) {
-      return
-    }
-    else if (typeof rule === 'string') {
-      return rule === path
-    }
-    else if (rule instanceof RegExp) {
-      return rule.test(path)
-    }
-    else if (typeof rule === 'function') {
-      return rule(ctx)
-    }
-    else {
-      throw new TypeError('Invalid type of rule value')
-    }
-  })
-  return ret
 }
 
 
