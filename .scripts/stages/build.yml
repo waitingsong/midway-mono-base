@@ -42,7 +42,9 @@
   artifacts:
     expire_in: '14 day'
     reports:
-      cobertura: coverage/cobertura-coverage.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/cobertura-coverage.xml
     paths:
       - coverage/
 
@@ -66,7 +68,9 @@ build_rc:
   artifacts:
     expire_in: '30 day'
     reports:
-      cobertura: coverage/cobertura-coverage.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/cobertura-coverage.xml
     paths:
       - coverage/
 

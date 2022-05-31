@@ -1,4 +1,5 @@
 // config for `npm run test` in vscode F5
+import { Config } from '@mw-components/ali-oss'
 import { initialConfig as initFetchConfig } from '@mw-components/fetch'
 import { initialConfig as initTracerConfig, TracerTag } from '@mw-components/jaeger'
 import { initialMiddlewareConfig as initialJwtMiddlewareConfig } from '@mw-components/jwt'
@@ -149,6 +150,23 @@ export const development = {
   ],
   overrideDefault: true,
 }
+
+
+export enum OssClientKey {
+  ossmain = 'ossmain',
+}
+const clientConfig = {
+  accessKeyId: process.env.ALI_OSS_AID ?? '',
+  accessKeySecret: process.env.ALI_OSS_ASECRET ?? '',
+  endpoint: process.env.ALI_OSS_ENDPOINT ?? 'https://oss-cn-hangzhou.aliyuncs.com',
+  bucket: process.env.ALI_OSS_BUCKET ?? '',
+  cmd: 'ossutil',
+  debug: false,
+}
+export const aliOssConfig: Readonly<Config<OssClientKey>> = {
+  ossmain: clientConfig,
+}
+
 
 export const svcHosts: SvcHosts = {
   uc: 'http://127.0.0.1:7001',

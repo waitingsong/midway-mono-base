@@ -16,6 +16,7 @@ import * as koa from '@midwayjs/koa'
 import { IMidwayLogger } from '@midwayjs/logger'
 import * as prometheus from '@midwayjs/prometheus'
 import * as validate from '@midwayjs/validate'
+import * as aliOss from '@mw-components/ali-oss'
 import * as fetch from '@mw-components/fetch'
 import * as jaeger from '@mw-components/jaeger'
 import * as jwt from '@mw-components/jwt'
@@ -49,6 +50,7 @@ process.env.UV_THREADPOOL_SIZE = '96'
     fetch,
     db,
     tm,
+    aliOss,
   ],
   importConfigs: [join(__dirname, 'config')],
 })

@@ -14,4 +14,5 @@ if [ -n "$CI_COMMIT_TAG" ]; then
 else
   export authorOfTagOrCommit="$(git rev-list -n 1 --pretty=short $CI_COMMIT_SHA | grep Author | cut -d ' ' -f2-)"
 fi
+echo $authorOfTagOrCommit
 

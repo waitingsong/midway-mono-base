@@ -13,6 +13,7 @@
     "@midwayjs/redis": "^3.3.0",
     "@midwayjs/swagger": "^3.3.0",
     "@midwayjs/validate": "^3.3.0",
+    "@mw-components/ali-oss": "^1.1.1",
     "@mw-components/fetch": "^19.0.1",
     "@mw-components/jaeger": "^11.0.8",
     "@mw-components/jwt": "^11.0.10",

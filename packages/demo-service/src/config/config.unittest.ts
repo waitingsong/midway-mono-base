@@ -21,7 +21,11 @@ export const security = {
 
 
 // 复用 local 的配置
-export { svcHosts } from './config.local'
+export {
+  svcHosts,
+  OssClientKey,
+  aliOssConfig,
+} from './config.local'
 
 
 // 建议跑测试的时候关闭日志(true)，这样手动故意触发的错误，都不会显示处理。如果想看则打开(false)

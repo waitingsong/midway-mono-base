@@ -2,6 +2,7 @@
 import { IncomingHttpHeaders } from 'http'
 
 import { App, Config, Inject } from '@midwayjs/decorator'
+import { AliOssComponent } from '@mw-components/ali-oss'
 import {
   Node_Headers,
   FetchComponent,
@@ -31,6 +32,8 @@ export class RootClass {
   @App() protected readonly app: Application
 
   @Inject() readonly ctx: Context
+
+  @Inject() readonly ossClient: AliOssComponent
 
   @Inject() private readonly fetchService: FetchComponent
 

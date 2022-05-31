@@ -15,7 +15,7 @@ find $(find $(find . -type d -iname "@waiting") -mindepth 2 -maxdepth 2 -type d 
 find $(find . -type d -iname "ajv") -maxdepth 1 -type d -iname "dist" -print0 | xargs -0II rm -rf I
 find $(find . -type d -iname "ajv") -maxdepth 1 -type d -iname "scripts" -print0 | xargs -0II rm -rf I
 
-find $(find . -type d -iname "ali-oss") -maxdepth 1 -type d -iname "dist" -print0 | xargs -0II rm -rf I
+# find $(find . -type d -iname "ali-oss") -maxdepth 1 -type d -iname "dist" -print0 | xargs -0II rm -rf I
 
 find $(find . -type d -iname "joi") -maxdepth 1 -type d -iname "dist" -print0 | xargs -0II rm -rf I
 

@@ -65,49 +65,40 @@ Format: 1.2.3
 
 const postUrl = `${url}/projects/${pid}/trigger/pipeline`
 $.verbose = false
-process.env.p1 = token
-process.env.p2 = refName
-process.env.p3 = imgNameNorm
-process.env.p4 = ver
-process.env.p5 = postUrl
-const ret = await $`curl -X POST -s \
-  -F token=$p1 \
-  -F "ref=$p2" \
-  -F "variables[CD_pkgImgNameNorm]=$p3" \
-  -F "variables[CD_pkgVer]=$p4" \
-  $p5
-`
-process.env.p1 = ''
-$.verbose = true
-// console.info(ret)
+
+
+const body = new URLSearchParams()
+body.append('token', token)
+body.append('ref', refName)
+body.append('variables[CD_pkgImgNameNorm]', imgNameNorm)
+body.append('variables[CD_pkgVer]', ver)
+
+
+const data = {
+  method: 'post',
+  body,
+}
+const resp = await fetch(postUrl, data)
+const ret = await resp.json()
+console.log({ resp, ret })
 
 if (! ret) {
   throw new Error('result type undefined')
 }
 
-const { stdout, stderr, exitCode } = ret
-if (ret.exitCode === 0 && typeof stdout === 'string' && stdout) {
-  const { id, sha, ref, status, created_at, web_url, error, message } = JSON.parse(stdout)
-  if (id) {
-    console.info({
-      pid,
-      id, sha, ref, status, created_at, web_url,
-    })
-  }
-  else {
-    console.info({
-      pid,
-      token: `${token.slice(0, 2)}..${token.slice(-2)}`,
-      error,
-      message,
-    })
-  }
+const { id, sha, ref, status, created_at, web_url, error, message } = ret
+if (id) {
+  console.info({
+    pid,
+    id, sha, ref, status, created_at, web_url,
+  })
 }
 else {
-  console.error({
-    stderr,
-    exitCode,
+  console.info({
+    pid,
+    token: `${token.slice(0, 2)}..${token.slice(-2)}`,
+    error,
+    message,
   })
-  process.exit(1)
 }
 

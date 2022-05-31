@@ -7,6 +7,18 @@ const CI_DEFAULT_BRANCH = process.env.CI_DEFAULT_BRANCH
 const CI_COMMIT_BRANCH = process.env.CI_COMMIT_BRANCH
 const CI_COMMIT_TAG = process.env.CI_COMMIT_TAG
 
+
+const baseImage = process.env.NODE_BASE_IMAGE
+const publisher = process.env.authorOfTagOrCommit ?? 'n/a'
+const pkgName = process.env.pkgName
+const pkgImgNameNorm = process.env.pkgImgNameNorm
+const pkgVer = process.env.pkgVer
+const fileNameNormVer = process.env.fileNameNormVer
+const CI_PIPELINE_ID = process.env.CI_PIPELINE_ID
+const CI_JOB_ID = process.env.$CI_JOB_ID
+const CI_USER_LOGIN = process.env.GITLAB_USER_LOGIN
+
+
 let logMsg = ''
 logMsg = ` \n
 -------------------------------------------
@@ -100,16 +112,16 @@ console.info('------------------')
 
 console.info(`>>> Building image`)
 await $`docker build \
-  --build-arg baseImage="$NODE_BASE_IMAGE" \
-  --label baseImage="$NODE_BASE_IMAGE" \
-  --label publisher="$authorOfTagOrCommit" \
-  --label pkgName="$pkgName" \
-  --label pkgImgNameNorm="$pkgImgNameNorm" \
-  --label pkgVer="$pkgVer" \
-  --label fileNameNormVer="$fileNameNormVer" \
-  --label CI_PIPELINE_ID="$CI_PIPELINE_ID" \
-  --label CI_JOB_ID="$CI_JOB_ID" \
-  --label CI_USER_LOGIN="$GITLAB_USER_LOGIN" \
+  --build-arg baseImage=${baseImage} \
+  --label baseImage=${baseImage} \
+  --label publisher=${publisher} \
+  --label pkgName=${pkgName} \
+  --label pkgImgNameNorm=${pkgImgNameNorm} \
+  --label pkgVer=${pkgVer} \
+  --label fileNameNormVer=${fileNameNormVer} \
+  --label CI_PIPELINE_ID=${CI_PIPELINE_ID} \
+  --label CI_JOB_ID=${CI_JOB_ID} \
+  --label CI_USER_LOGIN=${CI_USER_LOGIN} \
   -t "$imgPatch" ./
 `
 

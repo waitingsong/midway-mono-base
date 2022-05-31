@@ -1,3 +1,4 @@
+import { Config } from '@mw-components/ali-oss'
 import { initialConfig as initTracerConfig, TracerTag } from '@mw-components/jaeger'
 import { initialMiddlewareConfig as initialJwtMiddlewareConfig } from '@mw-components/jwt'
 import {
@@ -16,6 +17,7 @@ import { DbReplicaKeys } from './config.types'
 import { dbDict, DbModel } from './db.model'
 
 import type { AppConfig } from '~/interface'
+
 
 
 export { svcHosts } from './config.local'
@@ -121,5 +123,21 @@ export const taskClientConfig: AppConfig['taskClientConfig'] = {
 export const taskMiddlewareConfig: AppConfig['taskMiddlewareConfig'] = {
   enableMiddleware: true,
   ignore: ['/'],
+}
+
+
+export enum OssClientKey {
+  ossmain = 'ossmain',
+}
+const clientConfig = {
+  accessKeyId: process.env.ALI_OSS_AID ?? '',
+  accessKeySecret: process.env.ALI_OSS_ASECRET ?? '',
+  endpoint: process.env.ALI_OSS_ENDPOINT ?? 'https://oss-cn-hangzhou.aliyuncs.com',
+  bucket: process.env.ALI_OSS_BUCKET ?? '',
+  cmd: 'ossutil',
+  debug: false,
+}
+export const aliOssConfig: Readonly<Config<OssClientKey>> = {
+  ossmain: clientConfig,
 }
 

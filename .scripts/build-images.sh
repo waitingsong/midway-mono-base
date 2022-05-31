@@ -26,7 +26,7 @@ fi
 
 source "$cwd/.scripts/util/login-docker-repo.sh"
 
-# BusyBox not support execdir 
+# BusyBox not support execdir
 #pkgs=`find packages -maxdepth 1 -mindepth 1 -execdir basename {} .json ;`
 pkgs=`find packages -maxdepth 1 -mindepth 1`
 globalIgnoreFile="$cwd/.dockerignore"

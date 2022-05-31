@@ -9,6 +9,7 @@ set -e
 
 localHeadSha=$( git rev-parse HEAD )
 localHeadShortSha=$( git rev-parse --short HEAD )
+currentRef=$( git branch --show-current )
 
 curDir=$(dirname $(readlink -f "$0"))
 appPath=$(dirname $curDir)
