@@ -6,7 +6,7 @@ import { initialMiddlewareConfig as initialJwtMiddlewareConfig } from '@mw-compo
 import {
   DbConfig,
   DbConfigs,
-  postProcessResponse,
+  postProcessResponseToCamel,
   wrapIdentifier,
 } from '@mw-components/kmore'
 import {
@@ -84,7 +84,7 @@ const master: DbConfig<DbModel> = {
       // propagateCreateError: false,
     },
     acquireConnectionTimeout: 50000,
-    postProcessResponse,
+    postProcessResponse: postProcessResponseToCamel,
     wrapIdentifier,
   },
   dict: dbDict,

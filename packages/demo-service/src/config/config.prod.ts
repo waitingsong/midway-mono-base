@@ -4,7 +4,7 @@ import { initialMiddlewareConfig as initialJwtMiddlewareConfig } from '@mw-compo
 import {
   DbConfig,
   DbConfigs,
-  postProcessResponse,
+  postProcessResponseToCamel,
   wrapIdentifier,
 } from '@mw-components/kmore'
 import {
@@ -17,7 +17,6 @@ import { DbReplicaKeys } from './config.types'
 import { dbDict, DbModel } from './db.model'
 
 import type { AppConfig } from '~/interface'
-
 
 
 export { svcHosts } from './config.local'
@@ -63,7 +62,7 @@ const master: DbConfig<DbModel> = {
       // propagateCreateError: false,
     },
     acquireConnectionTimeout: 30000,
-    postProcessResponse,
+    postProcessResponse: postProcessResponseToCamel,
     wrapIdentifier,
   },
   dict: dbDict,

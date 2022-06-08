@@ -13,13 +13,13 @@
     "@midwayjs/redis": "^3.3.0",
     "@midwayjs/swagger": "^3.3.0",
     "@midwayjs/validate": "^3.3.0",
-    "@mw-components/ali-oss": "^1.1.1",
-    "@mw-components/fetch": "^19.0.1",
-    "@mw-components/jaeger": "^11.0.8",
-    "@mw-components/jwt": "^11.0.10",
-    "@mw-components/kmore": "^26.0.0",
+    "@mw-components/ali-oss": "^2.2.2",
+    "@mw-components/fetch": "^19.0.2",
+    "@mw-components/jaeger": "^12.0.2",
+    "@mw-components/jwt": "^11.0.12",
+    "@mw-components/kmore": "^27.0.0",
     "@mw-components/koid": "^9.0.0",
-    "@mw-components/taskman": "^16.4.2",
+    "@mw-components/taskman": "^17.0.2",
     "@waiting/base64": "^4.2.9",
     "@waiting/shared-core": "^18.0.0",
     "@waiting/shared-types": "^18.0.0",
@@ -45,7 +45,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://"
+    "url": "https://"
   },
   "license": "",
   "scripts": {
