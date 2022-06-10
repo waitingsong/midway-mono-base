@@ -56,7 +56,7 @@
     "**/.vscode": true,
     "**/appveyor.yml": true,
     "**/jest.config.*": true,
-    "**/node_modules*": true,
+    "**/node_modules*": false,
     "**/run": true
   },
   "files.insertFinalNewline": true,
@@ -134,7 +134,11 @@
     "editor.defaultFormatter": "yzhang.markdown-all-in-one",
     "editor.formatOnPaste": true,
     "editor.formatOnSave": true,
-    "editor.quickSuggestions": true,
+    "editor.quickSuggestions": {
+      "comments": "on",
+      "strings": "on",
+      "other": "on"
+    },
     "files.trimTrailingWhitespace": false
   },
   "[typescript]": {
