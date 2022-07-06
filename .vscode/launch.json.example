@@ -5,17 +5,27 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Midway TEST",
+      "name": "Mocha Tests",
       "type": "node",
+      "args": [
+        "-u",
+        "bdd",
+        "--timeout",
+        "999999",
+        "--colors",
+        "--parallel=false"
+      ],
       "console": "internalConsole",
       "env": {
         "NODE_ENV": "unittest",
+        "TS_NODE_PROJECT": "test/tsconfig.json",
         "POSTGRES_HOST": "",
         "POSTGRES_PORT": "5432",
         "POSTGRES_DB": "",
         "POSTGRES_USER": "postgres",
-        "POSTGRES_PASSWORD": "",
+        "POSTGRES_PASSWORD": ""
       },
+      "internalConsoleOptions": "openOnFirstSessionStart",
       "request": "launch",
       "restart": false,
       "runtimeArgs": [
@@ -23,22 +33,15 @@
         "test:local",
         "--",
         "--runInBand",
-        "--preserve-symlinks",
-        "--inspect-brk"
+        "--preserve-symlinks"
       ],
       "runtimeExecutable": "npm",
       "skipFiles": [
         "**/node_modules/rxjs/**",
         "**/node_modules/mocha/**",
-        "**/async_hooks.js",
-        "**/*async_hook*.js",
-        "**/node_modules/@midwayjs/core/dist/service/middlewareService.js",
         "<node_internals>/**",
-        "<node_internals>/async_hooks",
-        "<node_internals>/internal/async_hooks.js",
         "<node_internals>/**/*.js"
       ],
-      "smartStep": false,
       "timeout": 30000
     },
     {
@@ -53,8 +56,8 @@
         "POSTGRES_HOST": "",
         "POSTGRES_PORT": "5432",
         "POSTGRES_DB": "",
-        "POSTGRES_USER": "",
-        "POSTGRES_PASSWORD": "",
+        "POSTGRES_USER": "postgres",
+        "POSTGRES_PASSWORD": ""
       },
       "request": "launch",
       "restart": true,
@@ -69,11 +72,9 @@
       "skipFiles": [
         "**/node_modules/**",
         "**/node_modules/rxjs/**",
-        "**/async_hooks.js",
         "<node_internals>/**",
         "<node_internals>/**/*.js"
       ],
-      "smartStep": true,
       "timeout": 30000
     }
   ]

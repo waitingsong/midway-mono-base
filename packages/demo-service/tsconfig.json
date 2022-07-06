@@ -5,7 +5,7 @@
     "declarationMap": false,
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
-    "exactOptionalPropertyTypes": true,
+    "exactOptionalPropertyTypes": false,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "incremental": true,
@@ -30,6 +30,7 @@
     "sourceMap": true,
     "strict": true,
     "strictPropertyInitialization": false,
+    "stripInternal": true,
     "target": "ES2020",
     "tsBuildInfoFile": ".vscode/.tsbuildinfo",
     "types" : ["mocha", "node"]

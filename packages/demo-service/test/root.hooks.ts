@@ -5,7 +5,7 @@ import { join } from 'node:path'
 import * as WEB from '@midwayjs/koa'
 import { createApp, close, createHttpRequest } from '@midwayjs/mock'
 import { JwtComponent } from '@mw-components/jwt'
-import { DbManager } from '@mw-components/kmore'
+import { DbSourceManager } from '@mw-components/kmore'
 import {
   TaskClientConfig,
   ConfigKey as TCK,
@@ -62,7 +62,7 @@ export const mochaHooks = async () => {
       const host = tmcConfig.host
       console.info('taskClientConfig.host', host)
 
-      const dbManager = await container.getAsync<DbManager>(DbManager)
+      const dbManager = await container.getAsync(DbSourceManager)
       assert(dbManager)
 
     },

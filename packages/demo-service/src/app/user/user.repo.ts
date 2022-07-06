@@ -1,4 +1,4 @@
-import { Provide } from '@midwayjs/decorator'
+import { Init, Provide } from '@midwayjs/decorator'
 
 import {
   GetUserDTO,
@@ -11,15 +11,22 @@ import { BaseRepo } from '~/interface'
 @Provide()
 export class UserRepo extends BaseRepo {
 
-  async getUserNameByUid(uid: GetUserDTO['uid']): Promise<UserDetailDTO['userName']> {
-    const { refTables } = this.db
+  ref_tb_user: typeof this.db.camelTables.ref_tb_user
 
-    const name = await refTables.ref_tb_user()
-      .select('user_name')
-      .where('uid', uid)
+  @Init()
+  async initTable(): Promise<void> {
+    await this.init()
+    this.ref_tb_user = this.db.camelTables.ref_tb_user
+  }
+
+  async getUserNameByUid(uid: GetUserDTO['uid']): Promise<UserDetailDTO['userName']> {
+    // const name = await this.db.camelTables.ref_tb_user()
+    const name = await this.ref_tb_user()
+      .select('userName')
+      .where({ uid })
       .then((rows) => {
         if (rows.length === 1) {
-          const row = rows[0] as unknown as UserDetailDTO | undefined
+          const [row] = rows
           return row ? row.userName : ''
         }
         else if (rows.length > 1) {

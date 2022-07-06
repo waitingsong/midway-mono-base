@@ -1,22 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { Init } from '@midwayjs/decorator'
-import {
-  DbManager,
-  Kmore,
-  Knex,
-  unsubscribeEventFuncOnResFinish,
-} from '@mw-components/kmore'
+import assert from 'node:assert'
+
+import { Init, Inject } from '@midwayjs/decorator'
+import { DbManager, Kmore, Knex } from '@mw-components/kmore'
 
 import { RootClass } from './root.class'
 
-import { DbReplica, DbReplicaKeys } from '~/config/config.types'
-import { DbModel } from '~/config/db.model'
-import { DbTransaction } from '~/interface'
+import { DbReplica } from '~/config/config.types'
+import type { DbModel } from '~/config/db.model'
+import type { Context, DbTransaction } from '~/interface'
 
 
 export class BaseRepo extends RootClass {
 
-  protected db: Kmore<DbModel>
+  @Inject() dbManager: DbManager<DbReplica, DbModel, Context>
+
+  protected db: Kmore<DbModel, Context>
 
   @Init()
   async init(): Promise<void> {
@@ -28,9 +27,9 @@ export class BaseRepo extends RootClass {
       this.ctx.dbTransactions = new Set()
     }
 
-    const container = this.app.getApplicationContext()
-    const dbManager = await container.getAsync<DbManager<DbReplicaKeys>>(DbManager)
-    this.db = await dbManager.create<DbModel>(this.ctx, DbReplica.master, unsubscribeEventFuncOnResFinish)
+    const db = this.dbManager.getDataSource(DbReplica.master)
+    assert(db)
+    this.db = db
   }
 
   /**

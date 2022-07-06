@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "declaration": true,
     "declarationMap": true,
     "emitDecoratorMetadata": true,
@@ -18,6 +19,10 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "outDir": "dist",
+    "paths": {
+      "~/*": ["./src/*"],
+      "@/*": ["./test/*"]
+    },
     "preserveConstEnums": true,
     "pretty": true,
     "resolveJsonModule": true,
@@ -25,9 +30,17 @@
     "sourceMap": true,
     "strict": true,
     "strictPropertyInitialization": false,
+    "stripInternal": true,
     "target": "ES2022",
     "tsBuildInfoFile": ".vscode/.tsbuildinfo",
     "types" : ["mocha", "node"]
+  },
+  "ts-node": {
+    "esm": true,
+    "experimentalResolver": true,
+    "experimentalSpecifierResolution": "node",
+    "preferTsExts": true,
+    "transpileOnly": false
   },
   "include": [
     "src/**/*.ts"

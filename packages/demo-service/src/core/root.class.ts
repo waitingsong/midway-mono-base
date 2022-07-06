@@ -12,6 +12,7 @@ import { Logger } from '@mw-components/jaeger'
 import { JwtComponent } from '@mw-components/jwt'
 import { KoidComponent } from '@mw-components/koid'
 import { ClientService } from '@mw-components/taskman'
+import { MyError } from '@waiting/shared-midway'
 import { OverwriteAnyToUnknown } from '@waiting/shared-types'
 
 import {
@@ -24,7 +25,6 @@ import {
   TracerTag,
 } from '../interface'
 import { JwtUser } from '../types'
-import MyError from '../util/my-error'
 
 
 export class RootClass {
@@ -243,8 +243,8 @@ export class RootClass {
     return this.ctx.jwtState.user
   }
 
-  throwError(message: string, status?: number, errors?: unknown[]): never {
-    throw new MyError(message, status, errors)
+  throwError(message: string, status?: number, error?: Error): never {
+    throw new MyError(message, status, error)
   }
 
   protected async commitTransaction(trx: DbTransaction): Promise<void> {

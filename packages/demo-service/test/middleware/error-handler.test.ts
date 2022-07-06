@@ -1,12 +1,12 @@
 import assert from 'node:assert/strict'
 import { relative } from 'node:path'
 
+import { MyError } from '@waiting/shared-midway'
 import { JsonResp } from '@waiting/shared-types'
 
 import { testConfig } from '@/root.config'
 import { Context } from '~/interface'
 import { ErrorHandlerMiddleware } from '~/middleware/error-handler.middleware'
-import MyError from '~/util/my-error'
 
 
 const filename = relative(process.cwd(), __filename).replace(/\\/ug, '/')

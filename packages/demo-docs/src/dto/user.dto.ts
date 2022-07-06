@@ -1,8 +1,7 @@
 import { Rule } from '@midwayjs/validate'
 
-import { TbMemberDO } from '../do/database.do'
-import { userValidSchemas } from '../validation-schema/index.schema'
-
+import { TbMemberDO } from '../do/database.do.js'
+import { userValidSchemas } from '../validation-schema/index.schema.js'
 
 
 /**

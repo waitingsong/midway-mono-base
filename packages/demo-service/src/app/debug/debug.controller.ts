@@ -46,10 +46,10 @@ export class DebugController extends BaseController {
       void 0
     }
     else if (id === '1') {
-      body.path = this.svc.heapdump()
+      body.path = await this.svc.heapdump()
     }
     else if (pid.toString() === id) {
-      body.path = this.svc.heapdump()
+      body.path = await this.svc.heapdump()
     }
     else {
       void 0

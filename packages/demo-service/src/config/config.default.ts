@@ -1,7 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { MidwayAppInfo, MidwayConfig } from '@midwayjs/core'
-
-import { retrieveIp } from '../util/common'
+import { retrieveFirstIp } from '@waiting/shared-core'
 
 import type { NpmPkg } from '~/interface'
 
@@ -26,7 +25,7 @@ export default (appInfo: MidwayAppInfo): MidwayConfig => {
     epoch,
   }
 
-  const ip = retrieveIp()
+  const ip = retrieveFirstIp()
   const nameNorm = (appInfo.pkg as NpmPkg).name.replace(/@/ug, '').replace(/\//ug, '-')
   config.prometheus = {
     labels: {

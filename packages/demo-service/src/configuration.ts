@@ -22,11 +22,12 @@ import * as jaeger from '@mw-components/jaeger'
 import * as jwt from '@mw-components/jwt'
 import * as db from '@mw-components/kmore'
 // eslint-disable-next-line no-duplicate-imports
-import { DbConfigs, DbManager } from '@mw-components/kmore'
+import { DataSource, DbSourceManager } from '@mw-components/kmore'
 import * as koid from '@mw-components/koid'
 import * as tm from '@mw-components/taskman'
 
-import { DbReplicaKeys } from './config/config.types'
+import { DbReplica, DbReplicaKeys } from './config/config.types'
+import { DbModel } from './config/db.model'
 import { DbTrxMiddleware } from './middleware/db-trx.middleware'
 import { ErrorHandlerMiddleware } from './middleware/error-handler.middleware'
 import { RequestIdMiddleware } from './middleware/request-id.middleware'
@@ -34,10 +35,10 @@ import { ResponseHeadersMiddleware } from './middleware/response-headers.middlew
 import { ResponseMimeMiddleware } from './middleware/response-mime.middleware'
 // import { customLogger } from './util/custom-logger'
 
-import type { Application, NpmPkg } from '~/interface'
+import type { Application, Context, NpmPkg } from '~/interface'
 
 
-process.env.UV_THREADPOOL_SIZE = '96'
+process.env['UV_THREADPOOL_SIZE'] = '96'
 
 @Configuration({
   imports: [
@@ -62,9 +63,9 @@ export class ContainerConfiguration implements ILifeCycle {
 
   @Inject() readonly informationService: MidwayInformationService
 
-  @Inject() readonly dbManager: DbManager<DbReplicaKeys> | undefined
+  @Inject() readonly dbManager: DbSourceManager<DbReplica, DbModel, Context>
 
-  @Config() readonly dbConfigs: DbConfigs<DbReplicaKeys> | undefined
+  @Config() readonly dbConfigs: DataSource<DbReplicaKeys> | undefined
 
 
   // 启动前处理
@@ -111,13 +112,14 @@ export class ContainerConfiguration implements ILifeCycle {
   }
 
   async initDbs(): Promise<void> {
-    const { dbManager } = this
+    return
+    // const { dbManager } = this
 
-    if (dbManager && this.dbConfigs && Object.keys(this.dbConfigs).length) {
-      const pms = Object.entries(this.dbConfigs)
-        .map(([dbId, dbConfig]) => dbManager.connect<unknown>(dbId, dbConfig))
-      await Promise.all(pms)
-    }
+    // if (dbManager && this.dbConfigs && Object.keys(this.dbConfigs).length) {
+    //   const pms = Object.entries(this.dbConfigs)
+    //     .map(([dbId, dbConfig]) => dbManager.connect<unknown>(dbId, dbConfig))
+    //   await Promise.all(pms)
+    // }
   }
 }
 

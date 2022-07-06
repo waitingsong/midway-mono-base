@@ -1,8 +1,8 @@
 import { Provide } from '@midwayjs/decorator'
+import { retrieveFirstIp } from '@waiting/shared-core'
 
 import { BaseService } from '~/interface'
 import { AppInfomation } from '~/types'
-import { retrieveIp } from '~/util/common'
 
 
 @Provide()
@@ -10,7 +10,7 @@ export class HomeService extends BaseService {
 
   appInfo(): AppInfomation {
     const { reqId } = this.ctx
-    const ip = retrieveIp()
+    const ip = retrieveFirstIp()
     const ret: AppInfomation = {
       pkgName: this.pkg.name,
       pkgVer: this.pkg.version ?? 'n/a',

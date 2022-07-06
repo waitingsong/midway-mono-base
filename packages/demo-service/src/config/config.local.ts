@@ -4,24 +4,23 @@ import { initialConfig as initFetchConfig } from '@mw-components/fetch'
 import { initialConfig as initTracerConfig, TracerTag } from '@mw-components/jaeger'
 import { initialMiddlewareConfig as initialJwtMiddlewareConfig } from '@mw-components/jwt'
 import {
+  DataSourceConfig,
   DbConfig,
-  DbConfigs,
-  postProcessResponseToCamel,
-  wrapIdentifier,
 } from '@mw-components/kmore'
 import {
-  initDbConfig,
+  initDbConfig as taskInitDbConfig,
   ClientURL,
+  DbReplica as TaskDbReplica,
   ServerURL,
 } from '@mw-components/taskman'
 
 import {
-  DbReplicaKeys,
+  DbReplica,
   SvcHosts,
 } from './config.types'
 import { dbDict, DbModel } from './db.model'
 
-import { HeadersKey, AppConfig } from '~/interface'
+import { HeadersKey, AppConfig, Context } from '~/interface'
 
 
 export const jwtConfig: AppConfig['jwtConfig'] = {
@@ -66,34 +65,33 @@ fetchConfig.traceLoggingRespHeaders?.push(TracerTag.svcName)
 fetchConfig.traceLoggingRespHeaders?.push(TracerTag.svcVer)
 
 
-const master: DbConfig<DbModel> = {
-  autoConnect: true,
+const master: DbConfig<DbModel, Context> = {
   config: {
     client: 'pg',
     connection: {
-      host: process.env.POSTGRES_HOST ? process.env.POSTGRES_HOST : 'localhost',
-      port: process.env.POSTGRES_PORT ? +process.env.POSTGRES_PORT : 5432,
-      database: process.env.POSTGRES_DB ? process.env.POSTGRES_DB : 'db_ci_mw',
-      user: process.env.POSTGRES_USER ? process.env.POSTGRES_USER : 'postgres',
-      password: process.env.POSTGRES_PASSWORD ? process.env.POSTGRES_PASSWORD : 'postgres',
+      host: process.env['POSTGRES_HOST'] ? process.env['POSTGRES_HOST'] : 'localhost',
+      port: process.env['POSTGRES_PORT'] ? +process.env['POSTGRES_PORT'] : 5432,
+      database: process.env['POSTGRES_DB'] ? process.env['POSTGRES_DB'] : 'db_ci_mw',
+      user: process.env['POSTGRES_USER'] ? process.env['POSTGRES_USER'] : 'postgres',
+      password: process.env['POSTGRES_PASSWORD'] ? process.env['POSTGRES_PASSWORD'] : 'postgres',
     },
     pool: {
       min: 0,
-      max: 20,
+      max: 30,
       /** @link https://stackoverflow.com/a/67621567 */
       // propagateCreateError: false,
     },
     acquireConnectionTimeout: 50000,
-    postProcessResponse: postProcessResponseToCamel,
-    wrapIdentifier,
   },
   dict: dbDict,
   sampleThrottleMs: 10,
   enableTracing: true,
   tracingResponse: true,
 }
-export const dbConfigs: DbConfigs<DbReplicaKeys> = {
-  master,
+export const kmoreDataSourceConfig: DataSourceConfig<DbReplica> = {
+  dataSource: {
+    master,
+  },
 }
 
 
@@ -105,7 +103,7 @@ export const tracerConfig: AppConfig['tracerConfig'] = {
       param: 1,
     },
     reporter: {
-      agentHost: process.env.JAEGER_AGENT_HOST ?? '192.168.1.248',
+      agentHost: process.env['JAEGER_AGENT_HOST'] ?? '192.168.1.248',
     },
   },
 }
@@ -115,21 +113,29 @@ tracerConfig.loggingReqHeaders?.push(TracerTag.svcVer)
 
 export const taskServerConfig: AppConfig['taskServerConfig'] = {
   expInterval: '30min',
-  dbConfigs: {
-    ...initDbConfig,
-    connection: {
-      host: process.env.POSTGRES_HOST ? process.env.POSTGRES_HOST : 'localhost',
-      port: process.env.POSTGRES_PORT ? +process.env.POSTGRES_PORT : 5432,
-      database: process.env.POSTGRES_DB ? process.env.POSTGRES_DB : 'db_ci_mw',
-      user: process.env.POSTGRES_USER ? process.env.POSTGRES_USER : 'postgres',
-      password: process.env.POSTGRES_PASSWORD ? process.env.POSTGRES_PASSWORD : 'postgres',
+  dataSource: {
+    [TaskDbReplica.taskMaster]: {
+      ...taskInitDbConfig,
+      config: {
+        connection: {
+          host: process.env['POSTGRES_HOST'] ? process.env['POSTGRES_HOST'] : 'localhost',
+          port: process.env['POSTGRES_PORT'] ? +process.env['POSTGRES_PORT'] : 5432,
+          database: process.env['POSTGRES_DB'] ? process.env['POSTGRES_DB'] : 'db_ci_mw',
+          user: process.env['POSTGRES_USER'] ? process.env['POSTGRES_USER'] : 'postgres',
+          password: process.env['POSTGRES_PASSWORD'] ? process.env['POSTGRES_PASSWORD'] : 'postgres',
+        },
+      },
+      enableTracing: true,
+      tracingResponse: true,
+      sampleThrottleMs: 1000,
     },
-    tracingResponse: true,
   },
+
+
 }
 
 export const taskClientConfig: AppConfig['taskClientConfig'] = {
-  host: process.env.TASK_AGENT_HOST ? process.env.TASK_AGENT_HOST : 'http://127.0.0.1:7001',
+  host: process.env['TASK_AGENT_HOST'] ? process.env['TASK_AGENT_HOST'] : 'http://127.0.0.1:7001',
 }
 
 export const taskMiddlewareConfig: AppConfig['taskMiddlewareConfig'] = {
@@ -156,10 +162,10 @@ export enum OssClientKey {
   ossmain = 'ossmain',
 }
 const clientConfig = {
-  accessKeyId: process.env.ALI_OSS_AID ?? '',
-  accessKeySecret: process.env.ALI_OSS_ASECRET ?? '',
-  endpoint: process.env.ALI_OSS_ENDPOINT ?? 'https://oss-cn-hangzhou.aliyuncs.com',
-  bucket: process.env.ALI_OSS_BUCKET ?? '',
+  accessKeyId: process.env['ALI_OSS_AID'] ?? '',
+  accessKeySecret: process.env['ALI_OSS_ASECRET'] ?? '',
+  endpoint: process.env['ALI_OSS_ENDPOINT'] ?? 'https://oss-cn-hangzhou.aliyuncs.com',
+  bucket: process.env['ALI_OSS_BUCKET'] ?? '',
   cmd: 'ossutil',
   debug: false,
 }

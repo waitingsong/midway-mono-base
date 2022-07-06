@@ -1,6 +1,6 @@
 import { Rule } from '@midwayjs/validate'
 
-import { userValidSchemas } from '../validation-schema/index.schema'
+import { userValidSchemas } from '../validation-schema/index.schema.js'
 
 
 export class LoginDTO {

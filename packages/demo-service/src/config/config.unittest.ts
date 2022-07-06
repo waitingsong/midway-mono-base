@@ -2,17 +2,15 @@
 import { initialConfig as initTracerConfig, TracerTag } from '@mw-components/jaeger'
 import { initialMiddlewareConfig as initialJwtMiddlewareConfig } from '@mw-components/jwt'
 import {
+  DataSourceConfig,
   DbConfig,
-  DbConfigs,
-  postProcessResponseToCamel,
-  wrapIdentifier,
 } from '@mw-components/kmore'
 import { ClientURL, ServerURL } from '@mw-components/taskman'
 
-import { DbReplicaKeys } from './config.types'
+import { DbReplica } from './config.types'
 import { DbModel, dbDict } from './db.model'
 
-import { AppConfig } from '~/interface'
+import { AppConfig, Context } from '~/interface'
 
 
 export const security = {
@@ -63,33 +61,32 @@ jwtMiddlewareConfig.ignore = jwtMiddlewareConfig.ignore
   : jwtIgnoreArr
 
 
-const master: DbConfig<DbModel> = {
-  autoConnect: true,
+const master: DbConfig<DbModel, Context> = {
   config: {
     client: 'pg',
     connection: {
-      host: process.env.POSTGRES_HOST ? process.env.POSTGRES_HOST : 'localhost',
-      port: process.env.POSTGRES_PORT ? +process.env.POSTGRES_PORT : 5432,
-      database: process.env.POSTGRES_DB ? process.env.POSTGRES_DB : 'db_ci_mw',
-      user: process.env.POSTGRES_USER ? process.env.POSTGRES_USER : 'postgres',
-      password: process.env.POSTGRES_PASSWORD ? process.env.POSTGRES_PASSWORD : 'postgres',
+      host: process.env['POSTGRES_HOST'] ? process.env['POSTGRES_HOST'] : 'localhost',
+      port: process.env['POSTGRES_PORT'] ? +process.env['POSTGRES_PORT'] : 5432,
+      database: process.env['POSTGRES_DB'] ? process.env['POSTGRES_DB'] : 'db_ci_mw',
+      user: process.env['POSTGRES_USER'] ? process.env['POSTGRES_USER'] : 'postgres',
+      password: process.env['POSTGRES_PASSWORD'] ? process.env['POSTGRES_PASSWORD'] : 'postgres',
     },
     pool: {
-      min: 0,
-      max: 20,
+      min: 2,
+      max: 30,
       // propagateCreateError: false,
     },
     acquireConnectionTimeout: 50000,
-    postProcessResponse: postProcessResponseToCamel,
-    wrapIdentifier,
   },
   dict: dbDict,
   sampleThrottleMs: 300,
   enableTracing: true,
   tracingResponse: true,
 }
-export const dbConfigs: DbConfigs<DbReplicaKeys> = {
-  master,
+export const kmoreDataSourceConfig: DataSourceConfig<DbReplica> = {
+  dataSource: {
+    master,
+  },
 }
 
 
@@ -101,7 +98,7 @@ export const tracerConfig: AppConfig['tracerConfig'] = {
       param: 1,
     },
     reporter: {
-      agentHost: process.env.JAEGER_AGENT_HOST ?? '192.168.1.248',
+      agentHost: process.env['JAEGER_AGENT_HOST'] ?? '192.168.1.248',
     },
   },
 }

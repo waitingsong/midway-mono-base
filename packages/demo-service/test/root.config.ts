@@ -1,4 +1,4 @@
-import { IncomingHttpHeaders } from 'http'
+import { IncomingHttpHeaders } from 'node:http'
 
 import { JwtComponent } from '@mw-components/jwt'
 import supertest, { SuperTest } from 'supertest'
@@ -10,6 +10,7 @@ import {
 } from '~/interface'
 
 
+const CI = !! process.env.CI
 export type TestResponse = supertest.Response
 export interface TestRespBody {
   header: IncomingHttpHeaders
@@ -17,10 +18,11 @@ export interface TestRespBody {
 }
 
 export interface TestConfig {
+  CI: boolean
   app: Application
   container: IMidwayContainer
-  httpRequest: SuperTest<supertest.Test>
   host: string
+  httpRequest: SuperTest<supertest.Test>
   jwt: JwtComponent
   pkg: NpmPkg
   token: string
@@ -31,6 +33,7 @@ eyJhbGciOiJIUzI1NiJ9.eyJ
 `
 
 export const testConfig = {
+  CI,
   host: '',
   token: jwt.trim().replace(/\n/ug, ' '),
 } as TestConfig

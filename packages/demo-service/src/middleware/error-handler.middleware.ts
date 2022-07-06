@@ -1,4 +1,5 @@
 import { Middleware } from '@midwayjs/decorator'
+import { MyError } from '@waiting/shared-midway'
 
 import {
   Context,
@@ -7,7 +8,6 @@ import {
   JsonResp,
 } from '~/interface'
 import { ErrorCode } from '~/types'
-import MyError from '~/util/my-error'
 
 
 @Middleware()
@@ -96,7 +96,8 @@ async function middleware(
     }
 
     if (status === 422) {
-      body.data = myerr.errors ?? myerr.details // 兼容 midway 参数校验
+      // @ts-ignore
+      body.data = myerr.cause ?? myerr.details // 兼容 midway 参数校验
     }
 
     if (body.code === 500

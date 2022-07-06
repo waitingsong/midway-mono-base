@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { MidwayConfig, PowerPartial } from '@midwayjs/core'
+import { MidwayConfig } from '@midwayjs/core'
 import { PrometheusConfig } from '@midwayjs/prometheus'
 import { JwtState } from '@mw-components/jwt'
 import type { Knex } from '@mw-components/kmore'
@@ -33,7 +33,7 @@ export {
   NextFunction,
 } from '@midwayjs/core'
 
-export type AppConfig = PowerPartial<MidwayConfig>
+export type AppConfig = Partial<MidwayConfig>
 export {
   Application, Context,
 } from '@midwayjs/koa'

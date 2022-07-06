@@ -6,10 +6,11 @@ import { genISO8601String } from '~/util/ext'
 
 
 class CustomContextLogger extends MidwayContextLogger<Context> {
+  // @ts-ignore
   formatContextLabel() {
     const { ctx } = this
     // format: '[$userId/$ip/$traceId/$use_ms $method $url]'
-    const userId = (ctx.userId as string) || '-'
+    const userId = (ctx['userId'] as string) || '-'
     const traceId = ctx.reqId || '-'
     const use = Date.now() - ctx.startTime
     const ret = userId

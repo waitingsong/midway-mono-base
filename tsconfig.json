@@ -5,6 +5,7 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "incremental": true,
+    "module": "ESNext",
     "module": "commonjs",
     "newLine": "lf",
     "noFallthroughCasesInSwitch": true,
