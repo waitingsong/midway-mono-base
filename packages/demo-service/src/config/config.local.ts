@@ -1,8 +1,6 @@
 // config for `npm run test` in vscode F5
 import { Config } from '@mw-components/ali-oss'
-import { initialConfig as initFetchConfig } from '@mw-components/fetch'
-import { initialConfig as initTracerConfig, TracerTag } from '@mw-components/jaeger'
-import { initialMiddlewareConfig as initialJwtMiddlewareConfig } from '@mw-components/jwt'
+import { initPathArray } from '@mw-components/jwt'
 import {
   DataSourceConfig,
   DbConfig,
@@ -20,21 +18,16 @@ import {
 } from './config.types'
 import { dbDict, DbModel } from './db.model'
 
-import { HeadersKey, AppConfig, Context } from '~/interface'
+import { AppConfig, Context } from '~/interface'
 
 
 export const jwtConfig: AppConfig['jwtConfig'] = {
   secret: '123456abc', // 默认密钥，生产环境一定要更改!
 }
-export const jwtMiddlewareConfig: AppConfig['jwtMiddlewareConfig'] = {
-  ...initialJwtMiddlewareConfig,
-  enableMiddleware: true,
-}
 const jwtIgnoreArr = [
-  '/',
+  ...initPathArray,
   '/hello',
   '/ip',
-  '/ping',
   '/test/err',
   '/test/array',
   '/test/blank',
@@ -48,21 +41,10 @@ const jwtIgnoreArr = [
   RegExp(`${ClientURL.base}/.*`, 'u'),
   RegExp(`${ServerURL.base}/.*`, 'u'),
 ]
-jwtMiddlewareConfig.ignore = jwtMiddlewareConfig.ignore
-  ? jwtMiddlewareConfig.ignore.concat(jwtIgnoreArr)
-  : jwtIgnoreArr
-
-
-export const fetchConfig: AppConfig['fetchConfig'] = {
-  ...initFetchConfig,
+export const jwtMiddlewareConfig: AppConfig['jwtMiddlewareConfig'] = {
+  enableMiddleware: true,
+  ignore: jwtIgnoreArr,
 }
-fetchConfig.traceLoggingReqHeaders?.push(HeadersKey.traceId)
-fetchConfig.traceLoggingReqHeaders?.push(TracerTag.svcName)
-fetchConfig.traceLoggingReqHeaders?.push(TracerTag.svcVer)
-
-fetchConfig.traceLoggingRespHeaders?.push(HeadersKey.traceId)
-fetchConfig.traceLoggingRespHeaders?.push(TracerTag.svcName)
-fetchConfig.traceLoggingRespHeaders?.push(TracerTag.svcVer)
 
 
 const master: DbConfig<DbModel, Context> = {
@@ -96,7 +78,6 @@ export const kmoreDataSourceConfig: DataSourceConfig<DbReplica> = {
 
 
 export const tracerConfig: AppConfig['tracerConfig'] = {
-  ...initTracerConfig,
   tracingConfig: {
     sampler: {
       type: 'probabilistic',
@@ -107,8 +88,6 @@ export const tracerConfig: AppConfig['tracerConfig'] = {
     },
   },
 }
-tracerConfig.loggingReqHeaders?.push(TracerTag.svcName)
-tracerConfig.loggingReqHeaders?.push(TracerTag.svcVer)
 
 
 export const taskServerConfig: AppConfig['taskServerConfig'] = {

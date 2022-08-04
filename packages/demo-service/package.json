@@ -14,12 +14,12 @@
     "@midwayjs/swagger": "^3.4.0",
     "@midwayjs/validate": "^3.4.0",
     "@mw-components/ali-oss": "^2.3.4",
-    "@mw-components/fetch": "^20.0.0",
-    "@mw-components/jaeger": "^12.0.7",
-    "@mw-components/jwt": "^11.0.16",
-    "@mw-components/kmore": "^33.0.1",
+    "@mw-components/fetch": "^20.1.0",
+    "@mw-components/jaeger": "^13.1.0",
+    "@mw-components/jwt": "^12.0.0",
+    "@mw-components/kmore": "^33.0.2",
     "@mw-components/koid": "^9.1.1",
-    "@mw-components/taskman": "^21.0.0",
+    "@mw-components/taskman": "^22.0.0",
     "@waiting/base64": "^4.2.9",
     "@waiting/shared-core": "^20.3.0",
     "@waiting/shared-midway": "^20.3.0",
@@ -80,7 +80,7 @@
   ],
   "midway-cli": {
     "experimentalFeatures": {
-      "ignoreTsError": true
+      "ignoreTsError": false
     }
   },
   "midway-bin-build": {

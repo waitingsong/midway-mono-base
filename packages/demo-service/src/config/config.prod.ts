@@ -1,6 +1,4 @@
 import { Config } from '@mw-components/ali-oss'
-import { initialConfig as initTracerConfig, TracerTag } from '@mw-components/jaeger'
-import { initialMiddlewareConfig as initialJwtMiddlewareConfig } from '@mw-components/jwt'
 import {
   DataSourceConfig,
   DbConfig,
@@ -23,10 +21,6 @@ export { svcHosts } from './config.local'
 export const jwtConfig: AppConfig['jwtConfig'] = {
   secret: process.env['JWT_SECRET'],
 }
-export const jwtMiddlewareConfig: AppConfig['jwtMiddlewareConfig'] = {
-  ...initialJwtMiddlewareConfig,
-  enableMiddleware: true,
-}
 const jwtIgnoreArr = [
   '/',
   '/hello',
@@ -34,13 +28,13 @@ const jwtIgnoreArr = [
   '/ping',
   '/test/sign',
   '/test/err',
-  // /debug\/dump\/.*/u,
   RegExp(`${ClientURL.base}/.*`, 'u'),
   RegExp(`${ServerURL.base}/.*`, 'u'),
 ]
-jwtMiddlewareConfig.ignore = jwtMiddlewareConfig.ignore
-  ? jwtMiddlewareConfig.ignore.concat(jwtIgnoreArr)
-  : jwtIgnoreArr
+export const jwtMiddlewareConfig: AppConfig['jwtMiddlewareConfig'] = {
+  enableMiddleware: true,
+  ignore: jwtIgnoreArr,
+}
 
 
 const master: DbConfig<DbModel, Context> = {
@@ -73,27 +67,15 @@ export const kmoreDataSourceConfig: DataSourceConfig<DbReplica> = {
 
 
 export const tracerConfig: AppConfig['tracerConfig'] = {
-  ...initTracerConfig,
   tracingConfig: {
     sampler: {
       type: 'probabilistic',
-      param: process.env['JAEGER_SAMPLE_RATIO'] ? +process.env['JAEGER_SAMPLE_RATIO'] : 0.001,
+      param: process.env['JAEGER_SAMPLE_RATIO'] ? +process.env['JAEGER_SAMPLE_RATIO'] : 0.1,
     },
     reporter: {
       agentHost: process.env['JAEGER_AGENT_HOST'] ?? '127.0.0.1',
     },
   },
-}
-tracerConfig.loggingReqHeaders?.push(TracerTag.svcName)
-tracerConfig.loggingReqHeaders?.push(TracerTag.svcVer)
-
-export const tracerMiddlewareConfig: AppConfig['tracerMiddlewareConfig'] = {
-  ignore: [
-    '/favicon.ico',
-    '/favicon.png',
-    '/ping',
-    '/metrics',
-  ],
 }
 
 

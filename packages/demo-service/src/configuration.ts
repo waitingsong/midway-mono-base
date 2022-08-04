@@ -92,9 +92,6 @@ export class ContainerConfiguration implements ILifeCycle {
     const mwNames = this.app.getMiddleware().getNames()
     console.info({ mwNames })
 
-    // 初始化数据库连接
-    await this.initDbs()
-
     const pkg = this.informationService.getPkg() as NpmPkg
     assert(pkg, 'retrieve package.json failed')
     this.app.addConfigObject({ pkg })
@@ -111,15 +108,5 @@ export class ContainerConfiguration implements ILifeCycle {
     return
   }
 
-  async initDbs(): Promise<void> {
-    return
-    // const { dbManager } = this
-
-    // if (dbManager && this.dbConfigs && Object.keys(this.dbConfigs).length) {
-    //   const pms = Object.entries(this.dbConfigs)
-    //     .map(([dbId, dbConfig]) => dbManager.connect<unknown>(dbId, dbConfig))
-    //   await Promise.all(pms)
-    // }
-  }
 }
 

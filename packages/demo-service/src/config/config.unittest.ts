@@ -1,6 +1,5 @@
 // config for `npm run cov|ci`
-import { initialConfig as initTracerConfig, TracerTag } from '@mw-components/jaeger'
-import { initialMiddlewareConfig as initialJwtMiddlewareConfig } from '@mw-components/jwt'
+import { initPathArray } from '@mw-components/jwt'
 import {
   DataSourceConfig,
   DbConfig,
@@ -35,15 +34,10 @@ export const logger = {
 export const jwtConfig: AppConfig['jwtConfig'] = {
   secret: '123456abc', // 默认密钥，生产环境一定要更改!
 }
-export const jwtMiddlewareConfig: AppConfig['jwtMiddlewareConfig'] = {
-  ...initialJwtMiddlewareConfig,
-  enableMiddleware: true,
-}
 const jwtIgnoreArr = [
-  '/',
+  ...initPathArray,
   '/hello',
   '/ip',
-  '/ping',
   '/taskman/hello',
   '/test/err',
   '/test/array',
@@ -56,9 +50,10 @@ const jwtIgnoreArr = [
   RegExp(`${ClientURL.base}/.*`, 'u'),
   RegExp(`${ServerURL.base}/.*`, 'u'),
 ]
-jwtMiddlewareConfig.ignore = jwtMiddlewareConfig.ignore
-  ? jwtMiddlewareConfig.ignore.concat(jwtIgnoreArr)
-  : jwtIgnoreArr
+export const jwtMiddlewareConfig: AppConfig['jwtMiddlewareConfig'] = {
+  enableMiddleware: true,
+  ignore: jwtIgnoreArr,
+}
 
 
 const master: DbConfig<DbModel, Context> = {
@@ -91,7 +86,6 @@ export const kmoreDataSourceConfig: DataSourceConfig<DbReplica> = {
 
 
 export const tracerConfig: AppConfig['tracerConfig'] = {
-  ...initTracerConfig,
   tracingConfig: {
     sampler: {
       type: 'const',
@@ -101,18 +95,5 @@ export const tracerConfig: AppConfig['tracerConfig'] = {
       agentHost: process.env['JAEGER_AGENT_HOST'] ?? '192.168.1.248',
     },
   },
-}
-tracerConfig.loggingReqHeaders?.push(TracerTag.svcName)
-tracerConfig.loggingReqHeaders?.push(TracerTag.svcVer)
-
-export const tracerMiddlewareConfig: AppConfig['tracerMiddlewareConfig'] = {
-  ignore: [
-    '/favicon.ico',
-    '/favicon.png',
-    '/ping',
-    '/metrics',
-    '/untracedPath',
-    /\/unitTest[\d.]+/u,
-  ],
 }
 
