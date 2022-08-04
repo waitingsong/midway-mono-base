@@ -216,11 +216,14 @@ export class RootClass {
 
   /**
    * 根据输入 http headers 生成 Headers,
-   * @returns Headers 默认不包括 'host' 字段
+   * @returns Headers 默认不包括以下字段
+   *   - host: 当前服务器地址
+   *   - connection
+   *   - content-length
    */
   genFetchHeaders(
     headers?: HeadersInit | IncomingHttpHeaders | undefined,
-    excludes: string[] = ['host'],
+    excludes: string[] = ['host', 'connection', 'content-length'],
   ): Headers {
 
     const ret = new Node_Headers(this.initFetchOptions.headers)
