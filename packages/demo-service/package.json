@@ -6,20 +6,20 @@
   "bin": {},
   "dependencies": {
     "@scope/docs": "^0.0.0",
-    "@midwayjs/bootstrap": "^3.4.0",
-    "@midwayjs/decorator": "^3.4.0",
-    "@midwayjs/koa": "^3.4.0",
-    "@midwayjs/prometheus": "^3.4.0",
-    "@midwayjs/redis": "^3.4.0",
-    "@midwayjs/swagger": "^3.4.0",
-    "@midwayjs/validate": "^3.4.0",
-    "@mw-components/ali-oss": "^2.3.4",
+    "@midwayjs/bootstrap": "^3.4.7",
+    "@midwayjs/decorator": "^3.4.4",
+    "@midwayjs/koa": "^3.4.7",
+    "@midwayjs/prometheus": "^3.4.7",
+    "@midwayjs/redis": "^3.4.7",
+    "@midwayjs/swagger": "^3.4.7",
+    "@midwayjs/validate": "^3.4.7",
+    "@mw-components/ali-oss": "^2.3.6",
     "@mw-components/fetch": "^20.1.1",
-    "@mw-components/jaeger": "^13.1.1",
-    "@mw-components/jwt": "^12.0.0",
-    "@mw-components/kmore": "^33.0.2",
+    "@mw-components/jaeger": "^13.1.2",
+    "@mw-components/jwt": "^12.0.1",
+    "@mw-components/kmore": "^33.1.0",
     "@mw-components/koid": "^9.1.1",
-    "@mw-components/taskman": "^22.0.2",
+    "@mw-components/taskman": "^22.0.3",
     "@waiting/base64": "^4.2.9",
     "@waiting/shared-core": "^20.3.0",
     "@waiting/shared-midway": "^20.3.0",
@@ -80,7 +80,7 @@
   ],
   "midway-cli": {
     "experimentalFeatures": {
-      "ignoreTsError": false
+      "ignoreTsError": true
     }
   },
   "midway-bin-build": {

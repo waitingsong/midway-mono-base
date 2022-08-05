@@ -83,6 +83,7 @@ jobs:
           # .github/workflows/fix.sh
           npm i --no-audit -g c8 lerna rollup zx
           npm run bootstrap
+          .scripts/clean_pkgs.mjs
           npm list
         env:
           CI: true
