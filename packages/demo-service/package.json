@@ -48,7 +48,7 @@
   },
   "license": "",
   "scripts": {
-    "build": "midway-bin build && npm run db:gen-cjs",
+    "build": "midway-bin build && npm run db:gen-cjs && tsc-alias",
     "clean": "npm run clean:cache & npm run clean:mw & rm -rf dist/*",
     "clean:cache": "rm .eslintcache -f",
     "clean:lock": "rm package-lock.json -f",
