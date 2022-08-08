@@ -2,7 +2,6 @@
 import { MidwayConfig } from '@midwayjs/core'
 import { PrometheusConfig } from '@midwayjs/prometheus'
 import { JwtState } from '@mw-components/jwt'
-import type { Knex } from '@mw-components/kmore'
 
 import { JwtUser } from './types'
 
@@ -22,7 +21,6 @@ declare module '@midwayjs/core/dist/interface' {
     reqId: string
     _internalError?: Error
     jwtState: JwtState<JwtUser>
-    dbTransactions: Set<DbTransaction>
   }
 }
 
@@ -42,8 +40,6 @@ export {
 export { BaseController } from './core/base.controller'
 export { BaseService } from './core/base.service'
 export { BaseRepo } from './core/base.repo'
-
-export type DbTransaction = Knex.Transaction
 
 export {
   TracerTag, TracerLog, HeadersKey,

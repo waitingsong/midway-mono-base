@@ -18,7 +18,6 @@ import { OverwriteAnyToUnknown } from '@waiting/shared-types'
 import {
   Application,
   Context,
-  DbTransaction,
   FetchOptions,
   JsonResp,
   NpmPkg,
@@ -248,32 +247,6 @@ export class RootClass {
 
   throwError(message: string, status?: number, error?: Error): never {
     throw new MyError(message, status, error)
-  }
-
-  protected async commitTransaction(trx: DbTransaction): Promise<void> {
-    try {
-      if (trx.isTransaction && ! trx.isCompleted()) {
-        await trx.commit()
-      }
-    }
-    finally {
-      this._removeTransaction(trx)
-    }
-  }
-
-  protected async rollbackTransaction(trx: DbTransaction): Promise<void> {
-    try {
-      if (trx.isTransaction && ! trx.isCompleted()) {
-        await trx.rollback()
-      }
-    }
-    finally {
-      this._removeTransaction(trx)
-    }
-  }
-
-  protected _removeTransaction(trx: DbTransaction): void {
-    this.ctx.dbTransactions.delete(trx)
   }
 
 }

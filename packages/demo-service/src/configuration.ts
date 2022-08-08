@@ -28,7 +28,6 @@ import * as tm from '@mw-components/taskman'
 
 import { DbReplica, DbReplicaKeys } from './config/config.types'
 import { DbModel } from './config/db.model'
-import { DbTrxMiddleware } from './middleware/db-trx.middleware'
 import { ErrorHandlerMiddleware } from './middleware/error-handler.middleware'
 import { RequestIdMiddleware } from './middleware/request-id.middleware'
 import { ResponseHeadersMiddleware } from './middleware/response-headers.middleware'
@@ -85,7 +84,6 @@ export class ContainerConfiguration implements ILifeCycle {
     const mws = [
       ResponseMimeMiddleware,
       ResponseHeadersMiddleware,
-      DbTrxMiddleware, // 全局db处理中间件，请求结束时回滚所有本次请求未提交事务
     ]
     this.app.useMiddleware(mws)
 
