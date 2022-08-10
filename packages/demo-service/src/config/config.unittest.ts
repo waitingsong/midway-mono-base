@@ -4,7 +4,11 @@ import {
   DataSourceConfig,
   DbConfig,
 } from '@mw-components/kmore'
-import { ClientURL, ServerURL } from '@mw-components/taskman'
+import {
+  ClientURL,
+  DbReplica as TaskDbReplica,
+  ServerURL,
+} from '@mw-components/taskman'
 
 import { DbReplica } from './config.types'
 import { DbModel, dbDict } from './db.model'
@@ -87,13 +91,32 @@ export const kmoreDataSourceConfig: DataSourceConfig<DbReplica> = {
 
 export const tracerConfig: AppConfig['tracerConfig'] = {
   tracingConfig: {
-    sampler: {
-      type: 'const',
-      param: 1,
-    },
     reporter: {
       agentHost: process.env['JAEGER_AGENT_HOST'] ?? '192.168.1.248',
     },
   },
+}
+
+export const taskServerConfig: AppConfig['taskServerConfig'] = {
+  dataSource: {
+    [TaskDbReplica.taskMaster]: {
+      config: {
+        connection: {
+          host: process.env['POSTGRES_HOST'] ? process.env['POSTGRES_HOST'] : 'localhost',
+          port: process.env['POSTGRES_PORT'] ? +process.env['POSTGRES_PORT'] : 5432,
+          database: process.env['POSTGRES_DB'] ? process.env['POSTGRES_DB'] : 'db_ci_mw',
+          user: process.env['POSTGRES_USER'] ? process.env['POSTGRES_USER'] : 'postgres',
+          password: process.env['POSTGRES_PASSWORD'] ? process.env['POSTGRES_PASSWORD'] : 'postgres',
+        },
+      },
+      sampleThrottleMs: 1000,
+    },
+  },
+
+
+}
+
+export const taskClientConfig: AppConfig['taskClientConfig'] = {
+  host: process.env['TASK_AGENT_HOST'] ? process.env['TASK_AGENT_HOST'] : 'http://127.0.0.1:7001',
 }
 

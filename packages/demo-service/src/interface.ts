@@ -48,3 +48,5 @@ export {
 
 export { Options as FetchOptions } from '@mw-components/fetch'
 export { JwtResult } from '@mw-components/jwt'
+export { KmoreTransaction as DbTransaction } from 'kmore'
+

@@ -24,7 +24,7 @@ describe(filename, () => {
     const { app } = testConfig
     const hosts = app.getConfig('svcHosts') as Record<string, string>
     assert(hosts)
-    assert(hosts.uc)
+    assert(hosts['uc'])
   })
 })
 

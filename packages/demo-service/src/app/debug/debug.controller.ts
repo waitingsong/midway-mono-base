@@ -24,7 +24,7 @@ export class DebugController extends BaseController {
   @Get('/dump/:id/:hash')
   async heapdump(@Param('id') id: string, @Param('hash') hash: string): Promise<HeapDumpRet | void> {
     if (! hash || hash !== debugPwd) {
-      this.ctx.status = 401
+      this.ctx['status'] = 401
       return
     }
 

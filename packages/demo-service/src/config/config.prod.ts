@@ -4,7 +4,6 @@ import {
   DbConfig,
 } from '@mw-components/kmore'
 import {
-  initDbConfig as taskInitDbConfig,
   ClientURL,
   DbReplica as TaskDbReplica,
   ServerURL,
@@ -80,10 +79,8 @@ export const tracerConfig: AppConfig['tracerConfig'] = {
 
 
 export const taskServerConfig: AppConfig['taskServerConfig'] = {
-  expInterval: '30min',
   dataSource: {
     [TaskDbReplica.taskMaster]: {
-      ...taskInitDbConfig,
       config: {
         connection: {
           host: process.env['POSTGRES_HOST'] ?? '',
@@ -93,18 +90,11 @@ export const taskServerConfig: AppConfig['taskServerConfig'] = {
           password: process.env['POSTGRES_PASSWORD'] ?? '',
         },
       },
-      enableTracing: false,
-      tracingResponse: false,
     },
   },
 }
 export const taskClientConfig: AppConfig['taskClientConfig'] = {
   host: process.env['TASK_AGENT_HOST'] ?? '',
-}
-
-export const taskMiddlewareConfig: AppConfig['taskMiddlewareConfig'] = {
-  enableMiddleware: true,
-  ignore: ['/'],
 }
 
 

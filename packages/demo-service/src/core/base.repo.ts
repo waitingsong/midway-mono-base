@@ -8,7 +8,7 @@ import { RootClass } from './root.class'
 
 import { DbReplica } from '~/config/config.types'
 import type { DbModel } from '~/config/db.model'
-import type { Context } from '~/interface'
+import type { Context, DbTransaction } from '~/interface'
 
 
 export class BaseRepo extends RootClass {
@@ -27,6 +27,10 @@ export class BaseRepo extends RootClass {
     const db = this.dbManager.getDataSource(DbReplica.master)
     assert(db)
     this.db = db
+  }
+
+  transaction(): Promise<DbTransaction> {
+    return this.db.transaction()
   }
 
 }
