@@ -6,8 +6,8 @@
   "bin": {},
   "dependencies": {
     "@scope/docs": "^0.0.0",
-    "@mw-components/taskman": "^23.0.1",
-    "@waiting/shared-midway": "^20.4.3",
+    "@mw-components/share": "^1.1.0",
+    "@mw-components/taskman": "^24.0.0",
     "pg": "^8.7.3"
   },
   "devDependencies": {

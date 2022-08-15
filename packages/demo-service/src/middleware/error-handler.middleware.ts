@@ -1,5 +1,5 @@
 import { Middleware } from '@midwayjs/decorator'
-import { MyError } from '@waiting/shared-midway'
+import { MyError } from '@mw-components/share'
 
 import {
   Context,

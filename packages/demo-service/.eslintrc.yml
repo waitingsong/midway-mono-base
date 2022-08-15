@@ -9,7 +9,7 @@ rules:
     - 2
     - packageDir:
       - ./
-      - ../../node_modules/@waiting/shared-midway/
+      - ../../node_modules/@mw-components/share/
 
 ignorePatterns:
   - fixtures

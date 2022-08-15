@@ -1,4 +1,5 @@
 import { Config } from '@mw-components/ali-oss'
+import { initPathArray } from '@mw-components/jwt'
 import {
   DataSourceConfig,
   DbConfig,
@@ -21,6 +22,7 @@ export const jwtConfig: AppConfig['jwtConfig'] = {
   secret: process.env['JWT_SECRET'],
 }
 const jwtIgnoreArr = [
+  ...initPathArray,
   '/',
   '/hello',
   '/ip',

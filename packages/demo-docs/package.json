@@ -15,7 +15,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@midwayjs/validate": "^3.4.9"
+    "@midwayjs/validate": "^3.4.10"
   },
   "devDependencies": {
     "cross-env": "7"
