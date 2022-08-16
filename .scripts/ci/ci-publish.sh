@@ -51,7 +51,8 @@ echo -e ">>> lerna initializing..."
 # npm run clean
 npm run clean:dist
 date
-npm run bootstrap -- --ci
+# npm run bootstrap -- --ci
+npm run bootstrap
 date
 #lerna run build # not works on lerna v4
 npm run build
