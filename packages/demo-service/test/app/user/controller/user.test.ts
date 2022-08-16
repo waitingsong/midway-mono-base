@@ -3,10 +3,10 @@ import { relative } from 'node:path'
 
 import { createHttpRequest } from '@midwayjs/mock'
 import { JwtMsg, schemePrefix } from '@mw-components/jwt'
+import type { JsonResp } from '@mw-components/share'
 
 import { testConfig } from '@/root.config'
 import { UserDetailDTO } from '~/app/user/user.types'
-import { JsonResp } from '~/interface'
 
 
 const filename = relative(process.cwd(), __filename).replace(/\\/ug, '/')

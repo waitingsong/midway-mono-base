@@ -1,13 +1,12 @@
 import { IncomingHttpHeaders } from 'node:http'
 
 import { JwtComponent } from '@mw-components/jwt'
-import supertest, { SuperTest } from 'supertest'
-
-import {
+import type {
   Application,
   IMidwayContainer,
   NpmPkg,
-} from '~/interface'
+} from '@mw-components/share'
+import supertest, { SuperTest } from 'supertest'
 
 
 const CI = !! process.env['CI']

@@ -1,9 +1,13 @@
 import assert from 'node:assert/strict'
 import { relative } from 'node:path'
 
+import type {
+  HeadersKey,
+  NpmPkg,
+  TracerTag,
+} from '@mw-components/share'
+
 import { testConfig } from '@/root.config'
-import { HeadersKey } from '~/constant'
-import { NpmPkg, TracerTag } from '~/interface'
 import { ResponseHeadersMiddleware } from '~/middleware/response-headers.middleware'
 
 

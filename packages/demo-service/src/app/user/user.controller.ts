@@ -6,11 +6,12 @@ import {
   Query,
 } from '@midwayjs/decorator'
 import { Validate } from '@midwayjs/validate'
+import { JsonResp } from '@mw-components/share'
 
 import { UserService } from './user.service'
 import { GetUserDTO, UserDetailDTO } from './user.types'
 
-import { BaseController, JsonResp } from '~/interface'
+import { BaseController } from '~/interface'
 
 
 @Controller('/user')

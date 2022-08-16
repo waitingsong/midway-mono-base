@@ -4,6 +4,10 @@ import {
   DataSourceConfig,
   DbConfig,
 } from '@mw-components/kmore'
+import type {
+  AppConfig,
+  Context,
+} from '@mw-components/share'
 import {
   ClientURL,
   DbReplica as TaskDbReplica,
@@ -12,8 +16,6 @@ import {
 
 import { DbReplica } from './config.types'
 import { DbModel, dbDict } from './db.model'
-
-import { AppConfig, Context } from '~/interface'
 
 
 export const security = {

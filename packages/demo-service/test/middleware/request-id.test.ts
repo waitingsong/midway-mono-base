@@ -2,9 +2,13 @@ import assert from 'node:assert/strict'
 import { relative } from 'node:path'
 
 import { KoidComponent } from '@mw-components/koid'
+import type {
+  Application,
+  Context,
+  HeadersKey,
+} from '@mw-components/share'
 
 import { testConfig } from '@/root.config'
-import { HeadersKey } from '~/constant'
 import { RequestIdMiddleware } from '~/middleware/request-id.middleware'
 
 

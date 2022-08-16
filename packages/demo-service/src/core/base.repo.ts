@@ -3,12 +3,12 @@ import assert from 'node:assert'
 
 import { Init, Inject } from '@midwayjs/decorator'
 import { DbManager, Kmore } from '@mw-components/kmore'
+import type { Context, DbTransaction } from '@mw-components/share'
 
 import { RootClass } from './root.class'
 
 import { DbReplica } from '~/config/config.types'
 import type { DbModel } from '~/config/db.model'
-import type { Context, DbTransaction } from '~/interface'
 
 
 export class BaseRepo extends RootClass {

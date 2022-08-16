@@ -24,6 +24,11 @@ import * as db from '@mw-components/kmore'
 // eslint-disable-next-line no-duplicate-imports
 import { DataSource, DbSourceManager } from '@mw-components/kmore'
 import * as koid from '@mw-components/koid'
+import type {
+  Application,
+  Context,
+  NpmPkg,
+} from '@mw-components/share'
 import * as tm from '@mw-components/taskman'
 
 import { DbReplica, DbReplicaKeys } from './config/config.types'
@@ -33,8 +38,6 @@ import { RequestIdMiddleware } from './middleware/request-id.middleware'
 import { ResponseHeadersMiddleware } from './middleware/response-headers.middleware'
 import { ResponseMimeMiddleware } from './middleware/response-mime.middleware'
 // import { customLogger } from './util/custom-logger'
-
-import type { Application, Context, NpmPkg } from '~/interface'
 
 
 process.env['UV_THREADPOOL_SIZE'] = '96'

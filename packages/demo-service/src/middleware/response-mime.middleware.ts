@@ -1,6 +1,10 @@
 import { Middleware } from '@midwayjs/decorator'
+import type {
+  Context,
+  IMiddleware,
+  NextFunction,
+} from '@mw-components/share'
 
-import { Context, IMiddleware, NextFunction } from '~/interface'
 
 /**
  * 设置默认响应 ContentType

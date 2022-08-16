@@ -1,8 +1,9 @@
 import assert from 'node:assert/strict'
 import { relative } from 'node:path'
 
+import type { JsonResp } from '@mw-components/share'
+
 import { testConfig, TestRespBody } from '@/root.config'
-import { JsonResp } from '~/interface'
 
 
 const filename = relative(process.cwd(), __filename).replace(/\\/ug, '/')

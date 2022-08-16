@@ -1,9 +1,11 @@
 import { Middleware } from '@midwayjs/decorator'
 import { KoidComponent } from '@mw-components/koid'
-
-
-import { HeadersKey } from '~/constant'
-import { Context, IMiddleware, NextFunction } from '~/interface'
+import {
+  Context,
+  HeadersKey,
+  IMiddleware,
+  NextFunction,
+} from '@mw-components/share'
 
 
 @Middleware()

@@ -5,6 +5,10 @@ import {
   DataSourceConfig,
   DbConfig,
 } from '@mw-components/kmore'
+import type {
+  AppConfig,
+  Context,
+} from '@mw-components/share'
 import {
   ClientURL,
   DbReplica as TaskDbReplica,
@@ -16,8 +20,6 @@ import {
   SvcHosts,
 } from './config.types'
 import { dbDict, DbModel } from './db.model'
-
-import { AppConfig, Context } from '~/interface'
 
 
 export const jwtConfig: AppConfig['jwtConfig'] = {

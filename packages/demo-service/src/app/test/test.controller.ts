@@ -10,10 +10,10 @@ import {
   Provide,
 } from '@midwayjs/decorator'
 import { TracerManager } from '@mw-components/jaeger'
+import { HeadersKey } from '@mw-components/share'
 
 import { TestService } from './test.service'
 
-import { HeadersKey } from '~/constant'
 import { BaseController } from '~/interface'
 
 
