@@ -12,12 +12,12 @@ if [ -n "$NPM_REGISTRY" ]; then
   # must rm node_modules
   lerna clean --yes
   lerna bootstrap --hoist=false --ignore-scripts -- \
-    --no-audit --no-optional --prod --package-lock-only \
+    --no-audit --omit=dev --omit=optional --legacy-peer-deps --package-lock-only \
     --registry "$NPM_REGISTRY"
 else
   lerna clean --yes
   lerna bootstrap --hoist=false --ignore-scripts -- \
-    --no-audit --no-optional --prod --package-lock-only
+    --no-audit --omit=dev --omit=optional --legacy-peer-deps --package-lock-only 
 fi
 
 date

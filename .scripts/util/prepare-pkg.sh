@@ -18,7 +18,7 @@ date
 # else
 #   npm i --prod --no-audit --no-optional --legacy-peer-deps
 # fi
-npm i --prod --no-audit --no-optional --legacy-peer-deps
+npm i --no-audit --omit=dev --omit=optional --legacy-peer-deps
 date
 du -sh node_modules
 
