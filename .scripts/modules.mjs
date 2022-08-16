@@ -60,6 +60,7 @@ export const mods = [
     "@midwayjs",
     "@mw-components",
     "@waiting",
+    "kmore",
   ], // 3
 
   [
