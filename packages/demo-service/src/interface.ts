@@ -17,6 +17,8 @@ declare module '@midwayjs/core/dist/interface' {
   interface MidwayConfig {
     prometheus?: PrometheusConfig
   }
+}
+declare module '@midwayjs/koa/dist/interface' {
   interface Context {
     reqId: string
     _internalError?: Error

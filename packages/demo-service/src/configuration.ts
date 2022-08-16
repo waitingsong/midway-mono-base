@@ -74,17 +74,18 @@ export class ContainerConfiguration implements ILifeCycle {
     // customLogger(this.logger, this.app)
 
     // 全局x-request-id处理中间件
-    // @ts-expect-error
+    // @ts-ignore
     this.app.getMiddleware().insertFirst(RequestIdMiddleware)
 
     // 全局错误处理中间件（确保在最前）
-    // @ts-expect-error
+    // @ts-ignore
     this.app.getMiddleware().insertFirst(ErrorHandlerMiddleware)
 
     const mws = [
       ResponseMimeMiddleware,
       ResponseHeadersMiddleware,
     ]
+    // @ts-ignore
     this.app.useMiddleware(mws)
 
     const mwNames = this.app.getMiddleware().getNames()
