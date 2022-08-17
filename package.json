@@ -11,6 +11,7 @@
     "@midwayjs/mock": "^3.4.10",
     "@midwayjs/swagger": "^3.4.10",
     "@midwayjs/web": "^3.4.10",
+    "@mw-components/share": "^1.5.0",
     "@rollup/plugin-commonjs": "22",
     "@rollup/plugin-node-resolve": "13",
     "@swc/core": "^1.2.222",
