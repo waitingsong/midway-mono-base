@@ -9,6 +9,7 @@ rules:
     - 2
     - packageDir:
       - ./
+      - ../../node_modules/@mw-components/base/
       - ../../node_modules/@mw-components/share/
 
 ignorePatterns:

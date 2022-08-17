@@ -6,11 +6,11 @@ import {
   Inject,
   Provide,
 } from '@midwayjs/decorator'
+import { AppInfomation } from '@mw-components/share'
 
 import { HomeService } from './home.service'
 
 import { BaseController } from '~/interface'
-import { AppInfomation } from '~/types'
 
 
 @Provide()

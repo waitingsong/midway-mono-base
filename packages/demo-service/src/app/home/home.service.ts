@@ -1,8 +1,8 @@
 import { Provide } from '@midwayjs/decorator'
+import { AppInfomation } from '@mw-components/share'
 import { retrieveFirstIp } from '@waiting/shared-core'
 
 import { BaseService } from '~/interface'
-import { AppInfomation } from '~/types'
 
 
 @Provide()
