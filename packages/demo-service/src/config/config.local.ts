@@ -1,5 +1,5 @@
 // config for `npm run test` in vscode F5
-import { Config } from '@mw-components/ali-oss'
+import { DataSourceConfig as AliOssDataSourceConfig } from '@mw-components/ali-oss'
 import { initPathArray } from '@mw-components/jwt'
 import {
   DataSourceConfig,
@@ -17,9 +17,24 @@ import {
 
 import {
   DbReplica,
-  SvcHosts,
+  OssClientKey,
 } from './config.types'
 import { dbDict, DbModel } from './db.model'
+
+
+export const development = {
+  watchDirs: [
+    'agent.ts',
+    'app.ts',
+    'interface.ts',
+    'app',
+    'config',
+    'lib',
+    'middleware',
+    'service',
+  ],
+  overrideDefault: true,
+}
 
 
 export const jwtConfig: AppConfig['jwtConfig'] = {
@@ -29,6 +44,7 @@ const jwtIgnoreArr = [
   ...initPathArray,
   '/hello',
   '/ip',
+  '/taskman/hello',
   '/test/err',
   '/test/array',
   '/test/blank',
@@ -64,7 +80,6 @@ const master: DbConfig<DbModel, Context> = {
       /** @link https://stackoverflow.com/a/67621567 */
       // propagateCreateError: false,
     },
-    acquireConnectionTimeout: 50000,
   },
   dict: dbDict,
   sampleThrottleMs: 10,
@@ -103,50 +118,22 @@ export const taskServerConfig: AppConfig['taskServerConfig'] = {
     },
   },
 }
-
 export const taskClientConfig: AppConfig['taskClientConfig'] = {
   host: process.env['TASK_AGENT_HOST'] ? process.env['TASK_AGENT_HOST'] : 'http://127.0.0.1:7001',
 }
 
 
-export const development = {
-  watchDirs: [
-    'agent.ts',
-    'app.ts',
-    'interface.ts',
-    'app',
-    'config',
-    'lib',
-    'middleware',
-    'service',
-  ],
-  overrideDefault: true,
-}
-
-
-export enum OssClientKey {
-  ossmain = 'ossmain',
-}
 const clientConfig = {
   accessKeyId: process.env['ALI_OSS_AID'] ?? '',
   accessKeySecret: process.env['ALI_OSS_ASECRET'] ?? '',
   endpoint: process.env['ALI_OSS_ENDPOINT'] ?? 'https://oss-cn-hangzhou.aliyuncs.com',
   bucket: process.env['ALI_OSS_BUCKET'] ?? '',
-  cmd: 'ossutil',
-  debug: false,
 }
-export const aliOssConfig: Readonly<Config<OssClientKey>> = {
-  ossmain: clientConfig,
+export const aliOssDataSourceConfig: AliOssDataSourceConfig<OssClientKey> = {
+  dataSource: {
+    ossMain: clientConfig,
+  },
 }
 
 
-export const svcHosts: SvcHosts = {
-  uc: 'http://127.0.0.1:7001',
-}
-Object.keys(svcHosts).forEach((key) => {
-  const name = `SVC_HOST_${key}`
-  if (typeof process.env[name] === 'string') {
-    svcHosts[key] = process.env[name] as string
-  }
-})
 

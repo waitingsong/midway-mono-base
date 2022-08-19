@@ -11,7 +11,7 @@
     "@midwayjs/mock": "^3.4.10",
     "@midwayjs/swagger": "^3.4.10",
     "@midwayjs/web": "^3.4.10",
-    "@mw-components/share": "^1.5.0",
+    "@mw-components/share": "*",
     "@rollup/plugin-commonjs": "22",
     "@rollup/plugin-node-resolve": "13",
     "@swc/core": "^1.2.222",
@@ -19,7 +19,6 @@
     "@types/node": "18",
     "@types/rimraf": "3",
     "@types/supertest": "^2.0.12",
-    "@types/yargs": "17",
     "@waiting/eslint-config": "^8.5.0",
     "coveralls": "3",
     "debug": "^4.3.0",
@@ -39,7 +38,6 @@
     "tsc-alias": "^1.7.0",
     "tsconfig-paths": "4",
     "typescript": "^4.7.4",
-    "yargs": "17",
     "zx": "7"
   },
   "engines": {

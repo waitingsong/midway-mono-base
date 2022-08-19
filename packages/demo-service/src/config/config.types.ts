@@ -12,6 +12,11 @@ export const enum DbReplica {
 }
 export type DbReplicaKeys = keyof typeof DbReplica
 
+
+export enum OssClientKey {
+  ossmain = 'ossMain',
+}
+
 /**
  * 远程服务主机配置，结尾不应带有斜杠 '/'
  */

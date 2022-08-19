@@ -22,15 +22,6 @@ export const security = {
   csrf: false,
 }
 
-
-// 复用 local 的配置
-export {
-  svcHosts,
-  OssClientKey,
-  aliOssConfig,
-} from './config.local'
-
-
 // 建议跑测试的时候关闭日志(true)，这样手动故意触发的错误，都不会显示处理。如果想看则打开(false)
 export const logger = {
   disableConsoleAfterReady: true,
@@ -49,6 +40,8 @@ const jwtIgnoreArr = [
   '/test/array',
   '/test/blank',
   '/test/empty',
+  '/test/fetch',
+  '/test/_fetch_target',
   '/test/no_output',
   '/test/sign',
   /debug\/dump\/.*/u,
@@ -75,12 +68,10 @@ const master: DbConfig<DbModel, Context> = {
     pool: {
       min: 2,
       max: 30,
-      // propagateCreateError: false,
     },
-    acquireConnectionTimeout: 50000,
   },
   dict: dbDict,
-  sampleThrottleMs: 300,
+  sampleThrottleMs: 10,
   enableTracing: true,
   tracingResponse: true,
 }
@@ -99,6 +90,7 @@ export const tracerConfig: AppConfig['tracerConfig'] = {
   },
 }
 
+
 export const taskServerConfig: AppConfig['taskServerConfig'] = {
   dataSource: {
     [TaskDbReplica.taskMaster]: {
@@ -114,10 +106,7 @@ export const taskServerConfig: AppConfig['taskServerConfig'] = {
       sampleThrottleMs: 1000,
     },
   },
-
-
 }
-
 export const taskClientConfig: AppConfig['taskClientConfig'] = {
   host: process.env['TASK_AGENT_HOST'] ? process.env['TASK_AGENT_HOST'] : 'http://127.0.0.1:7001',
 }

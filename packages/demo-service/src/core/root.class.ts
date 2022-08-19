@@ -10,10 +10,6 @@ export class RootClass extends Root {
   @Inject() readonly taskMan: ClientService
 
   get jwtPayload(): JwtUser {
-    const foo = this.ctx.jwtState
-    void foo
-    this.ctx.jwtState.user?.uid
-
     return this.getJwtPayload<JwtUser>()
   }
 

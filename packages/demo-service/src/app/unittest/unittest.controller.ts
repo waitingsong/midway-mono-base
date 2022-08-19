@@ -8,6 +8,7 @@ import {
 import { TestRespBody } from './types'
 
 import { BaseController } from '~/interface'
+import { OssClientKey } from '~/config/config.types'
 
 
 @Controller('/unittest')
@@ -25,15 +26,15 @@ export class UnittestController extends BaseController {
 
   @Get('/oss_mkdir')
   async uploadOss(): Promise<TestRespBody> {
-    const { ossClient } = this
+    const ossClient = this.aliOssMan.getDataSource(OssClientKey.ossmain)
 
     const cloudUrlPrefix = 'mobileFile/debug' + Math.random().toString()
 
-    const mkdirRet = await ossClient.mkdir('ossmain', cloudUrlPrefix)
+    const mkdirRet = await ossClient.mkdir(cloudUrlPrefix)
     assert(! mkdirRet.exitCode, 'mkdir failed')
     assert(mkdirRet.data, 'mkdir failed')
 
-    const rmrfRet = await ossClient.rmrf('ossmain', cloudUrlPrefix)
+    const rmrfRet = await ossClient.rmrf(cloudUrlPrefix)
     assert(! rmrfRet.exitCode, 'rmrf failed')
 
     const { header, url } = this.ctx

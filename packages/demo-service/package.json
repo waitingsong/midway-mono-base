@@ -6,7 +6,7 @@
   "bin": {},
   "dependencies": {
     "@scope/docs": "^0.0.0",
-    "@mw-components/base": "^1.0.0",
+    "@mw-components/base": "^3.0.0",
     "@mw-components/taskman": "^24.0.2",
     "pg": "^8.7.3"
   },
