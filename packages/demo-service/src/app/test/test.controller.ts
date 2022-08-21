@@ -9,8 +9,8 @@ import {
   Inject,
   Provide,
 } from '@midwayjs/decorator'
+import { HeadersKey } from '@mw-components/base'
 import { TracerManager } from '@mw-components/jaeger'
-import { HeadersKey } from '@mw-components/share'
 
 import { TestService } from './test.service'
 
@@ -51,7 +51,7 @@ export class TestController extends BaseController {
   @Get('/err')
   testError(): never {
     // HTTP Response Code is 200, Result.code is 2404
-    this.throwError('管理员不存在，请检查', 2404)
+    this.throwError('管理员不存在，请检查', this.globalErrorCode.E_Admin_Not_Exists)
   }
 
   @Get('/array')

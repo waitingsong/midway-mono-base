@@ -1,18 +1,19 @@
-import { DataSourceConfig as AliOssDataSourceConfig } from '@mw-components/ali-oss'
-import { initPathArray } from '@mw-components/jwt'
-import {
-  DataSourceConfig,
-  DbConfig,
-} from '@mw-components/kmore'
+import { AliOssSourceConfig } from '@mw-components/ali-oss'
 import type {
   AppConfig,
   Context,
-} from '@mw-components/share'
+} from '@mw-components/base'
+import { initPathArray } from '@mw-components/jwt'
+import {
+  DbConfig,
+  KmoreSourceConfig,
+} from '@mw-components/kmore'
 import {
   ClientURL,
   DbReplica as TaskDbReplica,
   ServerURL,
 } from '@mw-components/taskman'
+import { ErrorCode } from '@scope/docs'
 
 import {
   DbReplica,
@@ -22,13 +23,6 @@ import {
 import { dbDict, DbModel } from './db.model'
 
 
-export const welcomeMsg = 'Hello Midwayjs!'
-export const keys = '1559532739677_8888'
-
-
-export const jwtConfig: AppConfig['jwtConfig'] = {
-  secret: process.env['JWT_SECRET'],
-}
 const jwtIgnoreArr = [
   ...initPathArray,
   '/',
@@ -40,7 +34,7 @@ const jwtIgnoreArr = [
   RegExp(`${ClientURL.base}/.*`, 'u'),
   RegExp(`${ServerURL.base}/.*`, 'u'),
 ]
-export const jwtMiddlewareConfig: AppConfig['jwtMiddlewareConfig'] = {
+const jwtMiddlewareConfig: AppConfig['jwtMiddlewareConfig'] = {
   enableMiddleware: true,
   ignore: jwtIgnoreArr,
 }
@@ -68,14 +62,14 @@ const master: DbConfig<DbModel, Context> = {
   enableTracing: true,
   tracingResponse: true,
 }
-export const kmoreDataSourceConfig: DataSourceConfig<DbReplica> = {
+const kmoreConfig: KmoreSourceConfig<DbReplica> = {
   dataSource: {
     master,
   },
 }
 
 
-export const tracerConfig: AppConfig['tracerConfig'] = {
+const tracerConfig: AppConfig['tracerConfig'] = {
   tracingConfig: {
     sampler: {
       type: 'probabilistic',
@@ -88,7 +82,7 @@ export const tracerConfig: AppConfig['tracerConfig'] = {
 }
 
 
-export const taskServerConfig: AppConfig['taskServerConfig'] = {
+const taskServerConfig: AppConfig['taskServerConfig'] = {
   dataSource: {
     [TaskDbReplica.taskMaster]: {
       config: {
@@ -103,7 +97,7 @@ export const taskServerConfig: AppConfig['taskServerConfig'] = {
     },
   },
 }
-export const taskClientConfig: AppConfig['taskClientConfig'] = {
+const taskClientConfig: AppConfig['taskClientConfig'] = {
   host: process.env['TASK_AGENT_HOST'] ?? '',
 }
 
@@ -114,14 +108,14 @@ const clientConfig = {
   endpoint: process.env['ALI_OSS_ENDPOINT'] ?? 'https://oss-cn-hangzhou.aliyuncs.com',
   bucket: process.env['ALI_OSS_BUCKET'] ?? '',
 }
-export const aliOssDataSourceConfig: AliOssDataSourceConfig<OssClientKey> = {
+const aliOssConfig: AliOssSourceConfig<OssClientKey> = {
   dataSource: {
     ossMain: clientConfig,
   },
 }
 
 
-export const svcHosts: SvcHosts = {
+const svcHosts: SvcHosts = {
   uc: 'http://127.0.0.1:7001',
 }
 Object.keys(svcHosts).forEach((key) => {
@@ -130,3 +124,21 @@ Object.keys(svcHosts).forEach((key) => {
     svcHosts[key] = process.env[name] as string
   }
 })
+
+
+const appConfig: AppConfig = {
+  keys: '1559532739677_8888',
+  aliOssConfig,
+  globalErrorCode: ErrorCode,
+  jwtConfig: {
+    secret: process.env['JWT_SECRET'],
+  },
+  jwtMiddlewareConfig,
+  kmoreConfig,
+  svcHosts,
+  taskClientConfig,
+  taskServerConfig,
+  tracerConfig,
+}
+export default appConfig
+

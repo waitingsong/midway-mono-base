@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import { JwtState } from '@mw-components/jwt'
 
 import { JwtUser } from './types'

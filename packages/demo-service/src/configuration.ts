@@ -1,5 +1,3 @@
-/* eslint-disable import/max-dependencies */
-/* eslint-disable import/no-extraneous-dependencies */
 import 'tsconfig-paths/register'
 import { join } from 'node:path'
 
@@ -12,10 +10,6 @@ import {
 } from '@midwayjs/decorator'
 import { IMidwayLogger } from '@midwayjs/logger'
 import * as base from '@mw-components/base'
-import type {
-  Application,
-  // Context,
-} from '@mw-components/share'
 import * as tm from '@mw-components/taskman'
 
 
@@ -28,7 +22,7 @@ import * as tm from '@mw-components/taskman'
 })
 export class ContainerConfiguration implements ILifeCycle {
 
-  @App() readonly app: Application
+  @App() readonly app: base.Application
 
   @Logger() readonly logger: IMidwayLogger
 

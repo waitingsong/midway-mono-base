@@ -1,11 +1,11 @@
 import { IncomingHttpHeaders } from 'node:http'
 
-import { JwtComponent } from '@mw-components/jwt'
 import type {
   Application,
   IMidwayContainer,
   NpmPkg,
-} from '@mw-components/share'
+} from '@mw-components/base'
+import { JwtComponent } from '@mw-components/jwt'
 import supertest, { SuperTest } from 'supertest'
 
 

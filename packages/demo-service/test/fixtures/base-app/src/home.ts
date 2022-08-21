@@ -3,9 +3,9 @@ import {
   Controller,
   Get,
 } from '@midwayjs/decorator'
+import type { Context } from '@mw-components/base'
 
 import { TestRespBody } from '@/root.config'
-import type { Context } from '@mw-components/share'
 
 
 @Controller('/')

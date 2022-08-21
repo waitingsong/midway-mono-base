@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { relative } from 'node:path'
 
 import { createHttpRequest } from '@midwayjs/mock'
-import type { JsonResp } from '@mw-components/share'
+import type { JsonResp } from '@mw-components/base'
 
 import { testConfig } from '@/root.config'
 

@@ -2,8 +2,8 @@
 import assert from 'node:assert'
 
 import { Init, Inject } from '@midwayjs/decorator'
+import type { Context, DbTransaction } from '@mw-components/base'
 import { DbManager, Kmore } from '@mw-components/kmore'
-import type { Context, DbTransaction } from '@mw-components/share'
 
 import { RootClass } from './root.class'
 
@@ -18,7 +18,7 @@ export class BaseRepo extends RootClass {
   protected db: Kmore<DbModel, Context>
 
   @Init()
-  async init(): Promise<void> {
+  async baseInit(): Promise<void> {
     /* c8 ignore next 3 */
     if (! this.ctx) {
       this.throwError('Value of this.ctx is undefined during Repo init')
@@ -29,8 +29,9 @@ export class BaseRepo extends RootClass {
     this.db = db
   }
 
-  transaction(): Promise<DbTransaction> {
-    return this.db.transaction()
+  transaction(sourceName: DbReplica): Promise<DbTransaction> {
+    const db = this.dbManager.getDataSource(sourceName)
+    return db.transaction()
   }
 
 }

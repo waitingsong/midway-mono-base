@@ -9,7 +9,7 @@ rules:
     - 2
     - packageDir:
       - ./
-      - ../../node_modules/@mw-components/share/
+      - ../../node_modules/@mw-components/base/
 
 ignorePatterns:
   - fixtures

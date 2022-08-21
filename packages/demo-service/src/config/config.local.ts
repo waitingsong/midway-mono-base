@@ -1,25 +1,17 @@
 // config for `npm run test` in vscode F5
-import { DataSourceConfig as AliOssDataSourceConfig } from '@mw-components/ali-oss'
+import type { AppConfig } from '@mw-components/base'
 import { initPathArray } from '@mw-components/jwt'
 import {
-  DataSourceConfig,
   DbConfig,
+  KmoreSourceConfig,
 } from '@mw-components/kmore'
-import type {
-  AppConfig,
-  Context,
-} from '@mw-components/share'
 import {
   ClientURL,
   DbReplica as TaskDbReplica,
   ServerURL,
 } from '@mw-components/taskman'
 
-import {
-  DbReplica,
-  OssClientKey,
-} from './config.types'
-import { dbDict, DbModel } from './db.model'
+import { DbReplica } from './config.types'
 
 
 export const development = {
@@ -64,9 +56,8 @@ export const jwtMiddlewareConfig: AppConfig['jwtMiddlewareConfig'] = {
 }
 
 
-const master: DbConfig<DbModel, Context> = {
+const master: DbConfig = {
   config: {
-    client: 'pg',
     connection: {
       host: process.env['POSTGRES_HOST'] ? process.env['POSTGRES_HOST'] : 'localhost',
       port: process.env['POSTGRES_PORT'] ? +process.env['POSTGRES_PORT'] : 5432,
@@ -74,19 +65,11 @@ const master: DbConfig<DbModel, Context> = {
       user: process.env['POSTGRES_USER'] ? process.env['POSTGRES_USER'] : 'postgres',
       password: process.env['POSTGRES_PASSWORD'] ? process.env['POSTGRES_PASSWORD'] : 'postgres',
     },
-    pool: {
-      min: 0,
-      max: 30,
-      /** @link https://stackoverflow.com/a/67621567 */
-      // propagateCreateError: false,
-    },
   },
-  dict: dbDict,
-  sampleThrottleMs: 10,
   enableTracing: true,
   tracingResponse: true,
 }
-export const kmoreDataSourceConfig: DataSourceConfig<DbReplica> = {
+export const kmoreConfig: KmoreSourceConfig<DbReplica> = {
   dataSource: {
     master,
   },
@@ -121,19 +104,4 @@ export const taskServerConfig: AppConfig['taskServerConfig'] = {
 export const taskClientConfig: AppConfig['taskClientConfig'] = {
   host: process.env['TASK_AGENT_HOST'] ? process.env['TASK_AGENT_HOST'] : 'http://127.0.0.1:7001',
 }
-
-
-const clientConfig = {
-  accessKeyId: process.env['ALI_OSS_AID'] ?? '',
-  accessKeySecret: process.env['ALI_OSS_ASECRET'] ?? '',
-  endpoint: process.env['ALI_OSS_ENDPOINT'] ?? 'https://oss-cn-hangzhou.aliyuncs.com',
-  bucket: process.env['ALI_OSS_BUCKET'] ?? '',
-}
-export const aliOssDataSourceConfig: AliOssDataSourceConfig<OssClientKey> = {
-  dataSource: {
-    ossMain: clientConfig,
-  },
-}
-
-
 

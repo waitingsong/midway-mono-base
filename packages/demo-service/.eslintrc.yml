@@ -10,7 +10,6 @@ rules:
     - packageDir:
       - ./
       - ../../node_modules/@mw-components/base/
-      - ../../node_modules/@mw-components/share/
 
 ignorePatterns:
   - fixtures

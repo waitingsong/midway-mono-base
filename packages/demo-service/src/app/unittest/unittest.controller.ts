@@ -7,8 +7,8 @@ import {
 
 import { TestRespBody } from './types'
 
-import { BaseController } from '~/interface'
 import { OssClientKey } from '~/config/config.types'
+import { BaseController } from '~/interface'
 
 
 @Controller('/unittest')

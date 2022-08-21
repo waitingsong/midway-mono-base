@@ -4,12 +4,12 @@ import { join } from 'node:path'
 
 import * as WEB from '@midwayjs/koa'
 import { createApp, close, createHttpRequest } from '@midwayjs/mock'
-import { JwtComponent } from '@mw-components/jwt'
-import { DbSourceManager } from '@mw-components/kmore'
 import type {
   Application,
   NpmPkg,
-} from '@mw-components/share'
+} from '@mw-components/base'
+import { JwtComponent } from '@mw-components/jwt'
+import { DbSourceManager } from '@mw-components/kmore'
 import {
   TaskClientConfig,
   ConfigKey as TCK,

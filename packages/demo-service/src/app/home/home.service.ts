@@ -1,5 +1,5 @@
 import { Provide } from '@midwayjs/decorator'
-import { AppInfomation } from '@mw-components/share'
+import { AppInfomation } from '@mw-components/base'
 import { retrieveFirstIp } from '@waiting/shared-core'
 
 import { BaseService } from '~/interface'

@@ -17,6 +17,10 @@ export enum ErrorCode {
    */
   E_Db_Acq_Connection_Timeout = 999,
   /**
+   * 管理员不存在
+   */
+  E_Admin_Not_Exists = 2404,
+  /**
    * 无效的应用
    * @description 在应用列表中没有对应的 appId 记录
    */

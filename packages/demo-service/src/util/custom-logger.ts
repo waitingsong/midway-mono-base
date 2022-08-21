@@ -1,9 +1,8 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { IMidwayLogger, MidwayContextLogger, MidwayTransformableInfo } from '@midwayjs/logger'
 import type {
   Application,
   Context,
-} from '@mw-components/share'
+} from '@mw-components/base'
 
 import { genISO8601String } from '~/util/ext'
 

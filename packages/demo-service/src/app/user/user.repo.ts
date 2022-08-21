@@ -15,7 +15,7 @@ export class UserRepo extends BaseRepo {
 
   @Init()
   async initTable(): Promise<void> {
-    await this.init()
+    await this.baseInit()
     this.ref_tb_user = this.db.camelTables.ref_tb_user
   }
 

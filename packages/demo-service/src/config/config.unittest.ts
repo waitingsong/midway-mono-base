@@ -1,13 +1,10 @@
 // config for `npm run cov|ci`
+import type { AppConfig } from '@mw-components/base'
 import { initPathArray } from '@mw-components/jwt'
 import {
-  DataSourceConfig,
   DbConfig,
+  KmoreSourceConfig,
 } from '@mw-components/kmore'
-import type {
-  AppConfig,
-  Context,
-} from '@mw-components/share'
 import {
   ClientURL,
   DbReplica as TaskDbReplica,
@@ -15,7 +12,6 @@ import {
 } from '@mw-components/taskman'
 
 import { DbReplica } from './config.types'
-import { DbModel, dbDict } from './db.model'
 
 
 export const security = {
@@ -55,9 +51,8 @@ export const jwtMiddlewareConfig: AppConfig['jwtMiddlewareConfig'] = {
 }
 
 
-const master: DbConfig<DbModel, Context> = {
+const master: DbConfig = {
   config: {
-    client: 'pg',
     connection: {
       host: process.env['POSTGRES_HOST'] ? process.env['POSTGRES_HOST'] : 'localhost',
       port: process.env['POSTGRES_PORT'] ? +process.env['POSTGRES_PORT'] : 5432,
@@ -65,17 +60,11 @@ const master: DbConfig<DbModel, Context> = {
       user: process.env['POSTGRES_USER'] ? process.env['POSTGRES_USER'] : 'postgres',
       password: process.env['POSTGRES_PASSWORD'] ? process.env['POSTGRES_PASSWORD'] : 'postgres',
     },
-    pool: {
-      min: 2,
-      max: 30,
-    },
   },
-  dict: dbDict,
-  sampleThrottleMs: 10,
   enableTracing: true,
   tracingResponse: true,
 }
-export const kmoreDataSourceConfig: DataSourceConfig<DbReplica> = {
+export const kmoreConfig: KmoreSourceConfig<DbReplica> = {
   dataSource: {
     master,
   },

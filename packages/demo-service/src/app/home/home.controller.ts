@@ -6,7 +6,7 @@ import {
   Inject,
   Provide,
 } from '@midwayjs/decorator'
-import { AppInfomation } from '@mw-components/share'
+import { AppInfomation } from '@mw-components/base'
 
 import { HomeService } from './home.service'
 
