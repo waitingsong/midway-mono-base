@@ -35,9 +35,5 @@ default:
   #     - node_modules
   #     - package-lock.json
   #   policy: pull-push
-  services:
-  - name: $PG_IMAGE
-    alias: postgres
-  # - name: $REDIS_IMAGE
-  #   alias: redis
+
 

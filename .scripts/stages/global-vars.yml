@@ -51,6 +51,7 @@ variables:
   BUILD_TMP_DIR: /tmp/build
   BUILD_LOCKS_CACHE_DIR: locks-cache
 
+  FF_NETWORK_PER_BUILD: 1
   POSTGRES_HOST: postgres
   POSTGRES_PORT: 5432
   POSTGRES_DB: db_ci_mw

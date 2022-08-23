@@ -1,0 +1,8 @@
+
+default:
+  services:
+  - name: $PG_IMAGE
+    alias: postgres
+  - name: $REDIS_IMAGE
+    alias: redis
+
