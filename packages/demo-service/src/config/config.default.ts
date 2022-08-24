@@ -42,7 +42,7 @@ const jwtMiddlewareConfig: AppConfig['jwtMiddlewareConfig'] = {
 
 const master: DbConfig<DbModel, Context> = {
   config: {
-    client: 'pg',
+    client: 'pgnative',
     connection: {
       host: process.env['POSTGRES_HOST'] ? process.env['POSTGRES_HOST'] : '',
       port: process.env['POSTGRES_PORT'] ? +process.env['POSTGRES_PORT'] : 5432,

@@ -5,10 +5,10 @@
   "private": true,
   "bin": {},
   "dependencies": {
-    "@mw-components/base": "^4.3.0",
-    "@mw-components/taskman": "^25.0.0",
+    "@mw-components/base": "^4.3.2",
+    "@mw-components/taskman": "^25.0.2",
     "@scope/docs": "^0.0.0",
-    "pg": "^8.7.3"
+    "pg-native": "^3.0.1"
   },
   "devDependencies": {
     "cross-env": "7"

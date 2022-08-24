@@ -2,6 +2,7 @@
 include:
   - local: '/.scripts/stages/global-vars.yml'
   - local: '/.scripts/stages/default.yml'
+  - local: '/.scripts/stages/services.yml'
   - local: '/.scripts/stages/build.yml'
   - local: '/.scripts/stages/pre-release.yml'
   - local: '/.scripts/stages/publish.yml'

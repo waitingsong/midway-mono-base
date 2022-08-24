@@ -129,7 +129,7 @@ npm run add:svc @ishop_pos/svc
 
 ```sh
 # clean build dist, cache and build
-npm run refresh
+npm run clean
 # clean and remove all node_modules, install deps and build
 npm run purge
 ```
@@ -144,15 +144,17 @@ npm run purge
 ## Freamwork and Plugin Documents
 
 - [Midway]
-- [Midway_v2_Docs]
-- [Eggjs]
+- [Knex]
+- [Kmore]
+- [node-pg-native]
 
 
 <br>
 
 [Midway]: https://midwayjs.org/midway
-[Midway_v2_Docs]: https://www.yuque.com/midwayjs/midway_v2
-[Eggjs]: https://eggjs.org
+[Knex]: https://knexjs.org/
+[Kmore]: https://github.com/waitingsong/kmore
+[node-pg-native]: https://github.com/brianc/node-pg-native
 
 
 [`docs`]: packages/demo-docs
