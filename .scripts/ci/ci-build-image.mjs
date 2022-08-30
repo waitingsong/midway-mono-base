@@ -76,11 +76,11 @@ cd(pkgBuildTmpDir)
 await $`"$cwd/.scripts/util/download-npm-pkg.sh" "$pkgName@$pkgVer" "$fileNameNormVer.tgz"`
 cd(`${pkgBuildTmpDir}/package`)
 await $`ls -al`
-await nothrow($`$cwd/.scripts/util/save-cache.mjs \
-  --action=restore \
-  --pkg=$pkgImgNameNorm \
-  --file=package-lock.json \
-  --dirName=$BUILD_LOCKS_CACHE_DIR `)
+// await nothrow($`$cwd/.scripts/util/save-cache.mjs \
+//   --action=restore \
+//   --pkg=$pkgImgNameNorm \
+//   --file=package-lock.json \
+//   --dirName=$BUILD_LOCKS_CACHE_DIR `)
 
 await $`$cwd/.scripts/util/prepare-pkg.sh`
 console.info('------------------')

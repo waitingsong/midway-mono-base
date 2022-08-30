@@ -5,8 +5,8 @@
   "private": true,
   "bin": {},
   "dependencies": {
-    "@mw-components/base": "^4.3.2",
-    "@mw-components/taskman": "^25.0.2",
+    "@mw-components/base": "^4.4.1",
+    "@mw-components/taskman": "^25.0.4",
     "@scope/docs": "^0.0.0",
     "pg-native": "^3.0.1"
   },
