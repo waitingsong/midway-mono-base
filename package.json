@@ -50,7 +50,7 @@
     "bp:sync": "git fetch --all -v && git pull origin && git merge bp/main -m \"Merge remote-tracking branch 'bp/main'\" ",
     "bp:syncxo": "git fetch --all -v && git pull origin && git merge bp/main -m \"Merge remote-tracking branch 'bp/main'\" -Xours",
     "bootstrap": "lerna bootstrap --loglevel notice",
-    "postbootstrap": "npm run repo:init",
+    "postbootstrap": "npm run repo:init && zx .scripts/clean_pkgs.mjs",
     "build": "sh .scripts/build.sh",
     "ci": "npm run cov",
     "clean": "lerna clean --loglevel error --yes & lerna run clean",
