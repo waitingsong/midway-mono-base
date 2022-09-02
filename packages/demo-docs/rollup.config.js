@@ -1,4 +1,4 @@
-import { basename } from 'path'
+import { basename } from 'node:path'
 // import commonjs from '@rollup/plugin-commonjs'
 // import resolve from '@rollup/plugin-node-resolve'
 // import { terser } from 'rollup-plugin-terser'
