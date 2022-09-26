@@ -34,7 +34,7 @@
   "scripts": {
     "build": "midway-bin build && npm run db:gen-cjs && tsc-alias",
     "clean": "npm run clean:cache & npm run clean:mw & rm -rf dist/*",
-    "clean:cache": "rm .eslintcache -f",
+    "clean:cache": "rm -rf .eslintcache .tsbuildinfo",
     "clean:lock": "rm package-lock.json -f",
     "clean:mw": "midway-bin clean",
     "cov": "cross-env MIDWAY_SERVER_ENV=unittest TS_NODE_TYPE_CHECK=false TS_NODE_TRANSPILE_ONLY=true TS_NODE_PROJECT=test/tsconfig.json c8 mocha --parallel=false",
@@ -56,8 +56,7 @@
     "tsc": "tsc -b "
   },
   "midway-bin-clean": [
-    ".vscode/.tsbuildinfo",
-    ".vscode/.tsbuildinfo.*",
+    ".tsbuildinfo",
     ".vscode/.jest-cache",
     "dist",
     "logs",
