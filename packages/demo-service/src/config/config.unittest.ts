@@ -1,15 +1,15 @@
 // config for `npm run cov|ci`
-import type { AppConfig } from '@mw-components/base'
-import { initPathArray } from '@mw-components/jwt'
+import type { AppConfig } from '@mwcp/base'
+import { initPathArray } from '@mwcp/jwt'
 import {
   DbConfig,
   KmoreSourceConfig,
-} from '@mw-components/kmore'
+} from '@mwcp/kmore'
 import {
   ClientURL,
   DbReplica as TaskDbReplica,
   ServerURL,
-} from '@mw-components/taskman'
+} from '@mwcp/taskman'
 
 import { DbReplica } from './config.types'
 
@@ -61,21 +61,10 @@ const master: DbConfig = {
       password: process.env['POSTGRES_PASSWORD'] ? process.env['POSTGRES_PASSWORD'] : 'postgres',
     },
   },
-  enableTracing: true,
-  tracingResponse: true,
 }
 export const kmoreConfig: KmoreSourceConfig<DbReplica> = {
   dataSource: {
     master,
-  },
-}
-
-
-export const tracerConfig: AppConfig['tracerConfig'] = {
-  tracingConfig: {
-    reporter: {
-      agentHost: process.env['JAEGER_AGENT_HOST'] ?? '192.168.1.248',
-    },
   },
 }
 

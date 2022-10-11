@@ -1,6 +1,6 @@
 import { Inject } from '@midwayjs/decorator'
-import { RootClass as Root } from '@mw-components/base'
-import { ClientService } from '@mw-components/taskman'
+import { RootClass as Root } from '@mwcp/base'
+import { ClientService } from '@mwcp/taskman'
 
 import { ErrorCode, JwtUser } from '../types'
 

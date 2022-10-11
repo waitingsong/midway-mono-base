@@ -4,8 +4,8 @@ import type {
   Application,
   IMidwayContainer,
   NpmPkg,
-} from '@mw-components/base'
-import { JwtComponent } from '@mw-components/jwt'
+} from '@mwcp/base'
+import { JwtComponent } from '@mwcp/jwt'
 import supertest, { SuperTest } from 'supertest'
 
 

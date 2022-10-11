@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { relative } from 'node:path'
 
-import { TaskClientConfig } from '@mw-components/taskman'
+import { TaskClientConfig } from '@mwcp/taskman'
 
 import { testConfig } from './root.config'
 

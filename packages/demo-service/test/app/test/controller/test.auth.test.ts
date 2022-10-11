@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { relative } from 'node:path'
 
 import { createHttpRequest } from '@midwayjs/mock'
-import { JwtMsg, schemePrefix } from '@mw-components/jwt'
+import { JwtMsg, schemePrefix } from '@mwcp/jwt'
 
 import { testConfig } from '@/root.config'
 

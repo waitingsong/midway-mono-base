@@ -1,10 +1,11 @@
-import { JwtState } from '@mw-components/jwt'
+import { JwtState } from '@mwcp/jwt'
 
 import { JwtUser } from './types'
 
 
 declare module '@midwayjs/koa/dist/interface' {
   interface Context {
+    // @ts-ignore
     jwtState: JwtState<JwtUser>
   }
 }

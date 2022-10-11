@@ -10,7 +10,7 @@ psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U$POSTGRES_USER -d $POSTGRES_DB -c "SH
 echo -e "\n"
 
 
-SQL_DIR="$cwd/node_modules/@mw-components/taskman/dist/database/"
+SQL_DIR="$cwd/node_modules/@mwcp/taskman/dist/database/"
 cd "$SQL_DIR"
 . ./init-db.sh
 

@@ -1,18 +1,19 @@
-import { AliOssSourceConfig } from '@mw-components/ali-oss'
+import { AliOssConfig } from '@mwcp/ali-oss'
 import type {
   AppConfig,
   Context,
-} from '@mw-components/base'
-import { initPathArray } from '@mw-components/jwt'
+} from '@mwcp/base'
+import { initPathArray } from '@mwcp/jwt'
 import {
   DbConfig,
   KmoreSourceConfig,
-} from '@mw-components/kmore'
+} from '@mwcp/kmore'
 import {
   ClientURL,
   DbReplica as TaskDbReplica,
   ServerURL,
-} from '@mw-components/taskman'
+  SupportTaskMapType,
+} from '@mwcp/taskman'
 import { ErrorCode } from '@scope/docs'
 
 import {
@@ -23,6 +24,9 @@ import {
 import { dbDict, DbModel } from './db.model'
 
 
+const jwtConfig = {
+  secret: process.env['JWT_SECRET'],
+}
 const jwtIgnoreArr = [
   ...initPathArray,
   '/',
@@ -44,11 +48,11 @@ const master: DbConfig<DbModel, Context> = {
   config: {
     client: 'pgnative',
     connection: {
-      host: process.env['POSTGRES_HOST'] ? process.env['POSTGRES_HOST'] : '',
+      host: process.env['POSTGRES_HOST'] ? process.env['POSTGRES_HOST'] : 'localhost',
       port: process.env['POSTGRES_PORT'] ? +process.env['POSTGRES_PORT'] : 5432,
-      database: process.env['POSTGRES_DB'] ? process.env['POSTGRES_DB'] : '',
-      user: process.env['POSTGRES_USER'] ? process.env['POSTGRES_USER'] : '',
-      password: process.env['POSTGRES_PASSWORD'] ? process.env['POSTGRES_PASSWORD'] : '',
+      database: process.env['POSTGRES_DB'] ? process.env['POSTGRES_DB'] : 'db_ci_mw',
+      user: process.env['POSTGRES_USER'] ? process.env['POSTGRES_USER'] : 'postgres',
+      password: process.env['POSTGRES_PASSWORD'] ? process.env['POSTGRES_PASSWORD'] : 'postgres',
     },
     pool: {
       min: 0,
@@ -58,9 +62,6 @@ const master: DbConfig<DbModel, Context> = {
     acquireConnectionTimeout: 30000,
   },
   dict: dbDict,
-  sampleThrottleMs: 500,
-  enableTracing: true,
-  tracingResponse: true,
 }
 const kmoreConfig: KmoreSourceConfig<DbReplica> = {
   dataSource: {
@@ -68,17 +69,9 @@ const kmoreConfig: KmoreSourceConfig<DbReplica> = {
   },
 }
 
-
-const tracerConfig: AppConfig['tracerConfig'] = {
-  tracingConfig: {
-    sampler: {
-      type: 'probabilistic',
-      param: process.env['JAEGER_SAMPLE_RATIO'] ? +process.env['JAEGER_SAMPLE_RATIO'] : 0.1,
-    },
-    reporter: {
-      agentHost: process.env['JAEGER_AGENT_HOST'] ?? '127.0.0.1',
-    },
-  },
+const exporterEndpoint = process.env['OTEL_EXPORTER_OTLP_ENDPOINT'] ?? 'http://localhost:4317'
+const otlpGrpcExporterConfig: AppConfig['otlpGrpcExporterConfig'] = {
+  url: exporterEndpoint,
 }
 
 
@@ -87,18 +80,20 @@ const taskServerConfig: AppConfig['taskServerConfig'] = {
     [TaskDbReplica.taskMaster]: {
       config: {
         connection: {
-          host: process.env['POSTGRES_HOST'] ?? '',
+          host: process.env['POSTGRES_HOST'] ? process.env['POSTGRES_HOST'] : 'localhost',
           port: process.env['POSTGRES_PORT'] ? +process.env['POSTGRES_PORT'] : 5432,
-          database: process.env['POSTGRES_DB'] ?? '',
-          user: process.env['POSTGRES_USER'] ?? '',
-          password: process.env['POSTGRES_PASSWORD'] ?? '',
+          database: process.env['POSTGRES_DB'] ? process.env['POSTGRES_DB'] : 'db_ci_mw',
+          user: process.env['POSTGRES_USER'] ? process.env['POSTGRES_USER'] : 'postgres',
+          password: process.env['POSTGRES_PASSWORD'] ? process.env['POSTGRES_PASSWORD'] : 'postgres',
         },
       },
     },
   },
 }
+const supportTaskMap: SupportTaskMapType = new Map([ [1, '*'] ])
 const taskClientConfig: AppConfig['taskClientConfig'] = {
-  host: process.env['TASK_AGENT_HOST'] ?? '',
+  host: process.env['TASK_AGENT_HOST'] ? process.env['TASK_AGENT_HOST'] : 'http://127.0.0.1:7001',
+  supportTaskMap,
 }
 
 
@@ -108,7 +103,7 @@ const clientConfig = {
   endpoint: process.env['ALI_OSS_ENDPOINT'] ?? 'https://oss-cn-hangzhou.aliyuncs.com',
   bucket: process.env['ALI_OSS_BUCKET'] ?? '',
 }
-const aliOssConfig: AliOssSourceConfig<OssClientKey> = {
+const aliOssConfig: AliOssConfig<OssClientKey> = {
   dataSource: {
     ossMain: clientConfig,
   },
@@ -130,15 +125,14 @@ const appConfig: AppConfig = {
   keys: '1559532739677_8888',
   aliOssConfig,
   globalErrorCode: ErrorCode,
-  jwtConfig: {
-    secret: process.env['JWT_SECRET'],
-  },
+  jwtConfig,
   jwtMiddlewareConfig,
   kmoreConfig,
   svcHosts,
+  otlpGrpcExporterConfig,
+  exporterEndpoint,
   taskClientConfig,
   taskServerConfig,
-  tracerConfig,
 }
 export default appConfig
 

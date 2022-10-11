@@ -1,5 +1,5 @@
 import assert from 'assert/strict'
-import { IncomingHttpHeaders } from 'http'
+import type { IncomingHttpHeaders } from 'http'
 
 import {
   Config,
@@ -9,8 +9,6 @@ import {
   Inject,
   Provide,
 } from '@midwayjs/decorator'
-import { HeadersKey } from '@mw-components/base'
-import { TracerManager } from '@mw-components/jaeger'
 
 import { TestService } from './test.service'
 
@@ -79,70 +77,22 @@ export class TestController extends BaseController {
   @ContentType('text')
   @Get('/fetch')
   async fetchSelf(): Promise<string> {
-    const { headers } = this.ctx.request
-    assert(typeof headers[HeadersKey.traceId] === 'undefined')
-
-    const tracerManager = await this.ctx.requestContext.getAsync(TracerManager)
-    const spanHeader = tracerManager.headerOfCurrentSpan()
-    assert(spanHeader)
-    const expect = {
-      reqId: this.ctx.reqId,
-      traceId: spanHeader[HeadersKey.traceId],
-      traceIdArr: spanHeader[HeadersKey.traceId].split(':'),
-    }
-
     const ret = await this.getJson<TestData>('http://localhost:7001/test/_fetch_target')
-
-    const body = {
-      firstTraceId: expect.traceId,
-      fisrtHeaders: this.ctx.request.headers,
-      upstreamData: ret.data,
-    }
-    assert(expect.reqId, body.upstreamData.reqId)
-
-    const upstreamTraceId = body.upstreamData.headers[HeadersKey.traceId] as string
-    assert(upstreamTraceId)
-    const upstreamTraceIdArr = upstreamTraceId.split(':')
-    assert(expect.traceIdArr[0] === upstreamTraceIdArr[0])
-    assert(expect.traceIdArr[1] !== upstreamTraceIdArr[1])
-    assert(expect.traceIdArr[2] === '0')
-    assert(expect.traceIdArr[0] === upstreamTraceIdArr[2])
-
-    const { nextTraceId } = body.upstreamData
-    assert(typeof nextTraceId === 'string' && nextTraceId.length)
-    const nextTraceIdArr = nextTraceId.split(':')
-    assert(nextTraceIdArr[0] === upstreamTraceIdArr[0])
-    assert(nextTraceIdArr[2] === upstreamTraceIdArr[1])
-
-    return JSON.stringify(body, null, 2)
+    assert(ret)
+    return JSON.stringify(ret, null, 2)
   }
 
   @Get('/_fetch_target')
   async fetchTarget(): Promise<TestData> {
-    const { headers } = this.ctx.request
-    const traceId = headers[HeadersKey.traceId]
-    this.logger.log({ traceId })
-    assert(typeof traceId === 'string' && traceId.length, 'Should accese path: \'/test/fetch\' for test')
-
-    const tracerManager = await this.ctx.requestContext.getAsync(TracerManager)
-    const spanHeader = tracerManager.headerOfCurrentSpan()
-    assert(spanHeader)
-    const nextTraceId: string = spanHeader[HeadersKey.traceId]
     const body = {
-      reqId: this.ctx.reqId,
-      nextTraceId,
       headers: this.ctx.request.headers,
     }
-    assert(body.reqId === this.ctx.reqId)
-
     return body
   }
 
 }
 
 interface TestData {
-  reqId: string
   headers: IncomingHttpHeaders
-  nextTraceId: string
 }
 

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { relative } from 'node:path'
 
-import type { JsonResp } from '@mw-components/base'
+import type { JsonResp } from '@mwcp/base'
 
 import { testConfig, TestRespBody } from '@/root.config'
 
@@ -12,7 +12,7 @@ describe(filename, () => {
 
   const path = '/unittest/oss_mkdir'
 
-  it('Should work', async () => {
+  it.skip('Should work', async () => {
     const { httpRequest } = testConfig
 
     const resp = await httpRequest

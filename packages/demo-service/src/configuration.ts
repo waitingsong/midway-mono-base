@@ -9,25 +9,22 @@ import {
   Logger,
 } from '@midwayjs/decorator'
 import { IMidwayLogger } from '@midwayjs/logger'
-import * as base from '@mw-components/base'
-import * as tm from '@mw-components/taskman'
+import { Application } from '@mwcp/base'
+
+import { useComponents } from './imports'
 
 
 @Configuration({
-  imports: [
-    base,
-    tm,
-  ],
   importConfigs: [join(__dirname, 'config')],
+  imports: useComponents,
 })
 export class ContainerConfiguration implements ILifeCycle {
 
-  @App() readonly app: base.Application
+  @App() readonly app: Application
 
   @Logger() readonly logger: IMidwayLogger
 
   @Inject() readonly informationService: MidwayInformationService
-
 
   // 启动前处理
   async onReady(): Promise<void> {

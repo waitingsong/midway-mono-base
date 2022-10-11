@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { relative } from 'node:path'
 
 import { createHttpRequest } from '@midwayjs/mock'
-import type { JsonResp } from '@mw-components/base'
+import type { JsonResp } from '@mwcp/base'
 import {
   ClientURL,
   ServerURL,
@@ -11,7 +11,7 @@ import {
   TaskFullDTO,
   initTaskDTO,
   AgentController,
-} from '@mw-components/taskman'
+} from '@mwcp/taskman'
 
 import { testConfig } from '@/root.config'
 

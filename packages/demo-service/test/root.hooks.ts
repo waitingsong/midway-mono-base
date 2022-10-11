@@ -7,13 +7,13 @@ import { createApp, close, createHttpRequest } from '@midwayjs/mock'
 import type {
   Application,
   NpmPkg,
-} from '@mw-components/base'
-import { JwtComponent } from '@mw-components/jwt'
-import { DbSourceManager } from '@mw-components/kmore'
+} from '@mwcp/base'
+import { JwtComponent } from '@mwcp/jwt'
+import { DbSourceManager } from '@mwcp/kmore'
 import {
   TaskClientConfig,
   ConfigKey as TCK,
-} from '@mw-components/taskman'
+} from '@mwcp/taskman'
 
 import { testConfig } from './root.config'
 

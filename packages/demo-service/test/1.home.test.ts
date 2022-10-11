@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { relative } from 'node:path'
 
-import type { JsonResp } from '@mw-components/base'
+import type { JsonResp } from '@mwcp/base'
 
 import { testConfig, TestRespBody } from '@/root.config'
 
