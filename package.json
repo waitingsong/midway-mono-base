@@ -12,7 +12,7 @@
     "@midwayjs/mock": "^3.5.0",
     "@midwayjs/swagger": "^3.5.0",
     "@midwayjs/web": "^3.5.0",
-    "@rollup/plugin-commonjs": "22",
+    "@rollup/plugin-commonjs": "23",
     "@rollup/plugin-node-resolve": "15",
     "@swc/core": "^1.2.222",
     "@types/mocha": "10",
