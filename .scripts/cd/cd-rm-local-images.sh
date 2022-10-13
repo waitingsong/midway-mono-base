@@ -48,5 +48,4 @@ cd "$cwd"
 echo -e "\n-------------------------------------------"
 echo -e "       remove local images succeeded"
 echo -e "-------------------------------------------\n\n"
-return 0
 
