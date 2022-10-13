@@ -15,7 +15,7 @@
     "@rollup/plugin-commonjs": "22",
     "@rollup/plugin-node-resolve": "13",
     "@swc/core": "^1.2.222",
-    "@types/mocha": "9",
+    "@types/mocha": "10",
     "@types/node": "18",
     "@types/rimraf": "3",
     "@types/supertest": "^2.0.12",
