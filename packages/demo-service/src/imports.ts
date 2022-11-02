@@ -1,9 +1,9 @@
-import * as base from '@mwcp/boot'
+import * as boot from '@mwcp/boot'
 import * as tm from '@mwcp/taskman'
 
 
 export const useComponents: IComponentInfo[] = [
-  base,
+  boot,
   tm,
 ]
 
