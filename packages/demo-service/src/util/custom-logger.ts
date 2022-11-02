@@ -2,7 +2,7 @@ import { IMidwayLogger, MidwayContextLogger, MidwayTransformableInfo } from '@mi
 import type {
   Application,
   Context,
-} from '@mwcp/base'
+} from '@mwcp/boot'
 
 import { genISO8601String } from '~/util/ext'
 

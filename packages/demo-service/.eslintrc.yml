@@ -9,7 +9,7 @@ rules:
     - 2
     - packageDir:
       - ./
-      - ../../node_modules/@mwcp/base/
+      - ../../node_modules/@mwcp/boot/
       - ../../node_modules/@mwcp/share/
 
 ignorePatterns:

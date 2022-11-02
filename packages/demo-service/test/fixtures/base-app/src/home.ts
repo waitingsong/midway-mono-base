@@ -3,7 +3,7 @@ import {
   Controller,
   Get,
 } from '@midwayjs/decorator'
-import type { Context } from '@mwcp/base'
+import type { Context } from '@mwcp/boot'
 
 import { TestRespBody } from '@/root.config'
 

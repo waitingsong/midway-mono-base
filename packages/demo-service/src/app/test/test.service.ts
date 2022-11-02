@@ -1,5 +1,5 @@
 import { Provide } from '@midwayjs/decorator'
-import { JsonObject, JwtResult } from '@mwcp/base'
+import { JsonObject, JwtResult } from '@mwcp/boot'
 
 import { BaseService } from '~/interface'
 

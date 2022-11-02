@@ -9,7 +9,7 @@ import {
   Logger,
 } from '@midwayjs/decorator'
 import { IMidwayLogger } from '@midwayjs/logger'
-import { Application } from '@mwcp/base'
+import { Application } from '@mwcp/boot'
 
 import { useComponents } from './imports'
 

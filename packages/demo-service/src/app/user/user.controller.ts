@@ -6,7 +6,7 @@ import {
   Query,
 } from '@midwayjs/decorator'
 import { Validate } from '@midwayjs/validate'
-import { JsonResp } from '@mwcp/base'
+import { JsonResp } from '@mwcp/boot'
 
 import { UserService } from './user.service'
 import { GetUserDTO, UserDetailDTO } from './user.types'

@@ -2,7 +2,7 @@
 import assert from 'node:assert'
 
 import { Init, Inject } from '@midwayjs/decorator'
-import type { Context, DbTransaction } from '@mwcp/base'
+import type { Context, DbTransaction } from '@mwcp/boot'
 import { DbManager, Kmore } from '@mwcp/kmore'
 
 import { RootClass } from './root.class'

@@ -7,7 +7,7 @@ import { createApp, close, createHttpRequest } from '@midwayjs/mock'
 import type {
   Application,
   NpmPkg,
-} from '@mwcp/base'
+} from '@mwcp/boot'
 import { JwtComponent } from '@mwcp/jwt'
 import { DbSourceManager } from '@mwcp/kmore'
 import {

@@ -1,5 +1,5 @@
 import { Inject } from '@midwayjs/decorator'
-import { RootClass as Root } from '@mwcp/base'
+import { RootClass as Root } from '@mwcp/boot'
 import { ClientService } from '@mwcp/taskman'
 
 import { ErrorCode, JwtUser } from '../types'

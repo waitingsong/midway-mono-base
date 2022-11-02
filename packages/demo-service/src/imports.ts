@@ -1,4 +1,4 @@
-import * as base from '@mwcp/base'
+import * as base from '@mwcp/boot'
 import * as tm from '@mwcp/taskman'
 
 

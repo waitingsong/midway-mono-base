@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { relative } from 'node:path'
 
-import type { JsonResp } from '@mwcp/base'
+import type { JsonResp } from '@mwcp/boot'
 
 import { testConfig } from '@/root.config'
 import { HeapDumpRet, debugPwd } from '~/app/debug/debug.controller'

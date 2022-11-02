@@ -1,5 +1,5 @@
 // config for `npm run cov|ci`
-import type { AppConfig } from '@mwcp/base'
+import type { AppConfig } from '@mwcp/boot'
 import { initPathArray } from '@mwcp/jwt'
 import {
   DbConfig,

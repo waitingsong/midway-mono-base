@@ -2,7 +2,7 @@ import { AliOssConfig } from '@mwcp/ali-oss'
 import type {
   AppConfig,
   Context,
-} from '@mwcp/base'
+} from '@mwcp/boot'
 import { initPathArray } from '@mwcp/jwt'
 import {
   DbConfig,
