@@ -18,7 +18,16 @@ date
 # else
 #   npm i --prod --no-audit --no-optional --legacy-peer-deps
 # fi
-npm i --no-audit --omit=dev --omit=optional --legacy-peer-deps
+
+if [ -z $NPM_DIST ]; then
+  npm i --no-audit --omit=dev --omit=optional --legacy-peer-deps
+else
+  echo $NPM_DIST
+  npm i --no-audit --omit=dev --omit=optional --legacy-peer-deps --disturl=$NPM_DIST
+  # npm i --no-audit --omit=dev --omit=optional --legacy-peer-deps --disturl=https://npmmirror.com/dist/
+fi
+
+
 date
 du -sh node_modules
 

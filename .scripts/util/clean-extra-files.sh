@@ -55,3 +55,7 @@ find $(find . -type d -iname "source-map") -maxdepth 1 -type d -iname "dist" -pr
 
 find $(find . -type d -iname "winston") -maxdepth 1 -type d -iname "dist" -print0 | xargs -0II rm -rf I
 
+# opentelemetry
+find $(find . -type d -iname "@opentelemetry") -maxdepth 3 -type d -iname "esm" -print0 | xargs -0II rm -rf I
+find $(find . -type d -iname "@opentelemetry") -maxdepth 3 -type d -iname "esnext" -print0 | xargs -0II rm -rf I
+

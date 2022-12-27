@@ -3,7 +3,7 @@ set -e
 
 free -m
 df -hT
-ls -l
+ls -al
 
 if [ -d packages ]; then
   du -sh packages/*
