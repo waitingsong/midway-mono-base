@@ -6,7 +6,7 @@
   "devDependencies": {
     "@commitlint/cli": "17",
     "@commitlint/config-conventional": "17",
-    "@midwayjs/cli": "^2.0.5",
+    "@midwayjs/cli": "^2.0.8",
     "@midwayjs/mock": "^3.9.0",
     "@midwayjs/swagger": "^3.9.3",
     "@midwayjs/web": "^3.9.0",
@@ -47,7 +47,7 @@
     "bp:add": "git remote add bp https://github.com/waitingsong/midway-mono-base",
     "bp:sync": "git fetch --all -v && git pull origin && git merge bp/main -m \"Merge remote-tracking branch 'bp/main'\" ",
     "bp:syncxo": "git fetch --all -v && git pull origin && git merge bp/main -m \"Merge remote-tracking branch 'bp/main'\" -Xours",
-    "bootstrap": "lerna bootstrap --loglevel notice -- --dist=https://npmmirror.com/dist/",
+    "bootstrap": "lerna bootstrap --loglevel notice -- --disturl=https://npmmirror.com/dist/",
     "postbootstrap": "npm run repo:init && zx .scripts/clean_pkgs.mjs",
     "build": "sh .scripts/build.sh",
     "ci": "npm run cov",
