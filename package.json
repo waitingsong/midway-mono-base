@@ -6,7 +6,7 @@
   "devDependencies": {
     "@commitlint/cli": "17",
     "@commitlint/config-conventional": "17",
-    "@midwayjs/cli": "^2.0.8",
+    "@midwayjs/cli": "^2.0.9",
     "@midwayjs/mock": "^3.9.0",
     "@midwayjs/swagger": "^3.9.3",
     "@midwayjs/web": "^3.9.0",
@@ -21,7 +21,7 @@
     "coveralls": "3",
     "debug": "^4.3.4",
     "eslint": "8",
-    "kmore-cli": "^52.0.0",
+    "kmore-cli": "^53.0.0",
     "lerna-relinker": "^1.5.0",
     "madge": "^5.0.1",
     "mocha": "10",
