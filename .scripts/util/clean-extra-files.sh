@@ -50,6 +50,8 @@ find $(find . -type d -iname "rxjs") -maxdepth 2 -type d -iname "types" -print0 
 find $(find . -type d -iname "sqlite3") -maxdepth 1 -type d -iname "src" -print0 | xargs -0II rm -rf I
 find $(find . -type d -iname "sqlite3") -maxdepth 1 -type d -iname "deps" -print0 | xargs -0II rm -rf I
 find $(find . -type d -iname "sqlite3") -maxdepth 1 -type d -iname "tools" -print0 | xargs -0II rm -rf I
+find $(find . -type d -iname "sqlite3") -maxdepth 1 -type d -iname "build-tmp-*" -print0 | xargs -0II rm -rf I
+find $(find . -type d -iname "sqlite3") -maxdepth 1 -type d -iname "build-tmp-napi-v6" -print0 | xargs -0II rm -rf I
 
 find $(find . -type d -iname "source-map") -maxdepth 1 -type d -iname "dist" -print0 | xargs -0II rm -rf I
 
