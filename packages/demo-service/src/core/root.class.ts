@@ -1,4 +1,4 @@
-import { Inject } from '@midwayjs/decorator'
+import { Inject } from '@midwayjs/core'
 import { RootClass as Root } from '@mwcp/boot'
 import { ClientService } from '@mwcp/taskman'
 

@@ -4,7 +4,7 @@ import {
   Inject,
   Param,
   Query,
-} from '@midwayjs/decorator'
+} from '@midwayjs/core'
 import { Validate } from '@midwayjs/validate'
 import { JsonResp } from '@mwcp/boot'
 

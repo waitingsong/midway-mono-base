@@ -8,7 +8,7 @@ import {
   Get,
   Inject,
   Provide,
-} from '@midwayjs/decorator'
+} from '@midwayjs/core'
 
 import { TestService } from './test.service'
 

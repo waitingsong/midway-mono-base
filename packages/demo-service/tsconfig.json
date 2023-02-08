@@ -6,7 +6,7 @@
     "declarationMap": false,
     "exactOptionalPropertyTypes": false,
     "module": "commonjs",
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "outDir": "dist",
     "paths": {
       "~/*": ["./src/*"],

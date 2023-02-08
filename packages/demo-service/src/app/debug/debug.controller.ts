@@ -4,7 +4,7 @@ import {
   Inject,
   Param,
   Provide,
-} from '@midwayjs/decorator'
+} from '@midwayjs/core'
 
 import { DebugService } from './debug.service'
 

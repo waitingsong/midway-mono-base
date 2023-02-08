@@ -1,13 +1,14 @@
 import 'tsconfig-paths/register'
 import { join } from 'node:path'
 
-import { ILifeCycle, MidwayInformationService } from '@midwayjs/core'
 import {
   App,
   Configuration,
+  ILifeCycle,
   Inject,
   Logger,
-} from '@midwayjs/decorator'
+  MidwayInformationService,
+} from '@midwayjs/core'
 import { IMidwayLogger } from '@midwayjs/logger'
 import { Application } from '@mwcp/boot'
 

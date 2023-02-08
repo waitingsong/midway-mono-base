@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import assert from 'node:assert'
 
-import { Init, Inject } from '@midwayjs/decorator'
+import { Init, Inject } from '@midwayjs/core'
 import type { Context, DbTransaction } from '@mwcp/boot'
 import { DbManager, Kmore } from '@mwcp/kmore'
 

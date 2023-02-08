@@ -2,7 +2,7 @@ import { constants } from 'node:fs'
 import { access, mkdir } from 'node:fs/promises'
 import { join } from 'node:path'
 
-import { Provide } from '@midwayjs/decorator'
+import { Provide } from '@midwayjs/core'
 import {
   genISO8601String,
   saveHeapSnapshot,

@@ -1,4 +1,4 @@
-import { Init, Provide } from '@midwayjs/decorator'
+import { Init, Provide } from '@midwayjs/core'
 
 import {
   GetUserDTO,

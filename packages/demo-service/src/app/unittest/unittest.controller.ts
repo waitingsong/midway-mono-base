@@ -3,7 +3,7 @@ import assert from 'node:assert'
 import {
   Controller,
   Get,
-} from '@midwayjs/decorator'
+} from '@midwayjs/core'
 
 import { TestRespBody } from './types'
 

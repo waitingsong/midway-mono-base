@@ -5,7 +5,7 @@ import {
   Get,
   Inject,
   Provide,
-} from '@midwayjs/decorator'
+} from '@midwayjs/core'
 import { AppInfomation } from '@mwcp/boot'
 
 import { HomeService } from './home.service'

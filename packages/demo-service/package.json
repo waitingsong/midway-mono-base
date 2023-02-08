@@ -5,8 +5,8 @@
   "private": true,
   "bin": {},
   "dependencies": {
-    "@mwcp/boot": "^3.0.9",
-    "@mwcp/taskman": "^31.0.9",
+    "@mwcp/boot": "^3.3.2",
+    "@mwcp/taskman": "^31.3.2",
     "@scope/docs": "^0.0.0",
     "pg-native": "^3.0.1"
   },
