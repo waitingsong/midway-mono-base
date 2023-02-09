@@ -65,6 +65,10 @@ f7="jest.config.js"
 f8="tsconfig.cjs.json"
 f9="src/*.ts"
 
+f01=".eslintrc.yml"
+f02=".nycrc.json"
+f03="bootstrap.js"
+
 d2="src/util"
 d3="src/middleware"
 d4="src/core"
@@ -80,6 +84,9 @@ cp "$tplDir/$f4" "$pkgPath/"
 cp "$tplDir/$f6" "$pkgPath/"
 cp "$tplDir/$f7" "$pkgPath/"
 cp "$tplDir/$f8" "$pkgPath/"
+cp "$tplDir/$f01" "$pkgPath/"
+cp "$tplDir/$f02" "$pkgPath/"
+cp "$tplDir/$f03" "$pkgPath/"
 echo "" >> "$pkgPath/$fReadme"
 
 CMD="$tplDir/$f9 $pkgPath/src/"
@@ -97,7 +104,7 @@ echo -e "Updating file: $pkgJson"
 sed -i "s#$tplName#${pkgFullName}#g" "$pkgJson"
 sed -i "s#$svcTitle#${pkgFullName}#g" "$pkgJson"
 sed -i "s#\(private.\+\)true#\1false#g" "$pkgJson"
-sed -i "s#${pkgScope}/docs#$svcTitle#g" package.json
+sed -i "s#$pkgScope/docs#$svcTitle#g" package.json
 repo=$(git remote get-url origin)
 if [ -n "$repo" ]; then
   sed -i "s#\(git+https://\)#${repo}#" "$pkgJson"
