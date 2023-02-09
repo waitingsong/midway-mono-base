@@ -70,15 +70,9 @@ if [ "$?" -ne 0 ]; then
 fi
 
 
-echo -e ">>> lerna initializing..."
-#npm run clean
-npm run bootstrap
-#lerna run build # not works on lerna v4
-npm run build
-
 echo -e ">>> lerna publishing..."
 git add --ignore-errors ./packages
-
+git restore .scripts
 git status
 #git diff
 
@@ -91,8 +85,7 @@ fi
 sleep "5s"
 git push --follow-tags origin
 
-set +e
-
+set -e
 tagVer=$(jq -r '.version' $appDir/lerna.json)
 if [ -z "$tagVer" ]; then
   echo -e "Retrieve version of lerna.json failed!"
@@ -107,8 +100,10 @@ if [ "$tagVer" != "$tagVerCur" ]; then
       "$CI_API_V4_URL" \
       $CI_PROJECT_ID \
       v$tagVer
+    # zx $cwd/.scripts/trigger/trigger-publish-completed.mjs --token=$GL_TOKEN --url=$CI_API_V4_URL --pid=$CI_PROJECT_ID --ref=v$tagVer
   fi
 fi
+
 
 set -e
 

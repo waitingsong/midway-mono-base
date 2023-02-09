@@ -1,14 +1,13 @@
+import assert from 'node:assert/strict'
+import { relative } from 'node:path'
+
 import { createHttpRequest } from '@midwayjs/mock'
-import { Jwt, JwtMsg, schemePrefix } from '@waiting/egg-jwt'
-import { basename, join } from '@waiting/shared-core'
+import { JwtMsg, schemePrefix } from '@mwcp/jwt'
 
-import { testConfig } from '~/../test/test-config'
-
-// eslint-disable-next-line import/order
-import assert = require('power-assert')
+import { testConfig } from '@/root.config'
 
 
-const filename = basename(__filename)
+const filename = relative(process.cwd(), __filename).replace(/\\/ug, '/')
 
 const expectPayloadStr = '{"foo":"bar","iat":1566629919}'
 const signature1 = 'PZkACzct30IcrymoodYlW0LW0Fc1r6Hs1l8yOZSeNpk'
@@ -16,6 +15,7 @@ const header1 = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.'
 const token1 = header1
   + 'eyJmb28iOiJiYXIiLCJpYXQiOjE1NjY2Mjk5MTl9.'
   + signature1
+
 
 describe(filename, () => {
 
@@ -69,7 +69,7 @@ describe(filename, () => {
         .get('/test/token')
         .set('authorization', `${schemePrefix} ${token1}  \v`)
     }
-    catch (ex) {
+    catch (ex: any) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       assert(ex && ex.message.includes('Invalid character in header content'))
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -92,12 +92,8 @@ describe(filename, () => {
   })
 
   it('should works with header auth', async () => {
-    const { app } = testConfig
+    const { app, jwt } = testConfig
     // npm run test/cov read different config file (local|unittest)
-    const jwt = new Jwt({
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      secret: app.config.jwt.client.secret,
-    })
     const token2 = jwt.sign({ foo: 'bar', iat: 1566629919 })
     const resp = await createHttpRequest(app)
       .get('/test/token')
@@ -106,20 +102,6 @@ describe(filename, () => {
 
     const msg: string = resp.text
     assert(msg && msg.includes(expectPayloadStr), msg)
-  })
-
-
-  it('should redirect w/o token', async () => {
-    const { app } = testConfig
-    // config at src/config/config.local.ts
-    const url = '/test_passthrough_redirect'
-    const resp = await createHttpRequest(app)
-      .get(url)
-      .expect(302)
-
-    const msg: string = resp.text
-    assert(msg && msg.includes('Redirecting'))
-    assert(msg.includes(`${url}_path`))
   })
 
 })

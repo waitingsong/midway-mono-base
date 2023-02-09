@@ -2,6 +2,5 @@
 export {
   GetUserDTO,
   UserDetailDTO,
-} from '~/interface'
-
+} from '~/types'
 

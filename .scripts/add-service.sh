@@ -34,14 +34,17 @@ if [ -z "$pkgName" ]; then
   echo -e "\n"
   exit 1
 fi
+pkgFullDir="${pkgScope}-${pkgName}"
 
 echo -e "-------------------------------------------"
 echo -e " Initialize package from tpl $tplName"
 echo -e " Name: $pkgFullName "
+echo -e " Folder: $pkgFullDir "
 echo -e "-------------------------------------------"
 
 
-pkgPath="${PKGS}/${pkgName}"
+# pkgPath="${PKGS}/${pkgName}"
+pkgPath="${PKGS}/${pkgFullDir}"
 
 if [ -d "$pkgPath" ]; then
   echo -e "pkg path EXITS!"
@@ -67,7 +70,7 @@ d3="src/middleware"
 d4="src/core"
 d5="src/config"
 d6="src/app/public"
-mkdir -p "$pkgPath/$d2" "$pkgPath/$d3" "$pkgPath/$d4" "$pkgPath/$d5" "$pkgPath/$d6" 
+mkdir -p "$pkgPath/$d2" "$pkgPath/$d3" "$pkgPath/$d4" "$pkgPath/$d5" "$pkgPath/$d6"
 
 echo -e "Copying files to folder: $pkgPath/ ..."
 cp "$tplDir/$f1" "$pkgPath/"
@@ -94,6 +97,7 @@ echo -e "Updating file: $pkgJson"
 sed -i "s#$tplName#${pkgFullName}#g" "$pkgJson"
 sed -i "s#$svcTitle#${pkgFullName}#g" "$pkgJson"
 sed -i "s#\(private.\+\)true#\1false#g" "$pkgJson"
+sed -i "s#${pkgScope}/docs#$svcTitle#g" package.json
 repo=$(git remote get-url origin)
 if [ -n "$repo" ]; then
   sed -i "s#\(git+https://\)#${repo}#" "$pkgJson"

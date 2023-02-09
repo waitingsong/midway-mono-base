@@ -9,8 +9,6 @@ echo -e "-------------------------------------------"
 echo -e "      Collecting coverages process"
 echo -e "-------------------------------------------"
 
-cwd=`pwd`
-
 tmpCovDir="$cwd/tmp.coverage"
 
 rm "$cwd/.nyc_output" -rf

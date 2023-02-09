@@ -3,20 +3,36 @@
   "version": "0.0.0",
   "description": "",
   "private": true,
+  "type": "module",
   "bin": {},
-  "main": "dist/index.cjs.js",
-  "module": "dist/index.js",
-  "types": "src/index.ts",
-  "dependencies": {
-    "@midwayjs/decorator": "^2.11.0",
-    "@waiting/shared-types": "^14.4.0"
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./v1": {
+      "import": "./dist/v1/index.js",
+      "require": "./dist/v1/index.cjs"
+    },
+    "./package.json": "./package.json"
   },
-  "devDependencies": { },
+  "dependencies": {
+    "@midwayjs/validate": "^3.10.6"
+  },
+  "devDependencies": {
+    "cross-env": "7"
+  },
+  "engines": {
+    "node": ">=16.13.0"
+  },
   "files": [
-    "src/**/*.ts",
-    "dist",
+    "tsconfig.json",
     "Dockerfile",
-    "package-lock.json"
+    "src/**/*.ts",
+    "src/**/*.js",
+    "bin/*.js",
+    "dist"
   ],
   "homepage": "",
   "publishConfig": {
@@ -28,13 +44,19 @@
   },
   "license": "",
   "scripts": {
-    "build": "npm run tsc && npm run rp",
-    "clean": "rm -rf dist/* .vscode/.tsbuildinfo",
-    "lint": "eslint --fix --cache src/**/*.ts",
-    "lint:nofix": "eslint --cache src/**/*.ts",
-    "rp": "rollup -c rollup.config.js",
-    "test": "npm run lint:nofix",
-    "tsc": "tsc -p tsconfig.json",
-    "tsc:w": "tsc -p tsconfig.json -w"
+    "build": "npm run tsc && npm run db:gen && npm run rp",
+    "clean": "npm run clean:lock & npm run clean:cache & rm -rf dist/* -rf",
+    "clean:cache": "rm -rf .eslintcache .tsbuildinfo",
+    "clean:lock": "rm package-lock.json -f",
+    "cov": "cross-env TS_NODE_PROJECT=test/tsconfig.json c8 mocha --loader=ts-node/esm --parallel=false",
+    "db:gen": "kmore gen --project tsconfig.json --path ./src",
+    "db:gen-cjs": "kmore gen --project tsconfig.json --path ./src --format cjs",
+    "lint": "eslint --fix --cache {src,test}/**/*.ts",
+    "lint:nofix": "eslint --cache {src,test}/**/*.ts",
+    "purge": "npm run clean && rm node_modules -rf",
+    "rp": "rollup -c rollup.config.js --context this",
+    "test": "cross-env TS_NODE_PROJECT=test/tsconfig.json mocha --loader=ts-node/esm",
+    "test:local": "cross-env TS_NODE_PROJECT=test/tsconfig.json ../../node_modules/.bin/mocha --loader=ts-node/esm --parallel=false",
+    "tsc": "tsc -b "
   }
 }

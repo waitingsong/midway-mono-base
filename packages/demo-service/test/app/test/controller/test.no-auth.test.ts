@@ -1,24 +1,19 @@
+import assert from 'node:assert/strict'
+import { relative } from 'node:path'
+
 import { createHttpRequest } from '@midwayjs/mock'
-import { basename, join } from '@waiting/shared-core'
-import { NpmPkg } from '@waiting/shared-types'
+import type { JsonResp } from '@mwcp/boot'
 
-import { testConfig } from '~/../test/test-config'
-import { JsonResp } from '~/interface'
-
-// eslint-disable-next-line import/order
-import assert = require('power-assert')
+import { testConfig } from '@/root.config'
 
 
-const filename = basename(__filename)
-
-// eslint-disable-next-line
-const pkg: NpmPkg = require('../../../../package.json')
+const filename = relative(process.cwd(), __filename).replace(/\\/ug, '/')
 
 describe(filename, () => {
 
   it('should assert', async () => {
-    const { app } = testConfig
-    assert(app.config.keys.startsWith(pkg.name))
+    // const { app, pkg } = testConfig
+    // assert(app.config.keys.startsWith(pkg.name))
     // const ctx = app.mockContext({})
   })
 

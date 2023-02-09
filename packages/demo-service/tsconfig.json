@@ -1,41 +1,28 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
     "declaration": false,
-    "emitDecoratorMetadata": true,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "incremental": true,
+    "declarationMap": false,
+    "exactOptionalPropertyTypes": false,
     "module": "commonjs",
-    "newLine": "lf",
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedIndexedAccess": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "moduleResolution": "nodenext",
     "outDir": "dist",
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": ["./src/*"],
+      "@/*": ["./test/*"]
     },
-    "pretty": true,
-    "skipLibCheck": true,
-    "sourceMap": true,
-    "strict": true,
-    "strictPropertyInitialization": false,
-    "target": "ES2020",
-    "tsBuildInfoFile": ".vscode/.tsbuildinfo",
-    "types" : ["jest", "mocha", "node"]
+    "target": "ES2022",
+    "tsBuildInfoFile": ".tsbuildinfo"
+  },
+  "ts-node": {
+    "esm": true,
+    "experimentalResolver": true,
+    "experimentalSpecifierResolution": "node",
+    "preferTsExts": true,
+    "swc": true
   },
   "include": [
     "src/**/*.ts"
-  ],
-  "exclude": [
-    "asset",
-    "app/public",
-    "app/views",
-    "dist",
-    "node_modules*",
-    "test",
-    "**/*.d.ts",
-    "**/*.spec.ts"
   ]
 }

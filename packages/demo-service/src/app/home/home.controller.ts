@@ -5,29 +5,31 @@ import {
   Get,
   Inject,
   Provide,
-} from '@midwayjs/decorator'
+} from '@midwayjs/core'
+import { AppInfomation } from '@mwcp/boot'
 
 import { HomeService } from './home.service'
 
-import { BaseController, NpmPkg } from '~/interface'
+import { BaseController } from '~/interface'
 
 
 @Provide()
 @Controller('/')
 export class HomeController extends BaseController {
 
-  @Config() readonly pkgJson: NpmPkg
   @Config() readonly welcomeMsg: string
 
   @Inject() readonly svc: HomeService
 
   @ContentType('text')
-  @Get('/', { middleware: ['apiMiddleware'] })
+  @Get('/')
   index(): string {
-    const { reqId } = this.ctx
-    let body = `${this.welcomeMsg} - ${this.ctx.api.reqTimeStr}`
-    body += `\npkgName: "${this.pkgJson.name}"\npkgVer: "${this.pkgJson.version ?? 'n/a'}"`
-    body += `\nreqId: "${reqId}"`
+    let body = this.welcomeMsg
+    const info: AppInfomation = this.svc.appInfo()
+    Object.entries(info).forEach(([key, val]) => {
+      body += `\n${key}: "${val}"`
+    })
+    body += '\n'
     return body
   }
 
@@ -38,17 +40,21 @@ export class HomeController extends BaseController {
   }
 
   @ContentType('text')
-  @Get('/hello', { middleware: ['apiMiddleware'] })
+  @Get('/hello')
   hello(): string {
-    let msg = `${this.welcomeMsg} - ${this.ctx.api.reqTimeStr}`
-    msg += `\npkgName: "${this.pkgJson.name}"\npkgVer: "${this.pkgJson.version ?? 'n/a'}"`
-    return msg
+    let body = this.welcomeMsg
+    const info = this.svc.appInfo()
+    Object.entries(info).forEach(([key, val]) => {
+      body += `\n${key}: "${val}"`
+    })
+    body += '\n'
+    return body
   }
 
   @ContentType('text')
   @Get('/ip')
   async ip(): Promise<string> {
-    const body = this.svc.retrieveGatewayIp()
+    const body = await this.svc.retrieveGatewayIp()
     return body
   }
 

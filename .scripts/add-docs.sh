@@ -33,14 +33,17 @@ if [ -z "$pkgName" ]; then
   echo -e "\n"
   exit 1
 fi
+pkgFullDir="${pkgScope}-${pkgName}"
 
 echo -e "-------------------------------------------"
 echo -e " Initialize package from tpl $tplName"
 echo -e " Name: $pkgFullName "
+echo -e " Folder: $pkgFullDir "
 echo -e "-------------------------------------------"
 
 
-pkgPath="${PKGS}/${pkgName}"
+# pkgPath="${PKGS}/${pkgName}"
+pkgPath="${PKGS}/${pkgFullDir}"
 
 if [ -d "$pkgPath" ]; then
   echo -e "pkg path EXITS!"

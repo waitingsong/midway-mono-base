@@ -5,71 +5,90 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Midway Debug",
+      "name": "Mocha Tests",
       "type": "node",
-      "autoAttachChildProcesses": true,
-      "console": "integratedTerminal",
-      "env": {
-        "NODE_ENV": "local",
-        "TS_NODE_TYPE_CHECK": "false",
-        "TS_NODE_TRANSPILE_ONLY": "true",
-        "POSTGRES_HOST": "",
-        "POSTGRES_PORT": "5432",
-        "POSTGRES_DB": "",
-        "POSTGRES_USER": "",
-        "POSTGRES_PASSWORD": "",
-      },
-      "port": 9229,
-      // "preLaunchTask": "TypeScript compile",
-      "protocol": "auto",
-      "request": "launch",
-      "restart": true,
-      "runtimeArgs": [
-        "run",
-        "debug",
-        "--",
-        "--inspect-brk"
+      "args": [
+        "-u",
+        "bdd",
+        "--timeout",
+        "999999",
+        "--colors",
+        "--parallel=false"
       ],
-      "runtimeExecutable": "npm",
-      "skipFiles": [
-        "${workspaceFolder}/../../node_modules/rxjs/**/*.js",
-        "${workspaceFolder}/node_modules/rxjs/**/*.js",
-        "<node_internals>/**/*.js"
-      ],
-      "timeout": 30000
-    },
-    {
-      "name": "Midway TEST",
-      "type": "node",
-      "autoAttachChildProcesses": true,
-      "console": "integratedTerminal",
+      "console": "internalConsole",
       "env": {
-        "NODE_ENV": "local",
-        "POSTGRES_HOST": "",
+        "MIDWAY_SERVER_ENV": "unittest",
+        "NODE_ENV": "unittest",
+        "OTEL_EXPORTER_OTLP_ENDPOINT": "http://127.0.0.1:4317",
+        "TS_NODE_PROJECT": "test/tsconfig.json",
+        "POSTGRES_HOST": "127.0.0.1",
         "POSTGRES_PORT": "5432",
         "POSTGRES_DB": "",
         "POSTGRES_USER": "postgres",
         "POSTGRES_PASSWORD": "",
+        "ALI_ALB_IPS": "120.55",
+        "ALI_ALB_GROUPID": "sgp-7z",
+        "ALI_ECS_AID": "LTAI5t",
+        "ALI_ECS_ASECRET": "Dr4",
+        "ALI_ECS_IDS": "",
+        "ALI_ECS_IPS": "",
+        "ALI_OSS_AID": "LTAI4",
+        "ALI_OSS_ASECRET": "FRK",
+        "ALI_OSS_ENDPOINT": "https://oss-cn-hangzhou.aliyuncs.com",
+        "ALI_OSS_BUCKET": ""
       },
-      "port": 9229,
-      // "preLaunchTask": "TypeScript compile",
-      "protocol": "auto",
+      "internalConsoleOptions": "openOnFirstSessionStart",
       "request": "launch",
-      "restart": true,
+      "restart": false,
       "runtimeArgs": [
         "run",
         "test:local",
         "--",
         "--runInBand",
-        "--inspect-brk"
+        "--preserve-symlinks"
       ],
       "runtimeExecutable": "npm",
       "skipFiles": [
-        "${workspaceFolder}/../../node_modules/rxjs/**/*.js",
-        "${workspaceFolder}/node_modules/rxjs/**/*.js",
+        "**/node_modules/rxjs/**",
+        "**/node_modules/mocha/**",
+        "<node_internals>/**",
         "<node_internals>/**/*.js"
       ],
       "timeout": 30000
     },
+    {
+      "name": "Midway Dev",
+      "type": "node",
+      "autoAttachChildProcesses": true,
+      "console": "integratedTerminal",
+      "env": {
+        "MIDWAY_SERVER_ENV": "local",
+        "NODE_ENV": "local",
+        "OTEL_EXPORTER_OTLP_ENDPOINT": "http://127.0.0.1:4317",
+        "TS_NODE_TYPE_CHECK": "false",
+        "TS_NODE_TRANSPILE_ONLY": "true",
+        "POSTGRES_HOST": "127.0.0.1",
+        "POSTGRES_PORT": "5432",
+        "POSTGRES_DB": "",
+        "POSTGRES_USER": "postgres",
+        "POSTGRES_PASSWORD": ""
+      },
+      "request": "launch",
+      "restart": true,
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--",
+        "--preserve-symlinks"
+      ],
+      "runtimeExecutable": "npm",
+      "skipFiles": [
+        "**/node_modules/**",
+        "**/node_modules/rxjs/**",
+        "<node_internals>/**",
+        "<node_internals>/**/*.js"
+      ],
+      "timeout": 30000
+    }
   ]
 }

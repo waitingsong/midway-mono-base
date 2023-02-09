@@ -1,21 +1,19 @@
-import { basename, join } from '@waiting/shared-core'
+import assert from 'node:assert/strict'
+import { relative } from 'node:path'
 
-import { testConfig } from '~/../test/test-config'
+import { testConfig } from '@/root.config'
 import { HomeController } from '~/app/home/home.controller'
 
 
-// eslint-disable-next-line import/order
-import assert = require('power-assert')
-
-
-const filename = basename(__filename)
+const filename = relative(process.cwd(), __filename).replace(/\\/ug, '/')
 
 describe(filename, () => {
 
   it('should Controller home::idGenerator works', async () => {
     const { app } = testConfig
-    const inst = await app.createAnonymousContext()
-      .requestContext.getAsync(HomeController)
+    const ctx = app.createAnonymousContext()
+
+    const inst = await ctx.requestContext.getAsync(HomeController)
 
     const id = inst.idGenerator
     const id2 = inst.idGenerator
@@ -26,6 +24,3 @@ describe(filename, () => {
 
 })
 
-async function next(): Promise<void> {
-  return void 0
-}

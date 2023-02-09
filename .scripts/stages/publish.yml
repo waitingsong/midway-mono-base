@@ -1,0 +1,110 @@
+
+.publish:
+  stage: publish
+  tags:
+    - cd-worker
+  cache: {}
+  needs:
+    - build_rc
+  variables:
+    GIT_STRATEGY: clone
+  allow_failure: false
+  # $GITLAB_USER_NAME will be deploy name if auto,
+  # and be the user of running the job if manual
+
+# npm with latest
+publish_latest:
+  extends: .publish
+  rules:
+    - if: $CI_COMMIT_BRANCH != $RELEASE_BRANCH || $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
+      when: never
+    - if: $PUB_AS_LATEST_MAJOR == "yes"
+      when: manual
+    - if: $PUB_AS_LATEST == "yes"
+      when: on_success
+    - if: $CI_COMMIT_BRANCH == $RELEASE_BRANCH
+      when: manual
+  script:
+    - echo -e "\e[0Ksection_start:`date +%s`:publish_section[collapsed=true]\r\e[0K Publish Latest"
+    # workaround for preversion and prepack of pkg.scripts
+    - echo "unsafe-perm = true" >> ~/.npmrc
+    - .scripts/ci/ci-publish.sh --loglevel $PUB_LOG_LEVEL --conventional-commits --create-release gitlab
+    - echo -e "\e[0Ksection_end:`date +%s`:publish_section\r\e[0K"
+
+
+publish_latest_major:
+  extends: .publish
+  rules:
+    - if: $CI_COMMIT_BRANCH != $RELEASE_BRANCH || $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
+      when: never
+    - if: $PUB_AS_LATEST_MAJOR == "yes"
+      when: manual
+  script:
+    - echo -e "\e[0Ksection_start:`date +%s`:publish_section[collapsed=true]\r\e[0K Publish major"
+    # workaround for preversion and prepack of pkg.scripts
+    - echo "unsafe-perm = true" >> ~/.npmrc
+    - .scripts/ci/ci-publish.sh --loglevel $PUB_LOG_LEVEL --conventional-commits --create-release gitlab major
+    - echo -e "\e[0Ksection_end:`date +%s`:publish_section\r\e[0K"
+
+
+
+
+
+
+
+# # npm with beta
+# publish_beta:
+#   extends: .publish
+#   except:
+#     variables:
+#       - $PUB_AS_BETA != "yes"
+#       - $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
+#   allow_failure: true
+#   script:
+#     - echo -e "\e[0Ksection_start:`date +%s`:publish_section[collapsed=true]\r\e[0K Publish Beta"
+#     - echo "unsafe-perm = true" >> ~/.npmrc
+#     - bash .scripts/ci/ci-publish.sh --loglevel $PUB_LOG_LEVEL --conventional-commits --create-release gitlab --dist-tag beta --force-publish=*
+#     - echo -e "\e[0Ksection_end:`date +%s`:publish_section\r\e[0K"
+
+# # npm with beta
+# publish_beta_major:
+#   extends: .publish
+#   except:
+#     variables:
+#       - $PUB_AS_BETA_MAJOR != "yes"
+#       - $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
+#   allow_failure: true
+#   script:
+#     - echo -e "\e[0Ksection_start:`date +%s`:publish_section[collapsed=true]\r\e[0K Publish Beta major"
+#     - echo "unsafe-perm = true" >> ~/.npmrc
+#     - bash .scripts/ci/ci-publish.sh --loglevel $PUB_LOG_LEVEL --conventional-commits --create-release gitlab --dist-tag beta --force-publish=* major
+#     - echo -e "\e[0Ksection_end:`date +%s`:publish_section\r\e[0K"
+
+# # npm with next
+# publish_next:
+#   extends: .publish
+#   except:
+#     variables:
+#       - $PUB_AS_NEXT != "yes"
+#       - $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
+#   allow_failure: true
+#   script:
+#     - echo -e "\e[0Ksection_start:`date +%s`:publish_section[collapsed=true]\r\e[0K Publish Next"
+#     - echo "unsafe-perm = true" >> ~/.npmrc
+#     - bash .scripts/ci/ci-publish.sh --loglevel $PUB_LOG_LEVEL --conventional-commits --create-release gitlab --dist-tag next
+#     - echo -e "\e[0Ksection_end:`date +%s`:publish_section\r\e[0K"
+
+# # npm with next major
+# publish_next_major:
+#   extends: .publish
+#   except:
+#     variables:
+#       - $PUB_AS_NEXT_MAJOR != "yes"
+#       - $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
+#   allow_failure: true
+#   script:
+#     - echo -e "\e[0Ksection_start:`date +%s`:publish_section[collapsed=true]\r\e[0K Publish Next major"
+#     - echo "unsafe-perm = true" >> ~/.npmrc
+#     - bash .scripts/ci/ci-publish.sh --loglevel $PUB_LOG_LEVEL --conventional-commits --create-release gitlab --dist-tag next major
+#     - echo -e "\e[0Ksection_end:`date +%s`:publish_section\r\e[0K"
+

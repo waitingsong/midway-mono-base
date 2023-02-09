@@ -1,0 +1,23 @@
+
+pre_release:
+  stage: pre-release
+  tags:
+    - cd-worker
+  only:
+    - main
+    - master
+  except:
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
+  cache: {}
+  variables:
+    GIT_STRATEGY: clone
+  needs:
+    - build_rc
+  script:
+    - .scripts/util/validate-project-changed.mjs
+    - echo -e "\e[0Ksection_start:`date +%s`:pre_release_section[collapsed=true]\r\e[0K Pre Release"
+    - .scripts/ci/ci-pre-publish.sh
+    - echo -e "\e[0Ksection_end:`date +%s`:pre_release_section\r\e[0K"
+  when: manual
+

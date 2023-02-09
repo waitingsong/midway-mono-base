@@ -1,16 +1,21 @@
 #!/bin/bash
+set -e
 
-if [ -n "$CI_COMMIT_TAG" ]; then
-  authorOfTagOrCommit="$(git rev-list -n 1 --pretty=short $CI_COMMIT_TAG | grep Author | cut -d ' ' -f2-)"
-else
-  authorOfTagOrCommit="$(git rev-list -n 1 --pretty=short $CI_COMMIT_SHA | grep Author | cut -d ' ' -f2-)"
-fi
 
-# no indent
-iifmt="Id:{{.Id}} {{println}}\
-Created: {{.Created}} {{println}}\
-RepoDigests: {{range .RepoDigests}}{{println}}  {{.}}{{end}} {{println}}\
-RepoTags: {{range .RepoTags}}{{println}}  {{.}}{{end}} {{println}}\
-Layers: {{range .RootFS.Layers}}{{println}}  {{.}}{{end}} {{println}}\
-Labels: {{range .Config.Labels}}{{println}}  {{.}}{{end}} {{println}}\
-"
+export LANG="en_US.UTF-8"
+#export LANGUAGE="en_US.UTF-8"
+#export LC_ALL="en_US.UTF-8"
+
+export TIMEZ=Asia/Chongqing
+export PGTZ=$TIMEZ
+export MOCK_HOME_DIR=~/
+
+
+# android
+export GRADLE_USER_HOME=.gradle-bin
+
+
+# flutter
+export PUB_CACHE="$CI_PROJECT_DIR/.pub-cache"
+export PATH="$PATH":"$PUB_CACHE/bin"
+

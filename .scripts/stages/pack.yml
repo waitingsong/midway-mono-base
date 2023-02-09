@@ -1,0 +1,93 @@
+
+.rc-pack:
+  stage: rc-pack
+  tags:
+    - worker
+  artifacts:
+    expire_in: '7 day'
+    name: "$CI_PROJECT_NAME-$CI_COMMIT_REF_SLUG-$(date +%Y-%m-%d.%H_%M_%S)-$CI_COMMIT_SHORT_SHA"
+    paths:
+      - assets/
+  script:
+    - .scripts/ci/ci-commitlint.sh
+
+    - date
+    - echo -e "\e[0Ksection_start:`date +%s`:deps_section[collapsed=true]\r\e[0K Install Deps"
+    - npm run bootstrap
+    - echo -e "\e[0Ksection_end:`date +%s`:deps_section\r\e[0K"
+
+    - date
+    - echo -e "\e[0Ksection_start:`date +%s`:build_section[collapsed=true]\r\e[0K Build"
+    - npm run build
+    - echo -e "\e[0Ksection_end:`date +%s`:build_section\r\e[0K"
+
+    - date
+    - echo -e "\e[0Ksection_start:`date +%s`:lint_section[collapsed=true]\r\e[0K Lint"
+    - npm run lint:nofix
+    - echo -e "\e[0Ksection_end:`date +%s`:lint_section\r\e[0K"
+
+    - date
+    - echo -e "\e[0Ksection_start:`date +%s`:pack_section[collapsed=true]\r\e[0K Pack"
+    - npm run tar
+    - echo -e "\e[0Ksection_end:`date +%s`:pack_section\r\e[0K"
+    - date
+  when: manual
+
+.build-image:
+  image: $NODE_DOCKER_IMAGE
+  variables:
+    GIT_DEPTH: 5
+  tags:
+    - worker
+  cache:
+    key: cache_img
+    paths:
+      - locks-cache/
+    policy: pull-push
+  when: manual
+  script:
+    - echo -e "\e[0Ksection_start:`date +%s`:image_ga_section[collapsed=true]\r\e[0K Image GA"
+    - .scripts/build-images.sh
+    - echo -e "\e[0Ksection_end:`date +%s`:image_ga_section\r\e[0K"
+
+image_dev:
+  extends: .build-image
+  stage: rc-pack
+  only:
+    refs:
+      - branches
+    variables:
+      - $PACK_DEV_IMG == "yes"
+  except:
+    - main
+    - master
+    - /^release.*/
+    - /^v\d+(\.\d+){2}.*/
+
+image_rc:
+  extends: .build-image
+  stage: rc-pack
+  only:
+    refs:
+      - /^release.*/
+    variables:
+      - $PACK_RC_IMG == "yes"
+  except:
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
+
+
+image_ga:
+  extends: .build-image
+  stage: pack
+  only:
+    - /^v\d+(\.\d+){2}.*/
+  except:
+    refs:
+      - branches
+    variables:
+      - $PACK_GA_IMG != "yes"
+      - $CI_PUBLISH_COMPLETED != "true"
+  when: delayed
+  start_in: 5 seconds
+

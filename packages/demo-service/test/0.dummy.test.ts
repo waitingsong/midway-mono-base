@@ -1,22 +1,19 @@
-import { TaskManClientConfig } from '@mw-components/taskman'
-import {
-  basename,
-  join,
-} from '@waiting/shared-core'
+import assert from 'node:assert/strict'
+import { relative } from 'node:path'
 
-import { testConfig } from './test-config'
+import { TaskClientConfig } from '@mwcp/taskman'
 
-// eslint-disable-next-line import/order
-import assert = require('power-assert')
+import { testConfig } from './root.config'
 
 
-const filename = basename(__filename)
+const filename = relative(process.cwd(), __filename).replace(/\\/ug, '/')
 
 describe(filename, () => {
 
-  describe('should works', () => {
+  describe('should work', () => {
     it('always passed', () => {
-      const host = (testConfig.app.config.taskManClientConfig as TaskManClientConfig).host as string
+      const taskClientConfig = testConfig.app.getConfig('taskClientConfig') as TaskClientConfig
+      const host = taskClientConfig.host
       console.info(host)
       assert(parseInt(new URL(host).port) > 10000)
       assert(true)
@@ -25,8 +22,9 @@ describe(filename, () => {
 
   before(async () => {
     const { app } = testConfig
-    const hosts = app.getConfig('svcHosts') as { uc: string }
+    const hosts = app.getConfig('svcHosts') as Record<string, string>
     assert(hosts)
+    assert(hosts['uc'])
   })
 })
 

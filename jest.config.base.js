@@ -21,7 +21,7 @@ module.exports = {
     }
   },
   moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1',
+    '^@/(.*)$': '<rootDir>/test/$1',
     "^~/(.*)$": "<rootDir>/src/$1",
   },
   preset: 'ts-jest',

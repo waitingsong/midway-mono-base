@@ -1,6 +1,10 @@
-import { existsSync, readFileSync } from 'fs'
+import { existsSync, readFileSync } from 'node:fs'
 
+import { sleep } from '@waiting/shared-core'
 import { remove } from 'fs-extra'
+
+
+export { sleep }
 
 
 export async function removeFileOrDir(path: string): Promise<void> {
@@ -8,11 +12,6 @@ export async function removeFileOrDir(path: string): Promise<void> {
   await sleep(500)
 }
 
-export async function sleep(timeout = 1000): Promise<void> {
-  return new Promise<void>((resolve) => {
-    setTimeout(resolve, timeout)
-  })
-}
 
 export function matchISO8601ContentTimes(path: string, matchString: string | RegExp): number {
   let content: string | void

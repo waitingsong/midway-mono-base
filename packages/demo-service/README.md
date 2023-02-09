@@ -40,13 +40,13 @@ npm stop
 ## Document and Plugins
 
 - [Midway]
-- [egg-fetch]
-- [egg-jwt]
-- [egg-kmore]
+- [Knex]
+- [Kmore]
+- [node-pg-native]
 
 
 [Midway]: https://midwayjs.org/midway
-[egg-fetch]: https://github.com/waitingsong/egg-fetch
-[egg-jwt]: https://github.com/waitingsong/egg-jwt
-[egg-kmore]: https://github.com/waitingsong/egg-kmore
+[Knex]: https://knexjs.org/
+[Kmore]: https://github.com/waitingsong/kmore
+[node-pg-native]: https://github.com/brianc/node-pg-native
 

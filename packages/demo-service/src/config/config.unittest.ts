@@ -1,24 +1,18 @@
 // config for `npm run cov|ci`
-import { TracerConfig, defaultTracerConfig } from '@mw-components/jaeger'
+import type { AppConfig } from '@mwcp/boot'
+import { initPathArray } from '@mwcp/jwt'
 import {
   DbConfig,
-  DbConfigs,
-  postProcessResponse,
-  wrapIdentifier,
-} from '@mw-components/kmore'
-import { ServerAgent } from '@mw-components/taskman'
-import { JwtEggConfig } from '@waiting/egg-jwt'
+  KmoreSourceConfig,
+} from '@mwcp/kmore'
+import {
+  ClientURL,
+  DbReplica as TaskDbReplica,
+  ServerURL,
+} from '@mwcp/taskman'
 
-import { DbReplicaKeys } from './config.types'
-import { DbModel, dbDict } from './db.model'
-import { testJumpTo } from './helper'
+import { DbReplica } from './config.types'
 
-
-export {
-  fetch,
-  taskManClientConfig,
-  taskManServerConfig,
-} from './config.local'
 
 export const security = {
   csrf: false,
@@ -29,69 +23,69 @@ export const logger = {
   disableConsoleAfterReady: true,
 }
 
-export const jwt: JwtEggConfig = {
-  enable: true, // enable middleware
-  client: {
-    authOpts: {
-      cookie: 'access_token',
-      // @ts-expect-error
-      passthrough: testJumpTo,
-    },
-    secret: '123456abc',
-  },
-  ignore: [
-    /^\/$/u, '/login', '/hello', '/ip', '/ping',
-    '/test/err',
-    '/test/array',
-    '/test/blank',
-    '/test/empty',
-    '/test/no_output',
-    '/test/sign',
-    `${ServerAgent.base}/*`,
-  ],
+
+export const jwtConfig: AppConfig['jwtConfig'] = {
+  secret: '123456abc', // 默认密钥，生产环境一定要更改!
+}
+const jwtIgnoreArr = [
+  ...initPathArray,
+  '/hello',
+  '/ip',
+  '/taskman/hello',
+  '/test/err',
+  '/test/array',
+  '/test/blank',
+  '/test/empty',
+  '/test/fetch',
+  '/test/_fetch_target',
+  '/test/no_output',
+  '/test/sign',
+  /debug\/dump\/.*/u,
+  /unittest/u,
+  RegExp(`${ClientURL.base}/.*`, 'u'),
+  RegExp(`${ServerURL.base}/.*`, 'u'),
+]
+export const jwtMiddlewareConfig: AppConfig['jwtMiddlewareConfig'] = {
+  enableMiddleware: true,
+  ignore: jwtIgnoreArr,
 }
 
-const master: DbConfig<DbModel> = {
-  autoConnect: true,
+
+const master: DbConfig = {
   config: {
-    client: 'pg',
     connection: {
-      host: process.env.POSTGRES_HOST ? process.env.POSTGRES_HOST : 'localhost',
-      port: process.env.POSTGRES_PORT ? +process.env.POSTGRES_PORT : 5432,
-      database: process.env.POSTGRES_DB ? process.env.POSTGRES_DB : 'db_ci_mw',
-      user: process.env.POSTGRES_USER ? process.env.POSTGRES_USER : 'postgres',
-      password: process.env.POSTGRES_PASSWORD ? process.env.POSTGRES_PASSWORD : 'postgres',
+      host: process.env['POSTGRES_HOST'] ? process.env['POSTGRES_HOST'] : 'localhost',
+      port: process.env['POSTGRES_PORT'] ? +process.env['POSTGRES_PORT'] : 5432,
+      database: process.env['POSTGRES_DB'] ? process.env['POSTGRES_DB'] : 'db_ci_mw',
+      user: process.env['POSTGRES_USER'] ? process.env['POSTGRES_USER'] : 'postgres',
+      password: process.env['POSTGRES_PASSWORD'] ? process.env['POSTGRES_PASSWORD'] : 'postgres',
     },
-    acquireConnectionTimeout: 10000,
-    postProcessResponse,
-    wrapIdentifier,
   },
-  dict: dbDict,
-  sampleThrottleMs: 300,
-  enableTracing: true,
-  tracingResponse: true,
 }
-export const dbConfigs: DbConfigs<DbReplicaKeys> = {
-  master,
+export const kmoreConfig: KmoreSourceConfig<DbReplica> = {
+  dataSource: {
+    master,
+  },
 }
 
-export const tracer: TracerConfig = {
-  ...defaultTracerConfig,
-  whiteList: [
-    '/favicon.ico',
-    '/favicon.png',
-    '/untracedPath',
-    '',
-    /\/unitTest[\d.]+/u,
-  ],
-  tracingConfig: {
-    sampler: {
-      type: 'const',
-      param: 1,
-    },
-    reporter: {
-      agentHost: process.env.JAEGER_AGENT_HOST ?? '192.168.1.248',
+
+export const taskServerConfig: AppConfig['taskServerConfig'] = {
+  dataSource: {
+    [TaskDbReplica.taskMaster]: {
+      config: {
+        connection: {
+          host: process.env['POSTGRES_HOST'] ? process.env['POSTGRES_HOST'] : 'localhost',
+          port: process.env['POSTGRES_PORT'] ? +process.env['POSTGRES_PORT'] : 5432,
+          database: process.env['POSTGRES_DB'] ? process.env['POSTGRES_DB'] : 'db_ci_mw',
+          user: process.env['POSTGRES_USER'] ? process.env['POSTGRES_USER'] : 'postgres',
+          password: process.env['POSTGRES_PASSWORD'] ? process.env['POSTGRES_PASSWORD'] : 'postgres',
+        },
+      },
+      sampleThrottleMs: 1000,
     },
   },
+}
+export const taskClientConfig: AppConfig['taskClientConfig'] = {
+  host: process.env['TASK_AGENT_HOST'] ? process.env['TASK_AGENT_HOST'] : 'http://127.0.0.1:7001',
 }
 

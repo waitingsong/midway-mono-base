@@ -19,12 +19,16 @@ chmod 700 ~/.ssh
 which ssh-agent
 eval $(ssh-agent -s)
 
-ssh-keyscan -t ed25519 -p $CI_SSH_PORT $CI_SERVER_HOST >> ~/.ssh/known_hosts
-cat ~/.ssh/known_hosts
+if [ ! -f ~/.ssh/known_hosts ]; then
+  ssh-keyscan -t ed25519 -p $CI_SSH_PORT $CI_SERVER_HOST >> ~/.ssh/known_hosts
+  cat ~/.ssh/known_hosts
+fi
 
 # echo "$CI_SSH_PRIVATE_KEY" | base64 -d -
 echo "$CI_SSH_PRIVATE_KEY" | base64 -d - | tr -d '\r' | ssh-add - > /dev/null
 
+git config --system core.fileMode false
+git config --global core.fileMode false
 git config user.email "$GITLAB_USER_EMAIL"
 git config user.name "$GITLAB_USER_NAME"
 git remote set-url origin git@$CI_SERVER_HOST:$CI_PROJECT_PATH.git

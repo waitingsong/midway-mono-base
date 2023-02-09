@@ -13,7 +13,6 @@ echo -e "-------------------------------------------"
 echo -e "           remove remote images "
 echo -e "-------------------------------------------\n "
 
-cwd=`pwd`
 echo -e "CI_JOB_MANUAL: $CI_JOB_MANUAL"
 
 if [ -z "$CI_COMMIT_TAG" -a -z "$CI_COMMIT_SHORT_SHA" ]; then
@@ -70,7 +69,7 @@ echo -e "----------------------------"
 ssh -p $CD_SSH_PORT $CD_SSH_USER@$CD_SSH_HOST "$cmd"
 echo -e "------------------------------\n "
 
-cd $cwd
+cd "$cwd"
 
 echo -e "-------------------------------------------"
 echo -e "       remove remote images succeeded"

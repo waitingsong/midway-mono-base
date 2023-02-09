@@ -10,10 +10,10 @@ fi
 
 pwd
 
-pkgVer=$(jq -r '.version' package.json)
-pkgName=$(jq -r '.name' package.json)
-pkgPrivate=$(jq -r '.private' package.json)
-pkgDesc=$(jq -r '.description' package.json)
+export pkgVer=$(jq -r '.version' package.json)
+export pkgName=$(jq -r '.name' package.json)
+export pkgPrivate=$(jq -r '.private' package.json)
+export pkgDesc=$(jq -r '.description' package.json)
 
 if [ -z "$pkgVer" ]; then
   echo -e "Value of version from package.json invalid!"
@@ -27,7 +27,7 @@ fi
 
 pkgScope=""
 if [ "${pkgName:0:1}" == "@" ]; then
-  pkgScope=$(echo "$pkgName" | awk -F'/' '{print $1}')
+  export pkgScope=$(echo "$pkgName" | awk -F'/' '{print $1}')
 fi
 
 majorValue=$(echo "$pkgVer" | awk -F'.' '{print $1}')
@@ -42,22 +42,22 @@ patchValue=$(echo "$pkgVer" | awk -F'.' '{print $3}')
 # fi
 
 # @scope/pkg => scope-pkg
-fileNameNorm=$(echo "$pkgName" | sed -r 's/[@]//g' | tr / -)
+export fileNameNorm=$(echo "$pkgName" | sed -r 's/[@]//g' | tr / -)
 if [ -z "$fileNameNorm" ]; then
   echo -e "Value of name from package.json invalid!"
   exit 1
 fi
 # @scope/pkg => scope-pkg
-pkgImgNameNorm="$fileNameNorm"
+export pkgImgNameNorm="$fileNameNorm"
 if [ -z "$pkgImgNameNorm" ]; then
   echo -e "Value of name from package.json invalid!"
   exit 1
 fi
 
 latestVer="latest"
-majorVer="$majorValue" # 2
-minorVer="${majorVer}.${minorValue}"  # 2.3
-patchVer="${minorVer}.${patchValue}"  # 2.3.4
+export majorVer="$majorValue" # 1
+export minorVer="${majorVer}.${minorValue}"  # 1.2
+export patchVer="${minorVer}.${patchValue}"  # 1.2.3
 
 # @scope/pkg => scope-pkg:version
 imgLatest="$pkgImgNameNorm:$latestVer"
@@ -78,22 +78,22 @@ fi
 
 # specify reg server
 if [ -n "$DOCKER_REG_SERVER" ]; then
-  imgLatest="$DOCKER_REG_SERVER/$imgLatest"
-  imgMajor="$DOCKER_REG_SERVER/$imgMajor"
-  imgMinor="$DOCKER_REG_SERVER/$imgMinor"
-  imgPatch="$DOCKER_REG_SERVER/$imgPatch"
+  export imgLatest="$DOCKER_REG_SERVER/$imgLatest"
+  export imgMajor="$DOCKER_REG_SERVER/$imgMajor"
+  export imgMinor="$DOCKER_REG_SERVER/$imgMinor"
+  export imgPatch="$DOCKER_REG_SERVER/$imgPatch"
 else
   echo "env DOCKER_REG_SERVER empty"
   exit 1
 fi
 
 # scope-pkg-1.2.3
-fileNameNormVer="$fileNameNorm-$patchVer"
+export fileNameNormVer="$fileNameNorm-$patchVer"
 
 BUILD_TMP_DIR="${BUILD_TMP_DIR:-/tmp/build}"
 #pkgBuildTmpDir="$BUILD_TMP_DIR/$fileNameNormVer-$CI_PIPELINE_ID-$CI_JOB_ID"
-# only name for image build cache
-pkgBuildTmpDir="$BUILD_TMP_DIR/$fileNameNorm"
+# only for image build cache
+export pkgBuildTmpDir="$BUILD_TMP_DIR/$fileNameNorm"
 if [ -d "$pkgBuildTmpDir" ]; then
   echo -e "folder \$pkgBuildTmpDir: '$pkgBuildTmpDir' already exists!"
   echo -e "try run: rm $pkgBuildTmpDir -rf"

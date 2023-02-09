@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![](https://img.shields.io/badge/lang-TypeScript-blue.svg)]()
 [![ci](https://github.com/waitingsong/midway-mono-base/workflows/ci/badge.svg)](https://github.com/waitingsong/midway-mono-base/actions?query=workflow%3A%22ci%22)
-[![codecov](https://codecov.io/gh/waitingsong/midway-mono-base/branch/master/graph/badge.svg?token=64mSqC475E)](https://codecov.io/gh/waitingsong/midway-mono-base)
+[![codecov](https://codecov.io/gh/waitingsong/midway-mono-base/branch/main/graph/badge.svg?token=64mSqC475E)](https://codecov.io/gh/waitingsong/midway-mono-base)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
 
@@ -27,12 +27,12 @@ git clone git@git.foo.com:foo/uc && cd uc
 # git (GitHub not support)
 git archive --remote=git@github.com:waitingsong/midway-mono-base.git HEAD package.json | tar -x > package.json
 # https
-curl -kL https://github.com.cnpmjs.org/waitingsong/midway-mono-base/raw/master/package.json > package.json
+curl -kL https://github.com/waitingsong/midway-mono-base/raw/main/package.json > package.json
 
 git add package.json
 git commit -m "chore: initialize"
 npm run bp:add
-git fetch bp -v && git merge bp/master --allow-unrelated-histories -m "Merge remote-tracking branch 'bp/master'"
+git fetch bp -v && git merge bp/main --allow-unrelated-histories -m "Merge remote-tracking branch 'bp/main'"
 
 # 手动指定项目名（仅作为代码库标识用途），包名可使用下划线分隔（不能使用减号-）
 sh init-project.sh @scope/foo
@@ -98,6 +98,11 @@ npm run build @scope/demo-docs
 npm run build @scope/demo-docs @scope/demo-serivce
 ```
 
+## Add dependencies
+
+```sh
+lerna add pkg-name --scope=@scope/demo-service
+```
 
 ## Update package
 
@@ -124,7 +129,7 @@ npm run add:svc @ishop_pos/svc
 
 ```sh
 # clean build dist, cache and build
-npm run refresh
+npm run clean
 # clean and remove all node_modules, install deps and build
 npm run purge
 ```
@@ -139,15 +144,17 @@ npm run purge
 ## Freamwork and Plugin Documents
 
 - [Midway]
-- [Midway_v2_Docs]
-- [Eggjs]
+- [Knex]
+- [Kmore]
+- [node-pg-native]
 
 
 <br>
 
 [Midway]: https://midwayjs.org/midway
-[Midway_v2_Docs]: https://www.yuque.com/midwayjs/midway_v2
-[Eggjs]: https://eggjs.org
+[Knex]: https://knexjs.org/
+[Kmore]: https://github.com/waitingsong/kmore
+[node-pg-native]: https://github.com/brianc/node-pg-native
 
 
 [`docs`]: packages/demo-docs

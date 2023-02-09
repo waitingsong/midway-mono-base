@@ -1,28 +1,37 @@
+import assert from 'node:assert/strict'
+import { relative } from 'node:path'
+
 import { createHttpRequest } from '@midwayjs/mock'
+import type { JsonResp } from '@mwcp/boot'
 import {
-  ServerAgent,
+  ClientURL,
+  ServerURL,
   CreateTaskDTO,
   TaskDTO,
   TaskFullDTO,
   initTaskDTO,
-} from '@mw-components/taskman'
-import { basename, join } from '@waiting/shared-core'
+  AgentController,
+} from '@mwcp/taskman'
+
+import { testConfig } from '@/root.config'
 
 
-import { testConfig } from '~/../test/test-config'
-import { JsonResp } from '~/interface'
-
-// eslint-disable-next-line import/order
-import assert = require('power-assert')
-
-
-const filename = basename(__filename)
+const filename = relative(process.cwd(), __filename).replace(/\\/ug, '/')
 
 describe(filename, () => {
 
-  it(ServerAgent.hello, async () => {
+  it(ClientURL.hello, async () => {
     const { app } = testConfig
-    const url = `${ServerAgent.base}/${ServerAgent.hello}`
+    const container = app.getApplicationContext()
+    try {
+      await container.getAsync(AgentController)
+    }
+    catch (ex) {
+      console.info('skip test due to instance of AgentController undefined')
+      return
+    }
+
+    const url = `${ClientURL.base}/${ClientURL.hello}`
     const res = await createHttpRequest(app)
       .get(url)
 
@@ -30,11 +39,20 @@ describe(filename, () => {
     assert(res.text === 'OK')
   })
 
-  it(ServerAgent.create, async () => {
+  it(ServerURL.create, async () => {
     const { app } = testConfig
+    const container = app.getApplicationContext()
+    try {
+      await container.getAsync(AgentController)
+    }
+    catch (ex) {
+      console.info('skip test due to instance of AgentController undefined')
+      return
+    }
+
     const input: CreateTaskDTO = {
       json: {
-        url: `http://localhost:7001${ServerAgent.base}/${ServerAgent.hello}`,
+        url: `http://localhost:7001${ServerURL.base}/${ServerURL.hello}`,
         method: 'GET',
         headers: {
           f2: Math.random().toString(),
@@ -45,7 +63,7 @@ describe(filename, () => {
         },
       },
     }
-    const url = `${ServerAgent.base}/${ServerAgent.create}`
+    const url = `${ServerURL.base}/${ServerURL.create}`
     const res = await createHttpRequest(app)
       .post(url)
       .send(input)

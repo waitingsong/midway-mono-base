@@ -1,0 +1,70 @@
+
+variables:
+  ZERO_COMMIT_HASH: "0000000000000000000000000000000000000000"
+  GIT_STRATEGY: fetch
+  GIT_DEPTH: 50
+  GIT_FETCH_EXTRA_FLAGS: --prune --quiet --no-tags
+  GIT_CLEAN_FLAGS: >
+    -ffdx
+    -e node_modules
+    -e package-lock.json
+    -e packages/*/.eslintcache
+    -e packages/*/.vscode
+    -e packages/*/dist
+    -e .!!next---------flutter
+    -e .dart_tool
+    -e .dartServer
+    -e .flutter-plugins
+    -e .flutter-plugins-dependencies
+    -e .pub-cache
+    -e android/local.properties
+    -e pubspec.lock
+    -e .!!next---------android
+    -e .gradle
+    -e .gradle-bin
+    -e build-cache
+    -e build
+
+  # for branches except version tag
+  PACK_DEV_IMG: ""
+  # only for main and release branches
+  PACK_RC_IMG: ""
+  # only for version tag
+  PACK_GA_IMG: "yes"
+  ZSTD_CLEVEL: 11
+
+  PUB_AS_BETA: ""
+  PUB_AS_BETA_MAJOR: ""
+  PUB_AS_BETA_MAJOR: ""
+  PUB_AS_LATEST: "yes"
+  PUB_AS_LATEST_MAJOR: ""
+  PUB_AS_NEXT: ""
+  PUB_AS_NEXT_MAJOR: ""
+
+  # for pull
+  # NPM_REGISTRY: https://nexus.foo.com/repository/npm-central/
+  # for npm publish, equal to version.registry of lerna.json (if exists)
+  # NPM_VERSION_REGISTRY: https://nexus.foo.com/repository/mynpm/
+  NPM_DIST: https://npmmirror.com/dist/
+  # restrict branch for version, equal to  version.allowBranch of lerna.json
+  RELEASE_BRANCH: release
+  BUILD_TMP_DIR: /tmp/build
+  BUILD_LOCKS_CACHE_DIR: locks-cache
+
+  FF_NETWORK_PER_BUILD: 1
+  POSTGRES_HOST: postgres
+  POSTGRES_PORT: 5432
+  POSTGRES_DB: db_ci_mw
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_HOST_AUTH_METHOD: trust
+
+  REDIS_HOST: redis
+  REDIS_PORT: 6379
+
+  JAEGER_AGENT_HOST: 127.0.0.1
+  JAEGER_SAMPLE_RATIO: 1
+  TASK_AGENT_HOST: "http://127.0.0.1:7001"
+  JWT_SECRET: $JWT_SECRET
+  OTEL_EXPORTER_OTLP_ENDPOINT: "http://jaeger:4317"
+

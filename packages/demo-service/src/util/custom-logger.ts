@@ -1,15 +1,18 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { IMidwayLogger, MidwayContextLogger, MidwayTransformableInfo } from '@midwayjs/logger'
-import { genISO8601String } from '@waiting/shared-core'
+import type {
+  Application,
+  Context,
+} from '@mwcp/boot'
 
-import { Application, Context } from '~/interface'
+import { genISO8601String } from '~/util/ext'
 
 
 class CustomContextLogger extends MidwayContextLogger<Context> {
+  // @ts-ignore
   formatContextLabel() {
     const { ctx } = this
     // format: '[$userId/$ip/$traceId/$use_ms $method $url]'
-    const userId = (ctx.userId as string) || '-'
+    const userId = (ctx['userId'] as string) || '-'
     const traceId = ctx.reqId || '-'
     const use = Date.now() - ctx.startTime
     const ret = userId
@@ -43,13 +46,4 @@ export function updateTransformableInfo(info: MidwayTransformableInfo): MidwayTr
   return ret
 }
 
-
-declare module 'egg' {
-  interface Application {
-    // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
-    // @ts-ignore
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    setContextLoggerClass: (BaseContextLoggerClass: any) => void
-  }
-}
 

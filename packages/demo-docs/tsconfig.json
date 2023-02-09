@@ -1,38 +1,24 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "declaration": true,
-    "emitDecoratorMetadata": true,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "incremental": true,
-    "module": "ES6",
-    "moduleResolution": "node",
-    "newLine": "lf",
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedIndexedAccess": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "baseUrl": ".",
+    "declaration": false,
+    "declarationMap": false,
     "outDir": "dist",
-    "pretty": true,
-    "skipLibCheck": true,
-    "sourceMap": true,
-    "strict": true,
-    "strictPropertyInitialization": false,
-    "target": "ES2020",
-    "tsBuildInfoFile": ".vscode/.tsbuildinfo",
-    "types" : ["jest", "node"]
+    "paths": {
+      "~/*": ["./src/*"],
+      "@/*": ["./test/*"]
+    },
+    "tsBuildInfoFile": ".tsbuildinfo"
+  },
+  "ts-node": {
+    "esm": true,
+    "experimentalResolver": true,
+    "experimentalSpecifierResolution": "node",
+    "preferTsExts": true,
+    "transpileOnly": false
   },
   "include": [
     "src/**/*.ts"
-  ],
-  "exclude": [
-    "asset",
-    "app/public",
-    "app/views",
-    "dist",
-    "node_modules*",
-    "test",
-    "**/*.d.ts",
-    "**/*.spec.ts"
   ]
 }
