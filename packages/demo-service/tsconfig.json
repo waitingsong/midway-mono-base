@@ -5,6 +5,7 @@
     "declaration": false,
     "declarationMap": false,
     "exactOptionalPropertyTypes": false,
+    "incremental": true,
     "module": "commonjs",
     "moduleResolution": "nodenext",
     "outDir": "dist",

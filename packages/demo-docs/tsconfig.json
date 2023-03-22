@@ -4,11 +4,13 @@
     "baseUrl": ".",
     "declaration": false,
     "declarationMap": false,
+    "incremental": true,
     "outDir": "dist",
     "paths": {
       "~/*": ["./src/*"],
       "@/*": ["./test/*"]
     },
+    "target": "ES2022",
     "tsBuildInfoFile": ".tsbuildinfo"
   },
   "ts-node": {
