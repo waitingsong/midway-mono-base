@@ -56,6 +56,8 @@ find . -type f -iname "*.swp" -print0 | xargs -P0 -0II rm -f I
 find . -type f -iname "*.html" -not -path "./koa-onerror/templates/*" -print0 | xargs -P0 -0II rm -f I
 
 find . -type f -iname "*.d.ts" -print0 | xargs -P0 -0II rm -f I
+find . -type f -iname "*.d.ts.map" -print0 | xargs -P0 -0II rm -f I
+find . -type f -iname "*.d.cts" -print0 | xargs -P0 -0II rm -f I
 
 find . -type f -iname "LICENCE*" -print0 | xargs -P0 -0II gzip I
 find . -type f -iname "LICENSE*" -print0 | xargs -P0 -0II gzip I
