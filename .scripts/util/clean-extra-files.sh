@@ -5,7 +5,7 @@
 
 echo -e ">>> Purging extra files"
 
-find $(find . -type d -iname "@mw-components") -maxdepth 3 -type d -iname "database" -print0 | xargs -0II rm -rf I
+find $(find . -type d -iname "@mwcp") -maxdepth 3 -type d -iname "database" -print0 | xargs -0II rm -rf I
 
 find $(find $(find . -type d -iname "@waiting") -mindepth 2 -maxdepth 2 -type d -name "dist") \
   -maxdepth 1 -type f -iname "*.esm.*" -print0 | xargs -0II rm -f I

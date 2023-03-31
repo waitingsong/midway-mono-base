@@ -34,10 +34,6 @@ export const mods = [
     "koa-session",
     "ast-types",
     "common-bin",
-    // "egg-errors",
-    // "egg-redis",
-    // "egg-scripts",
-    // "egg-security",
     "get-uri",
     "jaeger-client",
     "json-schema",
@@ -63,17 +59,12 @@ export const mods = [
 
   [
     "@midwayjs",
-    "@mw-components",
     "@mwcp",
     "@waiting",
     "kmore",
   ], // 3
 
   [
-    // "egg",
-    // "egg-core",
-    // "egg-cluster",
-    // "egg-logger",
     "koa",
     "iconv-lite",
     // "raw-body",
