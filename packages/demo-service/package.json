@@ -6,7 +6,7 @@
   "bin": {},
   "dependencies": {
     "@mwcp/boot": "^7.0.2",
-    "@mwcp/taskman": "^34.0.3",
+    "@mwcp/taskman": "^36.0.2",
     "@scope/docs": "^0.0.0",
     "pg-native": "^3.0.1"
   },
