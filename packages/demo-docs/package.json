@@ -18,7 +18,8 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@midwayjs/validate": "^3.11.0"
+    "@midwayjs/validate": "^3.11.1",
+    "@waiting/shared-types": "^21.0.0"
   },
   "devDependencies": {
     "cross-env": "7"

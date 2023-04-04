@@ -23,6 +23,15 @@ export class UserService extends BaseService {
       email: 'foo@bar.com',
       uid: options.uid,
       userName,
+
+      userValid: 1,
+      sex: 1,
+      idcard: '123456789012345678',
+      regip: '127.0.0.1',
+      lastip: '127.0.0.1',
+      json: {},
+      ctime: new Date(),
+      mtime: new Date(),
     }
     return ret
   }

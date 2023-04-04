@@ -1,4 +1,4 @@
-import { JsonObject } from '@waiting/shared-types'
+import type { JsonObject } from '@waiting/shared-types'
 
 
 /** UC 应用列表 */
