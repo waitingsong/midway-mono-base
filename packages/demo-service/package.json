@@ -5,8 +5,8 @@
   "private": true,
   "bin": {},
   "dependencies": {
-    "@mwcp/boot": "^7.1.1",
-    "@mwcp/taskman": "^36.0.7",
+    "@mwcp/boot": "^7.2.1",
+    "@mwcp/taskman": "^36.0.9",
     "@scope/docs": "^0.0.0",
     "pg-native": "^3.0.1"
   },
@@ -17,6 +17,7 @@
     "node": ">=18.12.0"
   },
   "files": [
+    "npm-shrinkwrap.json",
     "tsconfig.json",
     "Dockerfile",
     "bootstrap.js",

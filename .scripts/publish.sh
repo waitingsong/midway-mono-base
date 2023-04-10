@@ -69,8 +69,11 @@ if [ "$?" -ne 0 ]; then
   exit 1
 fi
 
-
 echo -e ">>> lerna publishing..."
+if [ -f package-lock.json ]; then
+  mv package-lock.json package-lock.json.publish_backup
+fi
+
 git add --ignore-errors ./packages
 git restore .scripts
 git status
@@ -82,8 +85,14 @@ if [ -z "$NPM_VERSION_REGISTRY" ]; then
 else
   lerna publish --registry "$NPM_VERSION_REGISTRY" $*
 fi
+
+if [ -f package-lock.json.publish_backup ]; then
+  mv package-lock.json.publish_backup package-lock.json
+fi
+
 sleep "5s"
 git push --follow-tags origin
+
 
 set -e
 tagVer=$(jq -r '.version' $appDir/lerna.json)

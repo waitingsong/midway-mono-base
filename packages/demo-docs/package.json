@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@midwayjs/validate": "^3.11.3",
-    "@waiting/shared-types": "^21.0.0"
+    "@waiting/shared-types": "^21.1.0"
   },
   "devDependencies": {
     "cross-env": "7"
@@ -28,6 +28,7 @@
     "node": ">=18.12.0"
   },
   "files": [
+    "npm-shrinkwrap.json",
     "tsconfig.json",
     "Dockerfile",
     "src/**/*.ts",
