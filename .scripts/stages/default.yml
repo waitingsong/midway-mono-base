@@ -29,11 +29,12 @@ default:
   after_script:
     - export cwd=`pwd`
     - .scripts/ci/after_script.sh
-  # cache: &global_cache
-  #   key: cache_dev
-  #   paths:
-  #     - node_modules
-  #     - package-lock.json
-  #   policy: pull-push
+
+  cache: &global_cache
+    key: cache_dev
+    paths:
+      - node_modules
+      - package-lock.json
+    policy: pull-push
 
 

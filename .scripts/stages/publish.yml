@@ -3,7 +3,7 @@
   stage: publish
   tags:
     - cd-worker
-  cache: {}
+  # cache: {}
   needs:
     - build_rc
   variables:

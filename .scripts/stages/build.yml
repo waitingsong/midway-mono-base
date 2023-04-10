@@ -3,7 +3,7 @@
   stage: build
   tags:
     - worker
-  cache: {}
+  # cache: {}
   script:
     - date
     - echo -e "\e[0Ksection_start:`date +%s`:deps_section[collapsed=true]\r\e[0K Install Deps"

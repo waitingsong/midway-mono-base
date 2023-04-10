@@ -183,9 +183,9 @@ await nothrow($`$cwd/.scripts/util/image-random-prune.sh`)
 
 cd(`${pkgBuildTmpDir}/package`)
 await $`ls -al`
-await nothrow($`$cwd/.scripts/util/save-cache.mjs \
-  --action=save \
-  --pkg=$pkgImgNameNorm \
-  --file=package-lock.json \
-  --dirName=$BUILD_LOCKS_CACHE_DIR `)
+// await nothrow($`$cwd/.scripts/util/save-cache.mjs \
+//   --action=save \
+//   --pkg=$pkgImgNameNorm \
+//   --file=package-lock.json \
+//   --dirName=$BUILD_LOCKS_CACHE_DIR `)
 

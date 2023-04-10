@@ -3,7 +3,7 @@
   image: $NODE_DOCKER_IMAGE
   tags:
     - worker
-  cache: {}
+  # cache: {}
   when: delayed
   start_in: 5 seconds
 

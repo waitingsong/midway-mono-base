@@ -10,7 +10,7 @@ import {
   MidwayInformationService,
 } from '@midwayjs/core'
 import { IMidwayLogger } from '@midwayjs/logger'
-import { Application } from '@mwcp/boot'
+import { Application, IMidwayContainer } from '@mwcp/boot'
 
 import { useComponents } from './imports'
 
@@ -28,7 +28,12 @@ export class ContainerConfiguration implements ILifeCycle {
   @Inject() readonly informationService: MidwayInformationService
 
   // 启动前处理
-  async onReady(): Promise<void> {
+  async onReady(container: IMidwayContainer): Promise<void> {
+    void container
+  }
+
+  async onServerReady(container: IMidwayContainer): Promise<void> {
+    void container
     // eslint-disable-next-line no-console
     console.log('✅ Your APP launched')
   }

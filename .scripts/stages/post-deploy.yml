@@ -4,7 +4,7 @@
     - cd-worker
   variables:
     GIT_DEPTH: 5
-  cache: {}
+  # cache: {}
   allow_failure: true
   when: manual
 
@@ -29,7 +29,7 @@
     - worker
   variables:
     GIT_DEPTH: 5
-  cache: {}
+  # cache: {}
   except:
     refs:
       - branches
