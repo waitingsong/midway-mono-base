@@ -24,7 +24,7 @@ else
 fi
 
 echo -e ">>> Verifying no newer publish..."
-git fetch origin
+git fetch -q origin
 set +e
 latestTag="$(git describe --abbrev=0 origin/$defaultBranch)"
 set -e
