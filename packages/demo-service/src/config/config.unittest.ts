@@ -62,6 +62,7 @@ const master: DbConfig = {
       statement_timeout: 30000, // in milliseconds
     },
   },
+  traceInitConnection: true,
 }
 export const kmoreConfig: KmoreSourceConfig<DbReplica> = {
   dataSource: {
@@ -83,6 +84,7 @@ export const taskServerConfig: AppConfig['taskServerConfig'] = {
         },
       },
       sampleThrottleMs: 1000,
+      traceInitConnection: true,
     },
   },
 }

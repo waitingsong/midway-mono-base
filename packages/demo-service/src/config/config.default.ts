@@ -63,6 +63,7 @@ const master: DbConfig<DbModel, Context> = {
     acquireConnectionTimeout: 30000,
   },
   dict: dbDict,
+  traceInitConnection: true,
 }
 const kmoreConfig: KmoreSourceConfig<DbReplica> = {
   dataSource: {
@@ -88,6 +89,7 @@ const taskServerConfig: AppConfig['taskServerConfig'] = {
           password: process.env['POSTGRES_PASSWORD'] ? process.env['POSTGRES_PASSWORD'] : 'postgres',
         },
       },
+      traceInitConnection: true,
     },
   },
 }
