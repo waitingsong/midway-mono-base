@@ -31,7 +31,7 @@
     "rxjs": "^7.8.0",
     "rxrunscript": "^11.0.1",
     "supertest": "^6.3.3",
-    "swagger-ui-dist": "^4.15.5",
+    "swagger-ui-dist": "^5.0.0",
     "ts-node": "^10.9.1",
     "tsc-alias": "^1.8.6",
     "tsconfig-paths": "4",
