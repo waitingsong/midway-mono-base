@@ -21,6 +21,7 @@
     "debug": "^4.3.4",
     "eslint": "8",
     "kmore-cli": "^55.2.1",
+    "lerna": "6",
     "lerna-relinker": "^1.5.0",
     "madge": "^6.0.0",
     "mocha": "10",
