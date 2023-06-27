@@ -46,7 +46,10 @@ const jwtMiddlewareConfig: AppConfig['jwtMiddlewareConfig'] = {
 
 const master: DbConfig<DbModel, Context> = {
   config: {
-    client: 'pgnative',
+    /**
+     * install "pg-native" dependency before use 'pgnative' client
+     */
+    client: 'pg',
     connection: {
       host: process.env['POSTGRES_HOST'] ? process.env['POSTGRES_HOST'] : 'localhost',
       port: process.env['POSTGRES_PORT'] ? +process.env['POSTGRES_PORT'] : 5432,
