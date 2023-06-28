@@ -4,6 +4,7 @@
 set -e
 
 
+find . -mindepth 1 -type d -iname ".midway_bin_cache" -print0 | xargs -P0 -0II rm -rf I
 find . -mindepth 3 -type d -iname "docs" -print0 | xargs -P0 -0II rm -rf I
 
 find . -type d -iname "@types" -print0 | xargs -P0 -0II rm -rf I

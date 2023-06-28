@@ -15,3 +15,5 @@ src
 test
 
 node_modules/@types
+node_modules/.midway_bin_cache
+
