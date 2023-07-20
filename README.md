@@ -40,8 +40,7 @@ sh init-project.sh @scope/foo
 sh init-project.sh
 
 # 初始化依赖
-npm run bootstrap
-lerna list
+npm install
 ```
 
 ### 根据模板选择初始化子包

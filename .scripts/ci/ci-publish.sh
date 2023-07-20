@@ -48,11 +48,11 @@ git push origin --no-verify
 
 
 echo -e ">>> lerna initializing..."
-# npm run clean
+nx reset
 npm run clean:dist
 date
-# npm run bootstrap -- --ci
-npm run bootstrap
+# npm i --ci
+npm i
 date
 #lerna run build # not works on lerna v4
 npm run build

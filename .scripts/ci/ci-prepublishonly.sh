@@ -4,8 +4,9 @@
 
 set -e
 
-echo '>>> ci-prepublish...'
+echo '>>> ci-prepublishOnly...'
 date
+nx reset
 
 # Do NOT use `--parallel`
 # # lerna clean --yes
@@ -22,8 +23,10 @@ else
     --no-audit --omit=dev --omit=optional --legacy-peer-deps --package-lock-only
 fi
 
+mv package.json package.json.top
 lerna exec --concurrency 1 -- npm shrinkwrap
 lerna exec --concurrency 1 -- ls npm-shrinkwrap.json
+mv package.json.top package.json
 
 date
 

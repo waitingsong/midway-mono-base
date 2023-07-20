@@ -13,7 +13,7 @@
 
     - date
     - echo -e "\e[0Ksection_start:`date +%s`:deps_section[collapsed=true]\r\e[0K Install Deps"
-    - npm run bootstrap
+    - npm i
     - echo -e "\e[0Ksection_end:`date +%s`:deps_section\r\e[0K"
 
     - date

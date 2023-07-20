@@ -28,6 +28,7 @@ publish_latest:
     - echo -e "\e[0Ksection_start:`date +%s`:publish_section[collapsed=true]\r\e[0K Publish Latest"
     # workaround for preversion and prepack of pkg.scripts
     - echo "unsafe-perm = true" >> ~/.npmrc
+    - nx reset
     - .scripts/ci/ci-publish.sh --loglevel $PUB_LOG_LEVEL --conventional-commits --create-release gitlab
     - echo -e "\e[0Ksection_end:`date +%s`:publish_section\r\e[0K"
 
@@ -43,6 +44,7 @@ publish_latest_major:
     - echo -e "\e[0Ksection_start:`date +%s`:publish_section[collapsed=true]\r\e[0K Publish major"
     # workaround for preversion and prepack of pkg.scripts
     - echo "unsafe-perm = true" >> ~/.npmrc
+    - nx reset
     - .scripts/ci/ci-publish.sh --loglevel $PUB_LOG_LEVEL --conventional-commits --create-release gitlab major
     - echo -e "\e[0Ksection_end:`date +%s`:publish_section\r\e[0K"
 
