@@ -3,6 +3,8 @@
 input="$@"
 scope=''
 
+nx reset
+
 if [ -z "$input" ]; then
   lerna run build
 else

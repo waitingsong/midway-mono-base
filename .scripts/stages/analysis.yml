@@ -1,0 +1,29 @@
+
+.analysis:
+  stage: analysis
+  tags:
+    # - analyze
+    - worker
+  # cache: {}
+  script:
+    - date
+    - echo -e "\e[0Ksection_start:`date +%s`:deps_section[collapsed=true]\r\e[0K Install Deps"
+    - npm i --no-ci
+    - echo -e "\e[0Ksection_end:`date +%s`:deps_section\r\e[0K"
+
+    - date
+    - .scripts/ci/ci-commitlint.sh
+
+    - date
+    - echo -e "\e[0Ksection_start:`date +%s`:lint_section[collapsed=true]\r\e[0K Lint"
+    - npm run lint:nofix
+    - echo -e "\e[0Ksection_end:`date +%s`:lint_section\r\e[0K"
+
+analysis:
+  extends: .analysis
+  except:
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
+      - $CI_COMMIT_MESSAGE =~ /^chore\(release\):.*/
+      - $CI_COMMIT_BRANCH =~ /^versioning_.+/
+

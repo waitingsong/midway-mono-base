@@ -28,8 +28,9 @@
       "conventionalCommits": true,
       "allowBranch": [
         "main",
+        "fix",
         "release",
-        "fix"
+        "versioning_*"
       ],
       "registry": "https://registry.npmjs.org/"
     }

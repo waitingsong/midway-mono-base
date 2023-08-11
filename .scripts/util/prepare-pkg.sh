@@ -26,7 +26,7 @@ if [ -f npm-shrinkwrap.json ]; then
   mv npm-shrinkwrap.json npm-shrinkwrap.json.bak
   npm i --no-audit --omit=dev --omit=optional --legacy-peer-deps $disturl
 else
-  npm i --no-audit --no-optional --omit=dev --omit=optional --legacy-peer-deps $disturl
+  npm i --no-audit --omit=dev --omit=optional --legacy-peer-deps $disturl
 fi
 
 date

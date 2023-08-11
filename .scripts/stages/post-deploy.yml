@@ -29,12 +29,9 @@
     - worker
   variables:
     GIT_DEPTH: 5
-  # cache: {}
   except:
     refs:
       - branches
-    variables:
-      - $CI_PUBLISH_COMPLETED != "true"
   allow_failure: true
   when: manual
 

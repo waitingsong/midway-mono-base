@@ -14,8 +14,9 @@ const pkgName = process.env.pkgName
 const pkgImgNameNorm = process.env.pkgImgNameNorm
 const pkgVer = process.env.pkgVer
 const fileNameNormVer = process.env.fileNameNormVer
+const imgPatch = process.env.imgPatch
 const CI_PIPELINE_ID = process.env.CI_PIPELINE_ID
-const CI_JOB_ID = process.env.$CI_JOB_ID
+const CI_JOB_ID = process.env.$CI_JOB_ID ?? 'n/a'
 const CI_USER_LOGIN = process.env.GITLAB_USER_LOGIN
 
 
@@ -42,6 +43,8 @@ if (! img) {
   throw new Error('Parameter of src invalid')
 }
 const ga = argv.ga
+
+const cacheFrom = argv['cache-from'] ?? ''
 
 console.info(`>>> Verifing image: "${img}" if exists`)
 const ret = await nothrow($`$cwd/.scripts/util/info-pkg-image.sh ${img} $iifmtId`)
@@ -111,19 +114,33 @@ await $`du -sh *`
 console.info('------------------')
 
 console.info(`>>> Building image`)
-await $`docker build \
-  --build-arg baseImage=${baseImage} \
-  --label baseImage=${baseImage} \
-  --label publisher=${publisher} \
-  --label pkgName=${pkgName} \
-  --label pkgImgNameNorm=${pkgImgNameNorm} \
-  --label pkgVer=${pkgVer} \
-  --label fileNameNormVer=${fileNameNormVer} \
-  --label CI_PIPELINE_ID=${CI_PIPELINE_ID} \
-  --label CI_JOB_ID=${CI_JOB_ID} \
-  --label CI_USER_LOGIN=${CI_USER_LOGIN} \
-  -t "$imgPatch" ./
-`
+
+const args = [
+  '--build-arg', `baseImage=${baseImage}`,
+  '--label', `baseImage=${baseImage}`,
+  '--label', `publisher=${publisher}`,
+  '--label', `pkgName=${pkgName}`,
+  '--label', `pkgImgNameNorm=${pkgImgNameNorm}`,
+  '--label', `pkgVer=${pkgVer}`,
+  '--label', `fileNameNormVer=${fileNameNormVer}`,
+  '--label', `CI_PIPELINE_ID=${CI_PIPELINE_ID}`,
+  '--label', `CI_JOB_ID=${CI_JOB_ID}`,
+  '--label', `CI_USER_LOGIN=${CI_USER_LOGIN}`,
+]
+
+if (cacheFrom) {
+  try {
+    await $`docker pull ${cacheFrom}`
+    args.push('--cache-from', cacheFrom)
+  }
+  catch (ex) {
+    console.warn(ex)
+  }
+}
+args.push('-t', imgPatch)
+
+await $`docker build ${args} ./ `
+
 
 $.verbose = true
 if (ga) {
@@ -182,7 +199,7 @@ console.info(logMsg)
 await nothrow($`$cwd/.scripts/util/image-random-prune.sh`)
 
 cd(`${pkgBuildTmpDir}/package`)
-await $`ls -al`
+await $`ls -Al`
 // await nothrow($`$cwd/.scripts/util/save-cache.mjs \
 //   --action=save \
 //   --pkg=$pkgImgNameNorm \
