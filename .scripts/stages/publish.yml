@@ -20,21 +20,15 @@ publish:
   script:
     - date
     - echo -e "\e[0Ksection_start:`date +%s`:deps_section[collapsed=true]\r\e[0K Install Deps"
-    - npm i --no-ci
+    - npm i --disturl=https://npmmirror.com/dist/
     - echo -e "\e[0Ksection_end:`date +%s`:deps_section\r\e[0K"
 
     - date
     - echo -e "\e[0Ksection_start:`date +%s`:publish_section[collapsed=true]\r\e[0K Publish"
     # workaround for preversion and prepack of pkg.scripts
     - echo "unsafe-perm = true" >> ~/.npmrc
-    - nx reset
     - .scripts/ci/ci-publish.mts
     - echo -e "\e[0Ksection_end:`date +%s`:publish_section\r\e[0K"
-
-    # - date
-    # - echo -e "\e[0Ksection_start:`date +%s`:post_pub_section[collapsed=true]\r\e[0K Post Publish"
-    # - .scripts/ci/ci-post-versioning.mts
-    # - echo -e "\e[0Ksection_end:`date +%s`:post_pub_section\r\e[0K"
 
     - date
 

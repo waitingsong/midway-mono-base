@@ -18,6 +18,8 @@ default:
     - echo "$CI_COMMIT_TAG-$CI_COMMIT_SHORT_SHA"
     - echo $CI_PIPELINE_URL
     - echo $CI_JOB_URL
+    - echo $CI_JOB_STAGE
+    - echo $CI_PIPELINE_NAME
     - echo "$CI_PIPELINE_ID:$CI_JOB_ID"
     - echo $CI_OPEN_MERGE_REQUESTS
     - echo $CI_CONCURRENT_ID
@@ -37,5 +39,4 @@ default:
       - node_modules
       - package-lock.json
     policy: pull-push
-
 

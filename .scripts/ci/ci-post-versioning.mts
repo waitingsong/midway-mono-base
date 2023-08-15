@@ -15,11 +15,9 @@ import {
   PUBLISH_TOKEN,
   VERSIONING_BRANCH_PREFIX,
  } from '../ci-consts.mjs'
-import { PkgInfoLite } from '../ci-types.mjs'
 
 $.verbose = true
 await $`pwd && date`
-// await $`nx reset`
 
 let msg = `
 
@@ -110,4 +108,7 @@ const args: (string|number)[] = [
   '--branch', CI_COMMIT_REF_NAME,
 ]
 await $`.scripts/util/delete-remote-branch.mts ${args}`
+
+await $`npm run clean:cache`
+
 

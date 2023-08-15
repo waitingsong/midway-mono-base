@@ -54,6 +54,13 @@ find . -type f -iname "*.markdown" -print0 | xargs -P0 -0II rm -f I
 find . -type f -iname "*.md" -print0 | xargs -P0 -0II rm -f I
 find . -type f -iname "*.swp" -print0 | xargs -P0 -0II rm -f I
 
+# gyp
+find . -type f -iname "binding.gyp" -print0 | xargs -P0 -0II rm -f I
+find . -type f -iname "config.gypi" -print0 | xargs -P0 -0II rm -f I
+find . -type f -iname "binding.Makefile" -print0 | xargs -P0 -0II rm -f I
+find . -type f -iname "addon.o.d" -print0 | xargs -P0 -0II rm -f I
+find . -type f -iname "addon.target.mk" -print0 | xargs -P0 -0II rm -f I
+
 find . -type f -iname "*.html" -not -path "./koa-onerror/templates/*" -print0 | xargs -P0 -0II rm -f I
 
 find . -type f -iname "*.d.ts" -print0 | xargs -P0 -0II rm -f I

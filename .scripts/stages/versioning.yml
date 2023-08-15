@@ -21,7 +21,7 @@ versioning:
 
     - date
     - echo -e "\e[0Ksection_start:`date +%s`:ver_section[collapsed=true]\r\e[0K Versioning"
-    - .scripts/ci/ci-versioning.mts
+    - .scripts/ci/ci-versioning.mts --semver $SEMVER
     - echo -e "\e[0Ksection_end:`date +%s`:ver_section\r\e[0K"
 
     - date

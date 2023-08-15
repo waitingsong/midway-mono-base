@@ -4,22 +4,37 @@
  * use only of top
  */
 import assert from 'node:assert'
+import minimist from 'minimist'
 import { $, sleep } from 'zx'
 
 import {
   baseDir,
+  CI,
   CI_COMMIT_REF_NAME,
   GH_TOKEN,
   GL_TOKEN,
   GL_API_URL,
   NPM_LOG_LEVEL,
   PUBLISH_RELEASE_REPO,
+  RELEASE_SEMVER,
  } from '../ci-consts.mjs'
-import { PkgInfoLite } from '../ci-types.mjs'
+import { PkgInfoLite, SemVerList } from '../ci-types.mjs'
 
 $.verbose = true
 await $`date`
-// await $`nx reset`
+
+const argv = minimist(process.argv.slice(2))
+console.info(argv)
+
+let semVer = argv.semver ?? RELEASE_SEMVER
+if (semVer) {
+  if (semVer === 'true' || semVer === true || semVer === '') {
+    semVer = void 0
+  }
+  else {
+    assert(Object.values(SemVerList).includes(semVer), `invalid semver: "${semVer}"`)
+  }
+}
 
 let msg = `
 
@@ -76,10 +91,9 @@ await $`git remote -v \
 msg = '>>> lerna initializing...'
 console.info(msg)
 
-await $`nx reset`
+CI && await $`nx reset`
 await $`npm run clean:dist`
 await $`date`
-// await $`npm i --ci`
 await $`npm i`
 await $`npm run build`
 
@@ -102,10 +116,15 @@ await $`git status`
 const args: string[] = [
   '--yes',
   '--no-private',
+  '--create-release', PUBLISH_RELEASE_REPO,
   '--conventional-commits',
   '--loglevel', NPM_LOG_LEVEL,
 ]
-await $`lerna version --create-release gitlab ${args}`
+if (semVer) {
+  args.push(semVer)
+}
+console.info('lerna version args:', args.join(' '))
+await $`lerna version ${args}`
 
 try {
   await $`test -f ${lockFileBackup}`
@@ -115,6 +134,7 @@ catch { void 0}
 
 // restore changed package.json (append gitHead)
 await $`git restore ./packages`.catch(() => void 0)
+await $`npm run clean:cache`
 
 await sleep('1s')
 await $`git push --follow-tags origin`

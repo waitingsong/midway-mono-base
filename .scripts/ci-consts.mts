@@ -1,16 +1,22 @@
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { NpmLogLevel } from './ci-types.mjs'
+import { NpmLogLevel, SemVerList } from './ci-types.mjs'
+
+/**
+ * Predefined variables
+ * @link https://docs.gitlab.com/ee/ci/variables/predefined_variables.html
+ */
 
 
 export const USER_HOME = process.env.HOME ?? ''
 
 const __dirname = genCurrentDirname(import.meta.url)
+export const CI = process.env.CI ? true : false
 export const CI_PROJECT_DIR = process.env.CI_PROJECT_DIR ?? ''
-export const baseDir = CI_PROJECT_DIR ? CI_PROJECT_DIR : join(__dirname, '../')
 export const CI_BUILDS_DIR = process.env.CI_BUILDS_DIR ?? '/build'
 export const BUILD_TMP_DIR = process.env.BUILD_TMP_DIR ?? '/tmp/build'
 export const BUNDLE_NAME = process.env.BUNDLE_NAME ?? 'bundle'
+export const baseDir = CI_PROJECT_DIR ? CI_PROJECT_DIR : join(__dirname, '../')
 
 const _pkgInfo = await import(`${baseDir}/package.json`, {
   assert: { type: 'json' },
@@ -194,6 +200,14 @@ export const NPM_LOG_LEVEL = npmLogLevel && Object.values(NpmLogLevel).includes(
   ? npmLogLevel
   : NpmLogLevel.notice
 export const LOG_LEVEL = process.env.LOG_LEVEL ?? 'error'
+
+const semVer = process.env.SEMVER
+/**
+ * @link https://docs.npmjs.com/cli/v8/commands/npm-version
+ */
+export const RELEASE_SEMVER: SemVerList | undefined = semVer && Object.values(SemVerList).includes(semVer as SemVerList)
+  ? semVer as SemVerList
+  : void 0
 
 /**
  * npm registry for versioning

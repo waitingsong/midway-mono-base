@@ -183,8 +183,7 @@ if (ga) {
     $`docker rmi $imgMajor > /dev/null`,
     $`docker rmi $imgMinor > /dev/null`,
     $`docker rmi $imgLatest > /dev/null`,
-    // keep image for next build cache
-    // $`docker rmi $imgPatch`,
+    $`docker rmi $imgPatch`,
   ])
 }
 

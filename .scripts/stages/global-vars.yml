@@ -8,7 +8,7 @@ variables:
     -ffdx
     -e node_modules
     -e package-lock.json
-    -e packages/*/.eslintcache
+    # -e packages/*/.eslintcache
     -e packages/*/.vscode
     -e packages/*/dist
     -e .!!next---------flutter

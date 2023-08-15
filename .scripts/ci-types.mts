@@ -17,3 +17,16 @@ export enum NpmLogLevel {
   silent = 'silent',
 }
 
+/**
+ * @link https://docs.npmjs.com/cli/v8/commands/npm-version
+ */
+export enum SemVerList {
+  major = 'major',
+  minor = 'minor',
+  patch = 'patch',
+  premajor = 'premajor',
+  preminor = 'preminor',
+  prepatch = 'prepatch',
+  prerelease = 'prerelease',
+}
+

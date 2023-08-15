@@ -2,7 +2,7 @@
 include:
   - local: '/.scripts/stages/global-vars.yml'
   - local: '/.scripts/stages/default.yml'
-  - local: '/.scripts/stages/services.yml'
+  # - local: '/.scripts/stages/services.yml'
   - local: '/.scripts/stages/analysis.yml'
   - local: '/.scripts/stages/build.yml'
   - local: '/.scripts/stages/testing.yml'
@@ -12,7 +12,11 @@ include:
   - local: '/.scripts/stages/publish.yml'
   - local: '/.scripts/stages/pack.yml'
   - local: '/.scripts/stages/dist.yml'
-  - local: '/.scripts/stages/post-deploy.yml'
+  # - local: '/.scripts/stages/post-deploy.yml'
+  - local: '/.scripts/stages/services-for-testing.yml'
+    # rules:
+    #   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    #     when: always
 
 stages:
   - analysis

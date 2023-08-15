@@ -8,7 +8,7 @@
   script:
     - date
     - echo -e "\e[0Ksection_start:`date +%s`:deps_section[collapsed=true]\r\e[0K Install Deps"
-    - npm i --no-ci
+    - npm i --disturl=https://npmmirror.com/dist/
     - echo -e "\e[0Ksection_end:`date +%s`:deps_section\r\e[0K"
 
     - date
@@ -16,6 +16,7 @@
 
     - date
     - echo -e "\e[0Ksection_start:`date +%s`:lint_section[collapsed=true]\r\e[0K Lint"
+    - npm run clean:cache
     - npm run lint:nofix
     - echo -e "\e[0Ksection_end:`date +%s`:lint_section\r\e[0K"
 

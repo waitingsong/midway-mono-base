@@ -6,10 +6,13 @@
  */
 import assert from 'node:assert'
 import minimist from 'minimist'
+
+import { getNpmPkgViewFromRegistry } from '@waiting/shared-core'
 import { $, sleep, fs } from 'zx'
 
 import {
   baseDir,
+  CI,
   NPM_LOG_LEVEL,
   NPM_VERSION_REGISTRY,
   USER_HOME,
@@ -51,10 +54,9 @@ const pubLogLevel = argv.loglevel ?? NPM_LOG_LEVEL
 const pubDebug = pubLogLevel === NpmLogLevel.verbose ? true : false
 await $`.scripts/util/npm-set-publish-token.mts --registry ${pubNpmReg} --check --debug ${pubDebug}`
 
-await $`nx reset`
-await $`npm run clean:dist`
+CI && await $`nx reset`
+await $`npm run clean`
 await $`date`
-// await $`npm i --ci`
 await $`npm i`
 await $`npm run build`
 
@@ -67,6 +69,12 @@ for (const pkg of pkgs) {
     console.info(`skip private package: ${pkg.name}`)
     continue
   }
+  const pkgExists = await getNpmPkgViewFromRegistry(pkg.name, pkg.version, pubNpmReg)
+  if (pkgExists) {
+    console.info(`skip existing package: ${pkg.name}@${pkg.version}`)
+    continue
+  }
+
   console.info(`\n\n>> publish package: ${pkg.name}`)
   await $`.scripts/util/npm-prepublishonly.mts --dir ${pkg.location}`
   await $`.scripts/util/npm-publish.mts --dir ${pkg.location} --loglevel ${pubLogLevel} `
@@ -76,4 +84,5 @@ for (const pkg of pkgs) {
 
 // restore npmrc
 await $`cp -f ${npmrcFileBack} ${npmrcFile}`
+await $`npm run clean:cache`
 
