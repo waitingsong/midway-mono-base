@@ -10,6 +10,7 @@ import { $, sleep, fs } from 'zx'
 
 import {
   baseDir,
+  CI,
   NPM_LOG_LEVEL,
   NPM_VERSION_REGISTRY,
   USER_HOME,
@@ -51,10 +52,9 @@ const pubLogLevel = argv.loglevel ?? NPM_LOG_LEVEL
 const pubDebug = pubLogLevel === NpmLogLevel.verbose ? true : false
 await $`.scripts/util/npm-set-publish-token.mts --registry ${pubNpmReg} --check --debug ${pubDebug}`
 
-await $`nx reset`
+CI && await $`nx reset`
 await $`npm run clean:dist`
 await $`date`
-// await $`npm i --ci`
 await $`npm i`
 await $`npm run build`
 

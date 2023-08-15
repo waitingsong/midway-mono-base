@@ -2,6 +2,11 @@ import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { NpmLogLevel } from './ci-types.mjs'
 
+/**
+ * Predefined variables
+ * @link https://docs.gitlab.com/ee/ci/variables/predefined_variables.html
+ */
+
 
 export const USER_HOME = process.env.HOME ?? ''
 
@@ -11,6 +16,7 @@ export const baseDir = CI_PROJECT_DIR ? CI_PROJECT_DIR : join(__dirname, '../')
 export const CI_BUILDS_DIR = process.env.CI_BUILDS_DIR ?? '/build'
 export const BUILD_TMP_DIR = process.env.BUILD_TMP_DIR ?? '/tmp/build'
 export const BUNDLE_NAME = process.env.BUNDLE_NAME ?? 'bundle'
+export const CI = process.env.CI ? true : false
 
 const _pkgInfo = await import(`${baseDir}/package.json`, {
   assert: { type: 'json' },

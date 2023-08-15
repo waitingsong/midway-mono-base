@@ -27,7 +27,6 @@ publish:
     - echo -e "\e[0Ksection_start:`date +%s`:publish_section[collapsed=true]\r\e[0K Publish"
     # workaround for preversion and prepack of pkg.scripts
     - echo "unsafe-perm = true" >> ~/.npmrc
-    - nx reset
     - .scripts/ci/ci-publish.mts
     - echo -e "\e[0Ksection_end:`date +%s`:publish_section\r\e[0K"
 

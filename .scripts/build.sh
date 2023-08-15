@@ -3,7 +3,9 @@
 input="$@"
 scope=''
 
-nx reset
+if [ -n "$CI" ]; then
+  nx reset
+fi
 
 if [ -z "$input" ]; then
   lerna run build

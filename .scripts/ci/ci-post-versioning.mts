@@ -19,7 +19,6 @@ import { PkgInfoLite } from '../ci-types.mjs'
 
 $.verbose = true
 await $`pwd && date`
-// await $`nx reset`
 
 let msg = `
 

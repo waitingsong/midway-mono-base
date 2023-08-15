@@ -8,6 +8,7 @@ import { $, sleep } from 'zx'
 
 import {
   baseDir,
+  CI,
   CI_COMMIT_REF_NAME,
   GH_TOKEN,
   GL_TOKEN,
@@ -19,7 +20,6 @@ import { PkgInfoLite } from '../ci-types.mjs'
 
 $.verbose = true
 await $`date`
-// await $`nx reset`
 
 let msg = `
 
@@ -76,10 +76,9 @@ await $`git remote -v \
 msg = '>>> lerna initializing...'
 console.info(msg)
 
-await $`nx reset`
+CI && await $`nx reset`
 await $`npm run clean:dist`
 await $`date`
-// await $`npm i --ci`
 await $`npm i`
 await $`npm run build`
 
