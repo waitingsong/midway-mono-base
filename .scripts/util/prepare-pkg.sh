@@ -23,8 +23,6 @@ fi
 if [ -f npm-shrinkwrap.json ]; then
   echo -e ">>> npm-shrinkwrap.json exists, use it"
   npm ci --no-audit --omit=dev --omit=optional --legacy-peer-deps $disturl
-  mv npm-shrinkwrap.json npm-shrinkwrap.json.bak
-  npm i --no-audit --omit=dev --omit=optional --legacy-peer-deps $disturl
 else
   npm i --no-audit --omit=dev --omit=optional --legacy-peer-deps $disturl
 fi

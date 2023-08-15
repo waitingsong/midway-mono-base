@@ -3,13 +3,19 @@
   stage: testing
   tags:
     - worker
-  needs:
-    - build
+  # needs:
+  #   - analysis
+  #   - build
   # cache: {}
   script:
     - date
+    - echo -e "\e[0Ksection_start:`date +%s`:valid_svc_section[collapsed=true]\r\e[0K Validate services"
+    - if [ -f .scripts/util/validate-services.mts ]; then .scripts/util/validate-services.mts; fi
+    - echo -e "\e[0Ksection_end:`date +%s`:valid_svc_section\r\e[0K"
+
+    - date
     - echo -e "\e[0Ksection_start:`date +%s`:deps_section[collapsed=true]\r\e[0K Install Deps"
-    - npm i --no-ci
+    - npm i --disturl=https://npmmirror.com/dist/
     - echo -e "\e[0Ksection_end:`date +%s`:deps_section\r\e[0K"
 
     - date
@@ -42,25 +48,17 @@
     paths:
       - coverage/
 
-build_dev:
-  extends: .build
-  except:
-    - main
-    - master
-    - /^release.*/
-    - /^versioning.*/
-    - /^v\d+(\.\d+){2}.*/
 
 testing:
   extends: .testing
-  only:
-    - main
-    - master
-    - /^release.*/
-  except:
-    variables:
-      - $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
-      - $CI_COMMIT_BRANCH =~ /^versioning_.+/
+  rules:
+    - if: $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
+      when: never
+    - if: $CI_COMMIT_BRANCH =~ /^versioning_.+/
+      when: never
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+    - when: on_success
   artifacts:
     expire_in: '30 day'
     reports:

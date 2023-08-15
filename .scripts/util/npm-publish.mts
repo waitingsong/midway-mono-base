@@ -9,14 +9,12 @@ import { $, cd } from 'zx'
 
 import { NPM_LOG_LEVEL } from '../ci-consts.mjs'
 
+const argv = minimist(process.argv.slice(2))
+
 $.verbose = true
 console.info('>>> publishing...')
 
-const argv = minimist(process.argv.slice(2))
-// console.info(argv)
-
 const logLevel = argv.loglevel ?? NPM_LOG_LEVEL
-
 const dir = argv.dir ?? ''
 assert(dir, 'dir not set')
 

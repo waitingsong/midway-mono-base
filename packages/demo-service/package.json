@@ -5,13 +5,12 @@
   "private": true,
   "bin": {},
   "dependencies": {
-    "@mwcp/boot": "^11.2.0",
-    "@mwcp/taskman": "^41.5.0",
+    "@mwcp/boot": "^11.3.2",
+    "@mwcp/taskman": "^41.6.2",
     "@scope/docs": "^0.0.0",
     "pg": "^8.11.1"
   },
   "devDependencies": {
-    "cross-env": "7"
   },
   "engines": {
     "node": ">=18.12.0"
@@ -23,6 +22,7 @@
     "npm-shrinkwrap.json",
     "tsconfig.json",
     "tsconfig.base.json",
+    "assert",
     "dist"
   ],
   "homepage": "",
@@ -36,13 +36,12 @@
   "license": "",
   "scripts": {
     "build": "midway-bin build && npm run db:gen-cjs && tsc-alias",
-    "clean": "npm run clean:cache & rm run clean:dist & npm run clean:log",
+    "clean": "npm run clean:lock && npm run clean:cache && npm run clean:dist && npm run clean:log",
     "clean:cache": "rm -rf .eslintcache .tsbuildinfo .vscode/.jest-cache",
-    "clean:dist": "rm -rf dist/*",
+    "clean:dist": "rm -rf dist/* .tsbuildinfo",
     "clean:lock": "rm package-lock.json -f",
     "clean:log": "rm -rf ./logs ./run",
     "cov": "cross-env MIDWAY_SERVER_ENV=unittest TS_NODE_TYPE_CHECK=false TS_NODE_TRANSPILE_ONLY=true TS_NODE_PROJECT=test/tsconfig.json c8 mocha --parallel=false",
-    "cov:local": "cross-env MIDWAY_SERVER_ENV=unittest TS_NODE_TYPE_CHECK=false TS_NODE_TRANSPILE_ONLY=true TS_NODE_PROJECT=test/tsconfig.json c8 ../../node_modules/.bin/mocha --parallel=false",
     "db:gen": "kmore gen --project tsconfig.cjs.json --path ./src",
     "db:gen-cjs": "kmore gen --project tsconfig.cjs.json --path ./src --format cjs",
     "debug": "cross-env MIDWAY_SERVER_ENV=local ../../node_modules/.bin/midway-bin dev -ts --fast --debug",

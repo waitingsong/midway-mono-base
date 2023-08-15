@@ -4,10 +4,12 @@
   tags:
     - worker
   # cache: {}
+  needs:
+    - analysis
   script:
     - date
     - echo -e "\e[0Ksection_start:`date +%s`:deps_section[collapsed=true]\r\e[0K Install Deps"
-    - npm i --no-ci
+    - npm i --disturl=https://npmmirror.com/dist/
     - echo -e "\e[0Ksection_end:`date +%s`:deps_section\r\e[0K"
 
     - date

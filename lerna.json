@@ -13,17 +13,6 @@
       ],
       "verifyAccess": false
     },
-    "bootstrap": {
-      "hoist": true,
-      "noCi": true,
-      "nohoist": [
-        "cross-env",
-        "egg"
-      ],
-      "npmClientArgs": [
-        "--no-audit"
-      ]
-    },
     "version": {
       "conventionalCommits": true,
       "allowBranch": [
@@ -31,6 +20,15 @@
         "fix",
         "release",
         "versioning_*"
+      ],
+      "ignoreChanges": [
+        "*.md",
+        ".githooks",
+        ".scripts",
+        ".vscode",
+        "package-lock.json",
+        "packages/demo",
+        "packages/mw-demo"
       ],
       "registry": "https://registry.npmjs.org/"
     }

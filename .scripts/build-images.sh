@@ -14,7 +14,9 @@ echo -e "-------------------------------------------"
 echo -e "      images build and push process "
 echo -e "-------------------------------------------"
 
-nx reset
+if [ -n "$CI" ]; then
+  nx reset
+fi
 
 # echo $authorOfTagOrCommit
 echo -e "CI_JOB_MANUAL: $CI_JOB_MANUAL"
@@ -51,6 +53,8 @@ do
   if [ ! -f ".dockerignore" ]; then
     cp "$globalIgnoreFile" ./.dockerignore
   fi
+
+  # ${cwd}/.scripts/util/prepare-bin-for-image.mjs
 
   set -e
   if [ -n "$CI_COMMIT_TAG" ]; then
