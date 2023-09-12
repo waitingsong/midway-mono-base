@@ -22,7 +22,7 @@
     "cross-env": "7",
     "debug": "^4.3.4",
     "eslint": "8",
-    "kmore-cli": "^56.0.0",
+    "kmore-cli": "^57.0.1",
     "madge": "^6.1.0",
     "mocha": "10",
     "mocha-lcov-reporter": "1",
