@@ -1,6 +1,6 @@
 #!/bin/bash
 # Should called by tar.sh and build-images.sh
-# Should under the folder <project>/packages/<some-pkg>
+# Should under the folder <project>/packages/<some-pkg>/node_modules
 set -e
 
 
@@ -15,6 +15,9 @@ find . -type d -iname "man1" -print0 | xargs -P0 -0II rm -rf I
 find . -type d -iname "spec" -print0 | xargs -P0 -0II rm -rf I
 find . -type d -iname "test" -print0 | xargs -P0 -0II rm -rf I
 find . -type d -iname "tests" -print0 | xargs -P0 -0II rm -rf I
+find . -type d -iname "build-tmp-*" -print0 | xargs -P0 -0II rm -rf I
+# find . -type d -iname "build-tmp-napi-*" -print0 | xargs -P0 -0II rm -rf I
+
 
 # unlink for image build cache
 find . -type f -iname "package-lock.json" -print0 | xargs -P0 -0II rm -f I
@@ -71,4 +74,6 @@ find . -type f -iname "LICENCE*" -print0 | xargs -P0 -0II gzip I
 find . -type f -iname "LICENSE*" -print0 | xargs -P0 -0II gzip I
 
 cd ../
+
+set +e
 

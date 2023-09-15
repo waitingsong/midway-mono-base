@@ -25,6 +25,8 @@ git config --local remote.pushdefault origin
 
 
 echo It may going for a long time. Plese wait...
-cd .githooks && node --loader ts-node/esm gen-file-from-example.ts && cd -
+.githooks/gen-file-from-example.mts
 
+nx reset
 lerna list
+echo init done

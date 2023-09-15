@@ -7,6 +7,8 @@ default:
     - echo $SHELL
     - echo $CI_SERVER_VERSION
     - echo $CI_PIPELINE_SOURCE
+    - echo $CI_PROJECT_DIR
+    - echo $CI_BUILDS_DIR
     - echo $CI_PROJECT_URL
     - echo $CI_PROJECT_NAMESPACE
     - echo $CI_PROJECT_NAME

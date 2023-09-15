@@ -1,15 +1,13 @@
 import assert from 'node:assert/strict'
-import { relative } from 'node:path'
 
-import type { JsonResp } from '@mwcp/boot'
+import { JsonResp } from '@mwcp/boot'
+import { fileShortPath } from '@waiting/shared-core'
 
-import { testConfig } from '@/root.config'
-import { HeapDumpRet, debugPwd } from '~/app/debug/debug.controller'
+import { HeapDumpRet, debugPwd } from '##/app/debug/debug.controller.js'
+import { testConfig } from '#@/root.config.js'
 
 
-const filename = relative(process.cwd(), __filename).replace(/\\/ug, '/')
-
-describe(filename, () => {
+describe(fileShortPath(import.meta.url), () => {
 
   it('Should GET /debug/dump 401', async () => {
     const { httpRequest } = testConfig

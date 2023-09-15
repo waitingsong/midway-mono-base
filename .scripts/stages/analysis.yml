@@ -15,10 +15,16 @@
     - .scripts/ci/ci-commitlint.sh
 
     - date
+    - echo -e "\e[0Ksection_start:`date +%s`:build_section[collapsed=true]\r\e[0K Build"
+    - npm run build
+    - echo -e "\e[0Ksection_end:`date +%s`:build_section\r\e[0K"
+
+    - date
     - echo -e "\e[0Ksection_start:`date +%s`:lint_section[collapsed=true]\r\e[0K Lint"
-    - npm run clean:cache
+    - lerna run clean:cache
     - npm run lint:nofix
     - echo -e "\e[0Ksection_end:`date +%s`:lint_section\r\e[0K"
+  allow_failure: false
 
 analysis:
   extends: .analysis

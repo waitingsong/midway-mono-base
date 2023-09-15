@@ -22,14 +22,9 @@
     - echo -e "\e[0Ksection_end:`date +%s`:build_section\r\e[0K"
 
     - date
+  allow_failure: false
   artifacts:
     expire_in: '14 day'
-    reports:
-      coverage_report:
-        coverage_format: cobertura
-        path: coverage/cobertura-coverage.xml
-    paths:
-      - coverage/
 
 
 build:
@@ -44,11 +39,5 @@ build:
       - $CI_COMMIT_BRANCH =~ /^versioning_.+/
   artifacts:
     expire_in: '30 day'
-    reports:
-      coverage_report:
-        coverage_format: cobertura
-        path: coverage/cobertura-coverage.xml
-    paths:
-      - coverage/
 
 

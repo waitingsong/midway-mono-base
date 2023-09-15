@@ -5,10 +5,10 @@ import {
   Get,
 } from '@midwayjs/core'
 
-import { TestRespBody } from './types'
+import { TestRespBody } from './types.js'
 
-import { OssClientKey } from '~/config/config.types'
-import { BaseController } from '~/interface'
+import { OssClientKey } from '##/config/config.types.js'
+import { BaseController } from '##/interface.js'
 
 
 @Controller('/unittest')

@@ -1,17 +1,15 @@
 import assert from 'node:assert/strict'
-import { relative } from 'node:path'
 
 import { createHttpRequest } from '@midwayjs/mock'
 import type { JsonResp } from '@mwcp/boot'
 import { JwtMsg, schemePrefix } from '@mwcp/jwt'
+import { fileShortPath } from '@waiting/shared-core'
 
-import { testConfig } from '@/root.config'
-import { UserDetailDTO } from '~/app/user/user.types'
+import { UserDetailDTO } from '##/app/user/user.types.js'
+import { testConfig } from '#@/root.config.js'
 
 
-const filename = relative(process.cwd(), __filename).replace(/\\/ug, '/')
-
-describe(filename, () => {
+describe.only(fileShortPath(import.meta.url), () => {
 
   it('should GET /user error w/o token', async () => {
     const { app } = testConfig

@@ -1,5 +1,8 @@
 // config for `npm run cov|ci`
-import type { AppConfig } from '@mwcp/boot'
+import type {
+  AppConfig,
+  Context,
+} from '@mwcp/boot'
 import { initPathArray } from '@mwcp/jwt'
 import {
   DbConfig,
@@ -11,7 +14,8 @@ import {
   ServerURL,
 } from '@mwcp/taskman'
 
-import { DbReplica } from './config.types'
+import { DbReplica } from './config.types.js'
+import { dbDict, DbModel } from './db.model.js'
 
 
 export const security = {
@@ -51,8 +55,9 @@ export const jwtMiddlewareConfig: AppConfig['jwtMiddlewareConfig'] = {
 }
 
 
-const master: DbConfig = {
+const master: DbConfig<DbModel, Context> = {
   config: {
+    client: 'pgnative',
     connection: {
       host: process.env['POSTGRES_HOST'] ? process.env['POSTGRES_HOST'] : 'localhost',
       port: process.env['POSTGRES_PORT'] ? +process.env['POSTGRES_PORT'] : 5432,
@@ -62,6 +67,7 @@ const master: DbConfig = {
       statement_timeout: 30000, // in milliseconds
     },
   },
+  dict: dbDict,
   traceInitConnection: true,
 }
 export const kmoreConfig: KmoreSourceConfig<DbReplica> = {

@@ -1,12 +1,12 @@
 import { Inject, Provide } from '@midwayjs/core'
 
-import { UserRepo } from './user.repo'
+import { UserRepo } from './user.repo.js'
 import {
   GetUserDTO,
   UserDetailDTO,
-} from './user.types'
+} from './user.types.js'
 
-import { BaseService } from '~/interface'
+import { BaseService } from '##/interface.js'
 
 
 @Provide()

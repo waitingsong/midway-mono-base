@@ -20,11 +20,12 @@ if [ -n "$NPM_DIST" ]; then
   disturl="--disturl=${NPM_DIST}"
 fi
 
+# --legacy-peer-deps
 if [ -f npm-shrinkwrap.json ]; then
   echo -e ">>> npm-shrinkwrap.json exists, use it"
-  npm ci --no-audit --omit=dev --omit=optional --legacy-peer-deps $disturl
+  npm ci --no-audit --omit=dev --omit=optional  $disturl
 else
-  npm i --no-audit --omit=dev --omit=optional --legacy-peer-deps $disturl
+  npm i --no-audit --omit=dev --omit=optional $disturl
 fi
 
 date
@@ -47,5 +48,8 @@ date
 sh "${cwd}/.scripts/util/clean-pkg-files.sh"
 date
 
+
+echo -e " Purged"
 cd ../
+du -sh node_modules
 

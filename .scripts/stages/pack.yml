@@ -13,7 +13,7 @@
   when: manual
   script:
     - echo -e "\e[0Ksection_start:`date +%s`:image_ga_section[collapsed=true]\r\e[0K Image GA"
-    - .scripts/build-images.sh
+    - .scripts/build-images.mts
     - echo -e "\e[0Ksection_end:`date +%s`:image_ga_section\r\e[0K"
 
 

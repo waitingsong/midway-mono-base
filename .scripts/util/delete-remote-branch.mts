@@ -1,14 +1,14 @@
-#!/usr/bin/env ts-node-esm
+#!/usr/bin/env tsx
 /**
  * Delete remote branch
  * @requires access token named PUBLISH_TOKEN with api, read_api and write_repository scope
  * @usage `./ci-delete-remote-branch.sh $ACCESS_TOKEN "$CI_API_V4_URL" $CI_PROJECT_ID <branch name>`
  * @example  `./ci-delete-remote-branch.sh d223a375d4c243926111110b386666 "https://gitlab.com/api/v4" 23 release`
  */
-
 import assert from 'node:assert'
+
+import { retrieveArgsFromProcess } from '@waiting/shared-core'
 import { $ } from 'zx'
-import minimist from 'minimist'
 
 import {
   CI_PROJECT_PATH,
@@ -21,7 +21,7 @@ $.verbose = true
 await $`pwd && date`
 let msg = ''
 
-const argv = minimist(process.argv.slice(2))
+const argv = retrieveArgsFromProcess()
 console.info(argv)
 
 const token = argv.token ?? ''

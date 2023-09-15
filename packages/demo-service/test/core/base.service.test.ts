@@ -1,13 +1,12 @@
 import assert from 'node:assert/strict'
-import { relative } from 'node:path'
 
-import { testConfig } from '@/root.config'
-import { HomeService } from '~/app/home/home.service'
+import { fileShortPath } from '@waiting/shared-core'
+
+import { HomeService } from '##/app/home/home.service.js'
+import { testConfig } from '#@/root.config.js'
 
 
-const filename = relative(process.cwd(), __filename).replace(/\\/ug, '/')
-
-describe(filename, () => {
+describe(fileShortPath(import.meta.url), () => {
 
   it('should BaseService work', async () => {
     const { app } = testConfig

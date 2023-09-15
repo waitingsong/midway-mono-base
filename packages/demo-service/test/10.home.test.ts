@@ -1,14 +1,11 @@
 import assert from 'node:assert/strict'
-import { relative } from 'node:path'
 
-import type { JsonResp } from '@mwcp/boot'
+import { fileShortPath } from '@waiting/shared-core'
 
-import { testConfig, TestRespBody } from '@/root.config'
+import { TestRespBody, testConfig } from '#@/root.config.js'
 
 
-const filename = relative(process.cwd(), __filename).replace(/\\/ug, '/')
-
-describe(filename, () => {
+describe(fileShortPath(import.meta.url), () => {
 
   const path = '/unittest/home'
 
@@ -17,7 +14,7 @@ describe(filename, () => {
 
     const resp = await httpRequest
       .get(path)
-    const ret = resp.body as JsonResp<TestRespBody>
+    const ret = resp.body as TestRespBody
 
     assert(ret)
     console.log({ ret })

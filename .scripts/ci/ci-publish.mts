@@ -1,11 +1,11 @@
-#!/usr/bin/env ts-node-esm
+#!/usr/bin/env tsx
 /**
  * for scripts.prepublishOnly of top package.json
  * use only of top
  * @param registry
  */
 import assert from 'node:assert'
-import minimist from 'minimist'
+import { retrieveArgsFromProcess } from '@waiting/shared-core'
 
 import { getNpmPkgViewFromRegistry } from '@waiting/shared-core'
 import { $, sleep, fs } from 'zx'
@@ -18,11 +18,12 @@ import {
   USER_HOME,
  } from '../ci-consts.mjs'
 import { NpmLogLevel, PkgInfoLite } from '../ci-types.mjs'
+import { getProjectPkgList } from '../util/project-info.js'
 
 $.verbose = true
 await $`pwd && date`
 
-const argv = minimist(process.argv.slice(2))
+const argv = retrieveArgsFromProcess()
 console.info(argv)
 
 let msg = `
@@ -60,8 +61,7 @@ await $`date`
 await $`npm i`
 await $`npm run build`
 
-const resp = await $`lerna ls --toposort --json --loglevel error `
-const pkgs = JSON.parse(resp.stdout) as PkgInfoLite[]
+const pkgs = await getProjectPkgList(baseDir)
 assert(pkgs.length > 0, 'no packages found')
 
 for (const pkg of pkgs) {
@@ -84,5 +84,5 @@ for (const pkg of pkgs) {
 
 // restore npmrc
 await $`cp -f ${npmrcFileBack} ${npmrcFile}`
-await $`npm run clean:cache`
+await $`lerna run clean:cache`
 

@@ -1,10 +1,11 @@
-#!/usr/bin/env ts-node-esm
+#!/usr/bin/env tsx
 /**
  * for scripts.prepublishOnly of top package.json
  * use only of top
  */
 import assert from 'node:assert'
-import minimist from 'minimist'
+
+import { retrieveArgsFromProcess } from '@waiting/shared-core'
 import { $, cd } from 'zx'
 
 import { baseDir, NPM_REGISTRY } from '../ci-consts.mjs'
@@ -14,7 +15,7 @@ $.verbose = true
 await $`pwd && date`
 console.info('>>> prepublishOnly...')
 
-const argv = minimist(process.argv.slice(2))
+const argv = retrieveArgsFromProcess()
 
 const dir = argv.dir ?? ''
 assert(dir, 'dir not set')
@@ -38,9 +39,9 @@ const pkgFile = `${baseDir}/package.json`
 try {
   await $`rm -f ${pkgFile}`
   await $`npm i ${args}`
-  await $`date`
+  await $`date && ls -Al`
   await $`npm shrinkwrap`
-  await $`date`
+  await $`date && ls -Al`
   await $`ls -l npm-shrinkwrap.json`
 }
 finally {

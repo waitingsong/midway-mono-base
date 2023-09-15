@@ -4,7 +4,7 @@ import type {
   Context,
 } from '@mwcp/boot'
 
-import { genISO8601String } from '~/util/ext'
+import { genISO8601String } from '##/util/ext.js'
 
 
 class CustomContextLogger extends MidwayContextLogger<Context> {

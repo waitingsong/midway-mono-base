@@ -1,10 +1,11 @@
-#!/usr/bin/env ts-node-esm
+#!/usr/bin/env tsx
 /**
  * for scripts.prepublishOnly of top package.json
  * use only of top
  */
 import assert from 'node:assert'
-import minimist from 'minimist'
+
+import { retrieveArgsFromProcess } from '@waiting/shared-core'
 import { $, sleep } from 'zx'
 
 import {
@@ -19,11 +20,12 @@ import {
   RELEASE_SEMVER,
  } from '../ci-consts.mjs'
 import { PkgInfoLite, SemVerList } from '../ci-types.mjs'
+import { getProjectPkgList } from '../util/project-info.js'
 
 $.verbose = true
 await $`date`
 
-const argv = minimist(process.argv.slice(2))
+const argv = retrieveArgsFromProcess()
 console.info(argv)
 
 let semVer = argv.semver ?? RELEASE_SEMVER
@@ -44,8 +46,7 @@ let msg = `
 `
 console.info(msg)
 
-const resp = await $`lerna ls --json`
-const pkgs = JSON.parse(resp.stdout) as PkgInfoLite[]
+const pkgs: PkgInfoLite[] = await getProjectPkgList(baseDir)
 assert(pkgs.length > 0, 'no packages found')
 
 assert(PUBLISH_RELEASE_REPO, 'PUBLISH_RELEASE_REPO not set, gitlab or github')
@@ -92,7 +93,7 @@ msg = '>>> lerna initializing...'
 console.info(msg)
 
 CI && await $`nx reset`
-await $`npm run clean:dist`
+await $`lerna run clean:dist`
 await $`date`
 await $`npm i`
 await $`npm run build`
@@ -134,7 +135,7 @@ catch { void 0}
 
 // restore changed package.json (append gitHead)
 await $`git restore ./packages`.catch(() => void 0)
-await $`npm run clean:cache`
+await $`lerna run clean:cache`
 
 await sleep('1s')
 await $`git push --follow-tags origin`

@@ -1,5 +1,8 @@
 import { join } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
+
+import type { NpmPkg } from '@waiting/shared-types'
+
 import { NpmLogLevel, SemVerList } from './ci-types.mjs'
 
 /**
@@ -11,16 +14,20 @@ import { NpmLogLevel, SemVerList } from './ci-types.mjs'
 export const USER_HOME = process.env.HOME ?? ''
 
 const __dirname = genCurrentDirname(import.meta.url)
+const __dirnameUrlHref = pathToFileURL(__dirname).href
+
 export const CI = process.env.CI ? true : false
-export const CI_PROJECT_DIR = process.env.CI_PROJECT_DIR ?? ''
+export const CI_PROJECT_DIR = process.env.CI_PROJECT_DIR ?? ''  // /builds/utQAMD00/0/devops/node-base
 export const CI_BUILDS_DIR = process.env.CI_BUILDS_DIR ?? '/build'
 export const BUILD_TMP_DIR = process.env.BUILD_TMP_DIR ?? '/tmp/build'
 export const BUNDLE_NAME = process.env.BUNDLE_NAME ?? 'bundle'
-export const baseDir = CI_PROJECT_DIR ? CI_PROJECT_DIR : join(__dirname, '../')
+export const baseDir = join(__dirname, '../')
+export const baseDirUrl = join(__dirnameUrlHref, '../')
 
-const _pkgInfo = await import(`${baseDir}/package.json`, {
-  assert: { type: 'json' },
-}) as Record<string, unknown>
+const _pkgInfo = await import(
+  `${baseDirUrl}/package.json`,
+  { assert: { type: 'json' },
+}) as NpmPkg
 export const pkgInfo = (_pkgInfo.default ?? _pkgInfo) as Record<string, unknown>
 
 export const CI_DEFAULT_BRANCH = process.env.CI_DEFAULT_BRANCH ?? 'main'
@@ -49,6 +56,10 @@ export const CI_PIPELINE_ID = process.env.CI_PIPELINE_ID ?? ''
 export const CI_JOB_ID = process.env.CI_JOB_ID ?? ''
 export const CI_JOB_URL = process.env.CI_JOB_URL ?? 'https://'
 export const CI_JOB_NAME = process.env.CI_JOB_NAME ?? ''
+const ciJobManual = process.env.CI_JOB_MANUAL
+export const CI_JOB_MANUAL: boolean = ciJobManual === 'true' || ciJobManual === true
+  ? true
+  : false
 
 /**
  * 包含完整的引用名称，如 refs/heads/branch-name

@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node-esm
+#!/usr/bin/env tsx
 /**
  * for scripts.prepublishOnly of top package.json
  * use only of top
@@ -7,9 +7,10 @@
  *
  */
 import assert from 'node:assert'
-import { $ } from 'zx'
-import minimist from 'minimist'
+
+import { retrieveArgsFromProcess } from '@waiting/shared-core'
 import { b64decode } from '@waiting/base64'
+import { $ } from 'zx'
 
 import {
   NPM_VERSION_TOKEN,
@@ -19,7 +20,7 @@ import {
 $.verbose = true
 await $`date`
 
-const argv = minimist(process.argv.slice(2))
+const argv = retrieveArgsFromProcess()
 
 const registry: string = argv.registry ?? NPM_VERSION_REGISTRY ?? ''
 const token: string = argv.token ?? NPM_VERSION_TOKEN

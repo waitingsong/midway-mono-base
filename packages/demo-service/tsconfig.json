@@ -1,9 +1,5 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "declaration": false,
-    "declarationMap": false,
-    "exactOptionalPropertyTypes": false,
-    "module": "commonjs"
   }
 }

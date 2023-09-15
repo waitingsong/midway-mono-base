@@ -3,9 +3,9 @@
   stage: testing
   tags:
     - worker
-  # needs:
-  #   - analysis
-  #   - build
+  needs:
+    - analysis
+    - build
   # cache: {}
   script:
     - date
@@ -35,10 +35,12 @@
     - echo -e "\e[0Ksection_end:`date +%s`:test_section\r\e[0K"
 
     - date
-    - echo -e "\e[0Ksection_start:`date +%s`:cov_section[collapsed=true]\r\e[0K Coverage"
-    - .scripts/collect-coverages.sh
+    - echo -e "\e[0Ksection_start:`date +%s`:cov_section[collapsed=false]\r\e[0K Coverage"
+    - .scripts/collect-coverages.mts
     - echo -e "\e[0Ksection_end:`date +%s`:cov_section\r\e[0K"
     - date
+  allow_failure: false
+  coverage: '/^Statements\s+:\s+([\d\.]+)%/'
   artifacts:
     expire_in: '14 day'
     reports:
@@ -59,13 +61,5 @@ testing:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: always
     - when: on_success
-  artifacts:
-    expire_in: '30 day'
-    reports:
-      coverage_report:
-        coverage_format: cobertura
-        path: coverage/cobertura-coverage.xml
-    paths:
-      - coverage/
 
 

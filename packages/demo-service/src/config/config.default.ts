@@ -20,9 +20,11 @@ import {
   DbReplica,
   OssClientKey,
   SvcHosts,
-} from './config.types'
-import { dbDict, DbModel } from './db.model'
+} from './config.types.js'
+import { dbDict, DbModel } from './db.model.js'
 
+
+export const enableJsonRespMiddlewareConfig = true
 
 const jwtConfig = {
   secret: process.env['JWT_SECRET'],

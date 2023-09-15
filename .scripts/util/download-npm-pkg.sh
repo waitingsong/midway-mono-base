@@ -22,6 +22,6 @@ fi
 echo -e ">>> Downloading '$npmPkg' from NPM"
 npm pack --quiet "$npmPkg"
 tar -xf "$npmPkgFile"
-ls -l package
+ls -Al package
 rm "$npmPkgFile" -f
 

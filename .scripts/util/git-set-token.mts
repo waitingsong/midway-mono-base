@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node-esm
+#!/usr/bin/env tsx
 /**
  * Set git config for publish
  * @requires access token named PUBLISH_TOKEN with read/write_repository scope

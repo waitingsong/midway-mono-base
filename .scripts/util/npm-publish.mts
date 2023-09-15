@@ -1,15 +1,16 @@
-#!/usr/bin/env ts-node-esm
+#!/usr/bin/env tsx
 /**
  * @param {string} dir
  * @param {string} logLevel - optional
  */
 import assert from 'node:assert'
-import minimist from 'minimist'
+
+import { retrieveArgsFromProcess } from '@waiting/shared-core'
 import { $, cd } from 'zx'
 
 import { NPM_LOG_LEVEL } from '../ci-consts.mjs'
 
-const argv = minimist(process.argv.slice(2))
+const argv = retrieveArgsFromProcess()
 
 $.verbose = true
 console.info('>>> publishing...')

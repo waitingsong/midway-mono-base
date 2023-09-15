@@ -1,8 +1,9 @@
 import { JwtState } from '@mwcp/jwt'
 
-import { JwtUser } from './types'
+import { JwtUser } from './types.js'
 
 
+// @ts-ignore
 declare module '@midwayjs/koa/dist/interface' {
   interface Context {
     // @ts-ignore
@@ -11,7 +12,7 @@ declare module '@midwayjs/koa/dist/interface' {
 }
 
 
-export { BaseController } from './core/base.controller'
-export { BaseService } from './core/base.service'
-export { BaseRepo } from './core/base.repo'
+export { BaseController } from './core/base.controller.js'
+export { BaseService } from './core/base.service.js'
+export { BaseRepo } from './core/base.repo.js'
 

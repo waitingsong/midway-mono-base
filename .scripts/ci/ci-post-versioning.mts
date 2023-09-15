@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node-esm
+#!/usr/bin/env tsx
 /**
  * for scripts.prepublishOnly of top package.json
  * use only of top
@@ -109,6 +109,6 @@ const args: (string|number)[] = [
 ]
 await $`.scripts/util/delete-remote-branch.mts ${args}`
 
-await $`npm run clean:cache`
+await $`lerna run clean:cache`
 
 

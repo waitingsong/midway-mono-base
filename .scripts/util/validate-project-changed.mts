@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node-esm
+#!/usr/bin/env tsx
 import assert from 'node:assert'
 import { $ } from 'zx'
 import { PkgInfoLite } from '../ci-types.mjs'
