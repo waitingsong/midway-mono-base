@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@midwayjs/validate": "^3.12.2",
-    "@waiting/shared-types": "^21.5.0"
+    "@waiting/shared-types": "^22.0.0"
   },
   "devDependencies": {
   },
