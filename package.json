@@ -24,7 +24,7 @@
     "mocha": "10",
     "mocha-lcov-reporter": "1",
     "mwtsc": "^1.0.1",
-    "nx": "16",
+    "nx": "17",
     "supertest": "^6.3.3",
     "swagger-ui-dist": "^5.4.2",
     "ts-node": "^10.9.1",
