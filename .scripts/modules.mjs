@@ -1,3 +1,4 @@
+/** only name , no sub-folder with "/"  */
 
 export const mods = [
   [
@@ -30,14 +31,9 @@ export const mods = [
 
   [
     "@koa",
-    "@opentelemetry",
     "koa-session",
     "ast-types",
     "common-bin",
-    // "egg-errors",
-    // "egg-redis",
-    // "egg-scripts",
-    // "egg-security",
     "get-uri",
     "jaeger-client",
     "json-schema",
@@ -55,6 +51,7 @@ export const mods = [
   [
     "ajv",
     "joi",
+    "koa",
     "knex",
     "lodash",
     "rxjs",
@@ -63,18 +60,14 @@ export const mods = [
 
   [
     "@midwayjs",
-    "@mw-components",
     "@mwcp",
     "@waiting",
     "kmore",
   ], // 3
 
   [
-    // "egg",
-    // "egg-core",
-    // "egg-cluster",
-    // "egg-logger",
-    "koa",
+    "@opentelemetry",
+    "@grpc",
     "iconv-lite",
     // "raw-body",
     "ready-callback",

@@ -19,3 +19,7 @@ export GRADLE_USER_HOME=.gradle-bin
 export PUB_CACHE="$CI_PROJECT_DIR/.pub-cache"
 export PATH="$PATH":"$PUB_CACHE/bin"
 
+# nodejs
+export NODE_OPTIONS="$NODE_OPTIONS --no-warnings"
+
+

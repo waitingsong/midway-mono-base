@@ -16,3 +16,9 @@ else
 fi
 echo $authorOfTagOrCommit
 
+globalDir="$(npm root -g)"
+# if globalDir exists and local node_modules does not exist
+if [ -d "$globalDir" ] &&  [ ! -d node_modules ] ; then
+  ln -s $globalDir node_modules
+fi
+

@@ -16,7 +16,7 @@ COPY --chown=node node_modules-ext-5 ./node_modules
 COPY --chown=node node_modules ./node_modules
 COPY --chown=node node_modules-ext-99 ./node_modules
 COPY --chown=node dist ./dist
-COPY --chown=node package.json README.md tsconfig.json bootstrap.js ./
+COPY --chown=node package.json README.md tsconfig.json tsconfig.base.json bootstrap.js ./
 
 EXPOSE 7001
 HEALTHCHECK \

@@ -1,14 +1,13 @@
 import assert from 'node:assert/strict'
-import { relative } from 'node:path'
 
 import { createHttpRequest } from '@midwayjs/mock'
+import { fileShortPath } from '@waiting/shared-core'
 
-import { testConfig } from '../../../root.config'
+import { testConfig } from '#@/root.config.js'
 
 
-const filename = relative(process.cwd(), __filename).replace(/\\/ug, '/')
+describe(fileShortPath(import.meta.url), () => {
 
-describe(filename, () => {
   it('should assert', async () => {
     // const { app, pkg } = testConfig
     // const ctx = app.mockContext({})

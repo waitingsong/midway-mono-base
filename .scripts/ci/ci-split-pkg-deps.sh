@@ -29,11 +29,11 @@ fi
 
 srcDir="./node_modules/$srcScope"
 if [ ! -d "$srcDir" ]; then
-  # echo -e "folder not exists: $srcDir, skip"
+  echo -e "folder not exists: $srcDir, mkdir only "
   mkdir -p "$srcDir"
   exit 0
 fi
 
-echo -e "\n>>> Splitting node_modules: $srcScope"
+echo -e "\n>>> Splitting node_modules: $srcScope to $dstDir"
 mv "$srcDir" "$dstDir"
 

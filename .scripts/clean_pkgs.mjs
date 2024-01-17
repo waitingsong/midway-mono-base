@@ -10,6 +10,7 @@ const dirs = [
   'dependency-tree/node_modules/typescript',
   'detective-typescript/node_modules/typescript',
   'filing-cabinet/node_modules/typescript',
+  'lerna/node_modules/typescript',
   'madge/node_modules/typescript',
 ]
 

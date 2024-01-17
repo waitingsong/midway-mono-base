@@ -1,0 +1,65 @@
+
+.testing:
+  stage: testing
+  tags:
+    - worker
+  needs:
+    - analysis
+    - build
+  # cache: {}
+  script:
+    - date
+    - echo -e "\e[0Ksection_start:`date +%s`:valid_svc_section[collapsed=true]\r\e[0K Validate services"
+    - if [ -f .scripts/util/validate-services.mts ]; then .scripts/util/validate-services.mts; fi
+    - echo -e "\e[0Ksection_end:`date +%s`:valid_svc_section\r\e[0K"
+
+    - date
+    - echo -e "\e[0Ksection_start:`date +%s`:deps_section[collapsed=true]\r\e[0K Install Deps"
+    - npm i --disturl=https://npmmirror.com/dist/
+    - echo -e "\e[0Ksection_end:`date +%s`:deps_section\r\e[0K"
+
+    - date
+    - echo -e "\e[0Ksection_start:`date +%s`:build_section[collapsed=true]\r\e[0K Build"
+    - npm run build
+    - ls -al
+    - echo -e "\e[0Ksection_end:`date +%s`:build_section\r\e[0K"
+
+    - date
+    - echo -e "\e[0Ksection_start:`date +%s`:init_db_section[collapsed=true]\r\e[0K Init database"
+    - .scripts/ci/ci-init-db.sh
+    - echo -e "\e[0Ksection_end:`date +%s`:init_db_section\r\e[0K"
+
+    - date
+    - echo -e "\e[0Ksection_start:`date +%s`:test_section[collapsed=true]\r\e[0K Testing"
+    - npm run ci
+    - echo -e "\e[0Ksection_end:`date +%s`:test_section\r\e[0K"
+
+    - date
+    - echo -e "\e[0Ksection_start:`date +%s`:cov_section[collapsed=false]\r\e[0K Coverage"
+    - .scripts/collect-coverages.mts
+    - echo -e "\e[0Ksection_end:`date +%s`:cov_section\r\e[0K"
+    - date
+  allow_failure: false
+  coverage: '/^Statements\s+:\s+([\d\.]+)%/'
+  artifacts:
+    expire_in: '14 day'
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/cobertura-coverage.xml
+    paths:
+      - coverage/
+
+
+testing:
+  extends: .testing
+  rules:
+    - if: $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
+      when: never
+    - if: $CI_COMMIT_BRANCH =~ /^versioning_.+/
+      when: never
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+    - when: on_success
+
+

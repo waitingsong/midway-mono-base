@@ -65,12 +65,17 @@ f7="jest.config.js"
 f8="tsconfig.cjs.json"
 f9="src/*.ts"
 
+f01=".eslintrc.yml"
+f02=".nycrc.json"
+f03="bootstrap.js"
+
 d2="src/util"
 d3="src/middleware"
 d4="src/core"
 d5="src/config"
 d6="src/app/public"
-mkdir -p "$pkgPath/$d2" "$pkgPath/$d3" "$pkgPath/$d4" "$pkgPath/$d5" "$pkgPath/$d6"
+d7="src/database"
+mkdir -p "$pkgPath/$d2" "$pkgPath/$d3" "$pkgPath/$d4" "$pkgPath/$d5" "$pkgPath/$d6" "$pkgPath/$d7"
 
 echo -e "Copying files to folder: $pkgPath/ ..."
 cp "$tplDir/$f1" "$pkgPath/"
@@ -80,6 +85,9 @@ cp "$tplDir/$f4" "$pkgPath/"
 cp "$tplDir/$f6" "$pkgPath/"
 cp "$tplDir/$f7" "$pkgPath/"
 cp "$tplDir/$f8" "$pkgPath/"
+cp "$tplDir/$f01" "$pkgPath/"
+cp "$tplDir/$f02" "$pkgPath/"
+cp "$tplDir/$f03" "$pkgPath/"
 echo "" >> "$pkgPath/$fReadme"
 
 CMD="$tplDir/$f9 $pkgPath/src/"
@@ -90,6 +98,7 @@ cp -a "$tplDir/$d3" "$pkgPath/src"
 cp -a "$tplDir/$d4" "$pkgPath/src"
 cp -a "$tplDir/$d5" "$pkgPath/src"
 cp -a "$tplDir/$d6" "$pkgPath/src/app"
+# cp -a "$tplDir/$d7" "$pkgPath/src"
 
 pkgJson="$pkgPath/package.json"
 echo -e "Updating file: $pkgJson"
@@ -97,7 +106,7 @@ echo -e "Updating file: $pkgJson"
 sed -i "s#$tplName#${pkgFullName}#g" "$pkgJson"
 sed -i "s#$svcTitle#${pkgFullName}#g" "$pkgJson"
 sed -i "s#\(private.\+\)true#\1false#g" "$pkgJson"
-sed -i "s#${pkgScope}/docs#$svcTitle#g" package.json
+sed -i "s#$pkgScope/docs#$svcTitle#g" package.json
 repo=$(git remote get-url origin)
 if [ -n "$repo" ]; then
   sed -i "s#\(git+https://\)#${repo}#" "$pkgJson"
@@ -122,7 +131,7 @@ echo -e "Git add success\n"
 #cp -a "$tplDir/src" "$pkgPath/"
 #echo -e "Copying folder src/ done, You should git add files manually!"
 
-npm run bootstrap
+npm i
 npm run build "$pkgFullName"
 
 echo -e "\nInitialization success. You should git add files under src/ manually!"

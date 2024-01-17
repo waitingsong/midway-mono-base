@@ -6,9 +6,9 @@ import {
   Provide,
 } from '@midwayjs/core'
 
-import { DebugService } from './debug.service'
+import { DebugService } from './debug.service.js'
 
-import { BaseController } from '~/interface'
+import { BaseController } from '##/interface.js'
 
 
 // CHANGE value for prod!

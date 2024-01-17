@@ -1,0 +1,12 @@
+
+default:
+  services:
+  - name: $PG_IMAGE
+    alias: postgres
+  - name: $REDIS_IMAGE
+    alias: redis
+  - name: registry.docker.graspyun.com/ishop_pos-svc:latest
+    alias: self-app
+  - name: registry.docker.graspyun.com/ishop_pos_offline_data-svc:latest
+    alias: pos-offline
+

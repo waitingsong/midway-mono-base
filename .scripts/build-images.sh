@@ -14,6 +14,10 @@ echo -e "-------------------------------------------"
 echo -e "      images build and push process "
 echo -e "-------------------------------------------"
 
+if [ -n "$CI" ]; then
+  nx reset
+fi
+
 # echo $authorOfTagOrCommit
 echo -e "CI_JOB_MANUAL: $CI_JOB_MANUAL"
 echo -e "base img: $NODE_BASE_IMAGE"
@@ -50,11 +54,13 @@ do
     cp "$globalIgnoreFile" ./.dockerignore
   fi
 
+  # ${cwd}/.scripts/util/prepare-bin-for-image.mjs
+
   set -e
   if [ -n "$CI_COMMIT_TAG" ]; then
-    ${cwd}/.scripts/ci/ci-build-image.mjs --src="$imgPatch" --ga=true
+    ${cwd}/.scripts/ci/ci-build-image.mjs --src="$imgPatch" --cache-from="$imgLatest --ga=true"
   else
-    ${cwd}/.scripts/ci/ci-build-image.mjs --src="$imgPatch"
+    ${cwd}/.scripts/ci/ci-build-image.mjs --src="$imgPatch" --cache-from="$imgLatest"
   fi
 
   rm "$pkgBuildTmpDir" -rf

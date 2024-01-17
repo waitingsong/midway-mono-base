@@ -12,5 +12,5 @@ rules:
       - ../../node_modules/@mwcp/boot/
       - ../../node_modules/@mwcp/share/
 
-ignorePatterns:
-  - fixtures
+# ignorePatterns:
+#   - test

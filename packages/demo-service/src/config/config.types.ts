@@ -1,4 +1,5 @@
 
+// @ts-ignore
 declare module '@midwayjs/core/dist/interface' {
   interface MidwayConfig {
     welcomeMsg: string

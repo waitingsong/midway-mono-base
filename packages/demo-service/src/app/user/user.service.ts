@@ -1,12 +1,12 @@
 import { Inject, Provide } from '@midwayjs/core'
 
-import { UserRepo } from './user.repo'
+import { UserRepo } from './user.repo.js'
 import {
   GetUserDTO,
   UserDetailDTO,
-} from './user.types'
+} from './user.types.js'
 
-import { BaseService } from '~/interface'
+import { BaseService } from '##/interface.js'
 
 
 @Provide()
@@ -23,6 +23,15 @@ export class UserService extends BaseService {
       email: 'foo@bar.com',
       uid: options.uid,
       userName,
+
+      userValid: 1,
+      sex: 1,
+      idcard: '123456789012345678',
+      regip: '127.0.0.1',
+      lastip: '127.0.0.1',
+      json: {},
+      ctime: new Date(),
+      mtime: new Date(),
     }
     return ret
   }

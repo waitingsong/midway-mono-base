@@ -5,10 +5,10 @@ import { Init, Inject } from '@midwayjs/core'
 import type { Context, DbTransaction } from '@mwcp/boot'
 import { DbManager, Kmore } from '@mwcp/kmore'
 
-import { RootClass } from './root.class'
+import { RootClass } from './root.class.js'
 
-import { DbReplica } from '~/config/config.types'
-import type { DbModel } from '~/config/db.model'
+import { DbReplica } from '##/config/config.types.js'
+import type { DbModel } from '##/config/db.model.js'
 
 
 export class BaseRepo extends RootClass {

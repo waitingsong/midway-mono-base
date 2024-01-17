@@ -1,6 +1,7 @@
 {
   "include": [
-    "packages/*/src/*.ts",
+    "src/*.ts",
+    "src/**/*.ts",
     "packages/*/src/**/*.ts"
   ],
   "exclude": [
@@ -14,9 +15,11 @@
     "**/test",
     "**/test*",
     "**/*.d.ts",
-    "**/*.js"
+    "**/*.js",
+    "**/*.map"
   ],
   "reporter": [
+    "text",
     "html",
     "json",
     "text-summary"

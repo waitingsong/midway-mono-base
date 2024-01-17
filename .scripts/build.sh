@@ -1,7 +1,12 @@
 #!/bin/bash
+. .scripts/env.sh
 
 input="$@"
 scope=''
+
+if [ -n "$CI" ]; then
+  nx reset
+fi
 
 if [ -z "$input" ]; then
   lerna run build

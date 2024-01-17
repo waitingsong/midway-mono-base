@@ -2,5 +2,5 @@
 export {
   GetUserDTO,
   UserDetailDTO,
-} from '~/types'
+} from '##/types.js'
 

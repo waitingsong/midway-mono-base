@@ -4,16 +4,14 @@ import {
   Controller,
   Get,
   Inject,
-  Provide,
 } from '@midwayjs/core'
 import { AppInfomation } from '@mwcp/boot'
 
-import { HomeService } from './home.service'
+import { HomeService } from './home.service.js'
 
-import { BaseController } from '~/interface'
+import { BaseController } from '##/interface.js'
 
 
-@Provide()
 @Controller('/')
 export class HomeController extends BaseController {
 

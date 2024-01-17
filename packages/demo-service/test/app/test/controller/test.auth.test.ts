@@ -1,13 +1,11 @@
 import assert from 'node:assert/strict'
-import { relative } from 'node:path'
 
 import { createHttpRequest } from '@midwayjs/mock'
 import { JwtMsg, schemePrefix } from '@mwcp/jwt'
+import { fileShortPath } from '@waiting/shared-core'
 
-import { testConfig } from '@/root.config'
+import { testConfig } from '#@/root.config.js'
 
-
-const filename = relative(process.cwd(), __filename).replace(/\\/ug, '/')
 
 const expectPayloadStr = '{"foo":"bar","iat":1566629919}'
 const signature1 = 'PZkACzct30IcrymoodYlW0LW0Fc1r6Hs1l8yOZSeNpk'
@@ -16,8 +14,7 @@ const token1 = header1
   + 'eyJmb28iOiJiYXIiLCJpYXQiOjE1NjY2Mjk5MTl9.'
   + signature1
 
-
-describe(filename, () => {
+describe(fileShortPath(import.meta.url), () => {
 
   it('should GET /test/sign', async () => {
     const { app } = testConfig

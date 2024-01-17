@@ -8,10 +8,10 @@ import {
 import { Validate } from '@midwayjs/validate'
 import { JsonResp } from '@mwcp/boot'
 
-import { UserService } from './user.service'
-import { GetUserDTO, UserDetailDTO } from './user.types'
+import { UserService } from './user.service.js'
+import { GetUserDTO, UserDetailDTO } from './user.types.js'
 
-import { BaseController } from '~/interface'
+import { BaseController } from '##/interface.js'
 
 
 @Controller('/user')

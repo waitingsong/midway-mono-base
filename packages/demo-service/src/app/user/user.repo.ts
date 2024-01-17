@@ -1,11 +1,13 @@
+import assert from 'node:assert'
+
 import { Init, Provide } from '@midwayjs/core'
 
 import {
   GetUserDTO,
   UserDetailDTO,
-} from './user.types'
+} from './user.types.js'
 
-import { BaseRepo } from '~/interface'
+import { BaseRepo } from '##/interface.js'
 
 
 @Provide()
@@ -16,6 +18,7 @@ export class UserRepo extends BaseRepo {
   @Init()
   async initTable(): Promise<void> {
     await this.baseInit()
+    assert(this.db.dict, 'this.db.dict not exists')
     this.ref_tb_user = this.db.camelTables.ref_tb_user
   }
 
