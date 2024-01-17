@@ -62,6 +62,7 @@
   "files.insertFinalNewline": true,
   "files.refactoring.autoSave": true,
   "files.watcherExclude": {
+    ".tsbuildinfo": true,
     "coverage/**": true,
     "dist/**": true,
     "packages/*/dist/**": true,
@@ -81,6 +82,7 @@
   "files.trimTrailingWhitespace": true,
   "git.autofetch": true,
   "git.ignoreLimitWarning": true,
+  "markdown.editor.pasteUrlAsFormattedLink.enabled": "smart",
   "markdown-pdf.outputDirectory": "d:/",
   "plantuml.render": "PlantUMLServer",
   "plantuml.server": "https://www.plantuml.com/plantuml",
@@ -89,6 +91,7 @@
   "search.exclude": {
     ".gitlab": false,
     ".scripts": false,
+    ".tsbuildinfo": true,
     "i18n": true,
     "library/": true,
     "node_modules": true,
@@ -118,7 +121,7 @@
       "args": ["-l"]
     }
   },
-  "terminal.integrated.defaultProfile.windows": "git-bash",
+  "terminal.integrated.defaultProfile.windows": "Git Bash",
   "terminal.integrated.defaultProfile.linux": "bash (login)",
   "typescript.autoClosingTags": false,
   "typescript.format.enable": true,

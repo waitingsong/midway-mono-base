@@ -2,7 +2,7 @@ import { Provide } from '@midwayjs/core'
 import { AppInfomation } from '@mwcp/boot'
 import { retrieveFirstIp } from '@waiting/shared-core'
 
-import { BaseService } from '~/interface'
+import { BaseService } from '##/interface.js'
 
 
 @Provide()

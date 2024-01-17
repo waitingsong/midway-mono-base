@@ -8,11 +8,12 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
     container: node:current
+    timeout-minutes: 60
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
 
     strategy:
       matrix:
-        node: ['lts/*']
+        node: ['lts/*', 'current']
         os: [ubuntu-latest]
 
     steps:
@@ -38,12 +39,13 @@ jobs:
             packages/*/node_modules
             packages/*/package-lock.json
             /usr/bin/ossutil
-          key: ${{ runner.OS }}-build-${{ env.cache-name }}-${{ github.ref }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.OS }}-build-${{ env.cache-name }}-${{ github.ref }}-${{ matrix.node }}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.OS }}-build-${{ env.cache-name }}-${{ github.ref }}-
+            ${{ runner.OS }}-build-${{ env.cache-name }}-${{ github.ref }}-${{ matrix.node }}-
 
       - name: Prepare
         run: |
+          pwd
           uname -a
           export DEBIAN_FRONTEND=noninteractive
           apt-get update -qq --yes > /dev/null
@@ -79,26 +81,23 @@ jobs:
           PGPASSWORD: postgres
 
       - name: Inatall Dependencies
+        timeout-minutes: 15
         run: |
-          chmod a+w -R .
+          # chmod a+w -R .
           # DO NOT execute: npm config set unsafe-perm=true
           export cwd=`pwd`
-          # .github/workflows/fix.sh
-          npm i --no-audit -g c8 lerna rollup zx
-          npm run bootstrap
-          .scripts/clean_pkgs.mjs
-          npm list
+          npm i --no-audit -g autocannon c8 lerna rollup tsx zx
+          npm i
         env:
           CI: true
 
       - name: Build
         run: |
-          chmod a+w -R .
+          pwd
           whoami
           export cwd=`pwd`
           . .scripts/ci/ci-env.sh
           .scripts/ci/ci-prepare.sh
-          # .github/workflows/fix.sh
           npm run build --if-present
         env:
           CI: true
@@ -109,6 +108,7 @@ jobs:
           . .scripts/ci/ci-env.sh
           .scripts/ci/ci-prepare.sh
           npm run lint:s
+          npm run lint:cycle
         env:
           CI: true
 
@@ -161,8 +161,10 @@ jobs:
           ALI_OSS_ENDPOINT: ${{ secrets.ALI_OSS_ENDPOINT }}
           ALI_OSS_BUCKET: ${{ secrets.ALI_OSS_BUCKET }}
 
+          OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v3
 
 
     services:

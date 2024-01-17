@@ -3,12 +3,17 @@
   stage: build
   tags:
     - worker
-  cache: {}
+  # cache: {}
+  needs:
+    - analysis
   script:
     - date
     - echo -e "\e[0Ksection_start:`date +%s`:deps_section[collapsed=true]\r\e[0K Install Deps"
-    - npm run bootstrap -- --no-ci
+    - npm i --disturl=https://npmmirror.com/dist/
     - echo -e "\e[0Ksection_end:`date +%s`:deps_section\r\e[0K"
+
+    - date
+    - .scripts/ci/ci-commitlint.sh
 
     - date
     - echo -e "\e[0Ksection_start:`date +%s`:build_section[collapsed=true]\r\e[0K Build"
@@ -16,62 +21,23 @@
     - ls -al
     - echo -e "\e[0Ksection_end:`date +%s`:build_section\r\e[0K"
 
-    - .scripts/ci/ci-commitlint.sh
-
     - date
-    - echo -e "\e[0Ksection_start:`date +%s`:init_db_section[collapsed=true]\r\e[0K Init database"
-    - .scripts/ci/ci-init-db.sh
-    - echo -e "\e[0Ksection_end:`date +%s`:init_db_section\r\e[0K"
-
-    - date
-    - echo -e "\e[0Ksection_start:`date +%s`:lint_section[collapsed=true]\r\e[0K Lint"
-    #- lerna run lint:nofix # will fail under lerna4
-    - npm run lint:nofix
-    - echo -e "\e[0Ksection_end:`date +%s`:lint_section\r\e[0K"
-
-    - date
-    - echo -e "\e[0Ksection_start:`date +%s`:test_section[collapsed=true]\r\e[0K Testing"
-    - npm run ci
-    - echo -e "\e[0Ksection_end:`date +%s`:test_section\r\e[0K"
-
-    - date
-    - echo -e "\e[0Ksection_start:`date +%s`:cov_section[collapsed=true]\r\e[0K Coverage"
-    - .scripts/collect-coverages.sh
-    - echo -e "\e[0Ksection_end:`date +%s`:cov_section\r\e[0K"
-    - date
+  allow_failure: false
   artifacts:
     expire_in: '14 day'
-    reports:
-      coverage_report:
-        coverage_format: cobertura
-        path: coverage/cobertura-coverage.xml
-    paths:
-      - coverage/
 
-build_dev:
-  extends: .build
-  except:
-    - main
-    - master
-    - /^release.*/
-    - /^v\d+(\.\d+){2}.*/
 
-build_rc:
+build:
   extends: .build
-  only:
-    - main
-    - master
-    - /^release.*/
+  # only:
+  #   - main
+  #   - master
+  #   - /^release.*/
   except:
     variables:
       - $CI_COMMIT_MESSAGE =~ /^v\d+(\.\d+){2}.*/
+      - $CI_COMMIT_BRANCH =~ /^versioning_.+/
   artifacts:
     expire_in: '30 day'
-    reports:
-      coverage_report:
-        coverage_format: cobertura
-        path: coverage/cobertura-coverage.xml
-    paths:
-      - coverage/
 
 

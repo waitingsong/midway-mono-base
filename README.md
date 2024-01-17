@@ -11,6 +11,11 @@
 
 以下所有命令行操作都在 `git-bash` 窗口中执行
 
+## 安装全局依赖
+```sh
+npm i -g c8 lerna tsx zx
+```
+
 ## 创建新项目
 
 ### 克隆新项目仓库
@@ -40,8 +45,7 @@ sh init-project.sh @scope/foo
 sh init-project.sh
 
 # 初始化依赖
-npm run bootstrap
-lerna list
+npm install
 ```
 
 ### 根据模板选择初始化子包

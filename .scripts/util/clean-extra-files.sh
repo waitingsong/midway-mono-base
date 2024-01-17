@@ -2,13 +2,14 @@
 # Should called by util/prepare-pkg.sh
 # Should under the folder <project>/packages/<some-pkg>/node_modules
 # remove files under subfolder
+set -e
 
 echo -e ">>> Purging extra files"
 
-find $(find . -type d -iname "@mw-components") -maxdepth 3 -type d -iname "database" -print0 | xargs -0II rm -rf I
+find $(find . -type d -iname "@mwcp") -maxdepth 3 -type d -iname "database" -print0 | xargs -0II rm -rf I
 
-find $(find $(find . -type d -iname "@waiting") -mindepth 2 -maxdepth 2 -type d -name "dist") \
-  -maxdepth 1 -type f -iname "*.esm.*" -print0 | xargs -0II rm -f I
+# find $(find $(find . -type d -iname "@waiting") -mindepth 2 -maxdepth 2 -type d -name "dist") \
+#   -maxdepth 1 -type f -iname "*.esm.*" -print0 | xargs -0II rm -f I
 find $(find $(find . -type d -iname "@waiting") -mindepth 2 -maxdepth 2 -type d -name "dist") \
   -maxdepth 1 -type f -iname "*.umd.*" -print0 | xargs -0II rm -f I
 
@@ -44,7 +45,7 @@ find $(find . -type d -iname "rxjs") -maxdepth 1 -type d -iname "testing" -print
 
 find $(find . -type d -iname "rxjs") -maxdepth 2 -type d -iname "bundles" -print0 | xargs -0II rm -rf I
 find $(find . -type d -iname "rxjs") -maxdepth 2 -type d -iname "esm5" -print0 | xargs -0II rm -rf I
-find $(find . -type d -iname "rxjs") -maxdepth 2 -type d -iname "esm" -print0 | xargs -0II rm -rf I
+# find $(find . -type d -iname "rxjs") -maxdepth 2 -type d -iname "esm" -print0 | xargs -0II rm -rf I
 find $(find . -type d -iname "rxjs") -maxdepth 2 -type d -iname "types" -print0 | xargs -0II rm -rf I
 
 find $(find . -type d -iname "sqlite3") -maxdepth 1 -type d -iname "src" -print0 | xargs -0II rm -rf I
@@ -57,7 +58,20 @@ find $(find . -type d -iname "source-map") -maxdepth 1 -type d -iname "dist" -pr
 
 find $(find . -type d -iname "winston") -maxdepth 1 -type d -iname "dist" -print0 | xargs -0II rm -rf I
 
-# opentelemetry
-find $(find . -type d -iname "@opentelemetry") -maxdepth 3 -type d -iname "esm" -print0 | xargs -0II rm -rf I
-find $(find . -type d -iname "@opentelemetry") -maxdepth 3 -type d -iname "esnext" -print0 | xargs -0II rm -rf I
+
+find $(find . -type d -iname "class-transformer") -maxdepth 1 -type d -iname "esm5" -print0 | xargs -0II rm -rf I
+# find $(find . -type d -iname "class-transformer") -maxdepth 1 -type d -iname "esm2015" -print0 | xargs -0II rm -rf I
+
+# find $(find . -type d -iname "dayjs") -maxdepth 1 -type d -iname "esm" -print0 | xargs -0II rm -rf I
+
+find $(find . -type d -iname "@protobufjs") -maxdepth 2 -type d -iname "tests" -print0 | xargs -0II rm -rf I
+
+find $(find . -type d -iname "protobufjs") -maxdepth 1 -type d -iname "dist" -print0 | xargs -0II rm -rf I
+# @grpc/proto-loader/build/src/index.js need this
+# find $(find . -type d -iname "protobufjs") -maxdepth 1 -type d -iname "ext" -print0 | xargs -0II rm -rf I
+
+find $(find . -type d -iname "undici") -maxdepth 1 -type d -iname "types" -print0 | xargs -0II rm -rf I
+
+
+set +e
 

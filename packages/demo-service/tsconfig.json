@@ -1,28 +1,5 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "declaration": false,
-    "declarationMap": false,
-    "exactOptionalPropertyTypes": false,
-    "module": "commonjs",
-    "moduleResolution": "nodenext",
-    "outDir": "dist",
-    "paths": {
-      "~/*": ["./src/*"],
-      "@/*": ["./test/*"]
-    },
-    "target": "ES2022",
-    "tsBuildInfoFile": ".tsbuildinfo"
-  },
-  "ts-node": {
-    "esm": true,
-    "experimentalResolver": true,
-    "experimentalSpecifierResolution": "node",
-    "preferTsExts": true,
-    "swc": true
-  },
-  "include": [
-    "src/**/*.ts"
-  ]
+  }
 }

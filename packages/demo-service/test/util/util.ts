@@ -14,7 +14,7 @@ export async function removeFileOrDir(path: string): Promise<void> {
 
 
 export function matchISO8601ContentTimes(path: string, matchString: string | RegExp): number {
-  let content: string | void
+  let content: string | void = ''
   const path2 = path + '.' + getCurrentDateString()
 
   if (existsSync(path)) {

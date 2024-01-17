@@ -7,6 +7,8 @@ default:
     - echo $SHELL
     - echo $CI_SERVER_VERSION
     - echo $CI_PIPELINE_SOURCE
+    - echo $CI_PROJECT_DIR
+    - echo $CI_BUILDS_DIR
     - echo $CI_PROJECT_URL
     - echo $CI_PROJECT_NAMESPACE
     - echo $CI_PROJECT_NAME
@@ -14,9 +16,12 @@ default:
     - echo $CI_COMMIT_REF_SLUG
     - echo $CI_COMMIT_BRANCH
     - echo $CI_COMMIT_BEFORE_SHA
+    - echo $BUMP_BRANCH_NAME
     - echo "$CI_COMMIT_TAG-$CI_COMMIT_SHORT_SHA"
     - echo $CI_PIPELINE_URL
     - echo $CI_JOB_URL
+    - echo $CI_JOB_STAGE
+    - echo $CI_PIPELINE_NAME
     - echo "$CI_PIPELINE_ID:$CI_JOB_ID"
     - echo $CI_OPEN_MERGE_REQUESTS
     - echo $CI_CONCURRENT_ID
@@ -29,11 +34,11 @@ default:
   after_script:
     - export cwd=`pwd`
     - .scripts/ci/after_script.sh
-  # cache: &global_cache
-  #   key: cache_dev
-  #   paths:
-  #     - node_modules
-  #     - package-lock.json
-  #   policy: pull-push
 
+  cache: &global_cache
+    key: cache_dev
+    paths:
+      - node_modules
+      - package-lock.json
+    policy: pull-push
 

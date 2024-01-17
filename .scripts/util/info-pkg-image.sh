@@ -20,7 +20,7 @@ fi
 
 imgExists=0
 
-echo -e "Try docker inspect image $imageName:"
+echo -e "Try docker inspect image $imageName ..."
 docker image inspect -f "$fmt" "$imageName" 2>/dev/null
 if [ "$?" -eq 0 ]; then
   imgExists=$(( imgExists | 1 ))
@@ -28,7 +28,7 @@ if [ "$?" -eq 0 ]; then
   echo -e "Image exists in local: $imageName"
 fi
 
-echo -e "Try docker pull image:"
+echo -e "Try docker pull image $imageName ... "
 docker pull --quiet "$imageName" 2>/dev/null
 if [ "$?" -eq 0 ]; then
   imgExists=$(( imgExists | 2 ))
