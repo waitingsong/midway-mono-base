@@ -12,7 +12,7 @@
     "@types/koa": "2",
     "@types/mocha": "10",
     "@types/node": "20",
-    "@types/supertest": "2",
+    "@types/supertest": "6",
     "@waiting/eslint-config": "^9.1.1",
     "c8": "^9.1.0",
     "coveralls": "3",
