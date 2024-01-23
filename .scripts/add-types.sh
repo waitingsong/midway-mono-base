@@ -22,8 +22,10 @@ if [ -z "$pkgFullName" ]; then
 fi
 
 pkgScope=""
+pkgScopeWoAt=""
 if [ "${pkgFullName:0:1}" == "@" ]; then
   pkgScope=$(echo "$pkgFullName" | awk -F'/' '{print $1}')
+  pkgScopeWoAt="${pkgScope/#@/}"
   pkgName=$(echo "$pkgFullName" | awk -F'/' '{print $2}')
 fi
 
@@ -33,7 +35,7 @@ if [ -z "$pkgName" ]; then
   echo -e "\n"
   exit 1
 fi
-pkgFullDir="${pkgScope}-${pkgName}"
+pkgFullDir="${pkgScopeWoAt}-${pkgName}"
 
 echo -e "-------------------------------------------"
 echo -e " Initialize package from tpl $tplName"
@@ -57,23 +59,15 @@ mkdir -p "$pkgPath"
 fReadme="README.md"
 f1="package.json"
 f2="tsconfig.json"
-f3="tsconfig.eslint.json"
 f4=".editorconfig"
-f5="rollup.config.js"
-f8="tsconfig.cjs.json"
 
 f01=".eslintrc.yml"
-f02=".nycrc.json"
 
 echo -e "Copying files to folder: $pkgPath/ ..."
 cp "$tplDir/$f1" "$pkgPath/"
 cp "$tplDir/$f2" "$pkgPath/"
-cp "$tplDir/$f3" "$pkgPath/"
 cp "$tplDir/$f4" "$pkgPath/"
-cp "$tplDir/$f5" "$pkgPath/"
-cp "$tplDir/$f8" "$pkgPath/"
 cp "$tplDir/$f01" "$pkgPath/"
-cp "$tplDir/$f02" "$pkgPath/"
 echo "" >> "$pkgPath/$fReadme"
 
 pkgJson="$pkgPath/package.json"
@@ -85,6 +79,21 @@ repo=$(git remote get-url origin)
 if [ -n "$repo" ]; then
   sed -i "s#\(git+https://\)#${repo}#" "$pkgJson"
 fi
+
+testDir="$pkgPath/test"
+mkdir -p "$testDir"
+t1="tsconfig.json"
+t2=".eslintrc.yml"
+t3="setup.ts"
+t4="root.config.ts"
+t5="00.dummy.test.ts"
+t6="01.index.test.ts"
+cp "$tplDir/test/$t1" "$testDir/"
+cp "$tplDir/test/$t2" "$testDir/"
+cp "$tplDir/test/$t3" "$testDir/"
+cp "$tplDir/test/$t4" "$testDir/"
+cp "$tplDir/test/$t5" "$testDir/"
+cp "$tplDir/test/$t6" "$testDir/"
 
 echo -e "Git add files..."
 git add -f -- "$pkgPath"

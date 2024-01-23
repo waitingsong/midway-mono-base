@@ -41,7 +41,7 @@ export class HomeController extends BaseController {
   @Get('/hello')
   hello(): string {
     let body = this.welcomeMsg
-    const info = this.svc.appInfo()
+    const info: AppInfomation = this.svc.appInfo()
     Object.entries(info).forEach(([key, val]) => {
       body += `\n${key}: "${val}"`
     })

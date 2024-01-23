@@ -1,6 +1,5 @@
 
-export * from './consts/constant.js'
-export * from './consts/error-code.js'
+export * from './consts/index.const.js'
 
 // export * as v1 from './v1/index.js'
 export * from './v1/index.js'

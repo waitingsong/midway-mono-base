@@ -111,7 +111,7 @@ lerna add pkg-name --scope=@scope/demo-service
 ## Update package
 
 ```sh
-npm run bootstrap
+npm i
 ```
 
 
@@ -121,7 +121,7 @@ npm run bootstrap
 # TypeScript 类型子包（前后端可以共用）
 npm run add:types @scope/types
 # 服务子包（生成完毕之后需要手工替换 src/ 源码中对于 `@scope/types` 模块的引用）
-npm run add:svc @ishop_pos/svc
+npm run add:svc @ishop-pos/svc
 ```
 
 ## Test
@@ -138,6 +138,17 @@ npm run clean
 npm run purge
 ```
 
+## Swagger API docs and tests
+```sh
+cd packages/ishop-pos-svc
+npm run dev
+```
+
+Open location:
+```
+http://localhost:7001/swagger-ui/index.html
+```
+
 ## Note
 
 - Default publish registry is `NPM`, configurated in file `lerna.json`
@@ -145,7 +156,7 @@ npm run purge
 - Default response MIME type is `application/json` via  `config.middleware` and `response-mime.middleware.ts`
 
 
-## Freamwork and Plugin Documents
+## Framework and Plugin Documents
 
 - [Midway]
 - [Knex]

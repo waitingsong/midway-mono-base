@@ -4,6 +4,7 @@ import { createHttpRequest } from '@midwayjs/mock'
 import type { JsonResp } from '@mwcp/boot'
 import { fileShortPath } from '@waiting/shared-core'
 
+import { ErrorCode } from '##/types.js'
 import { testConfig } from '#@/root.config.js'
 
 
@@ -23,7 +24,8 @@ describe(fileShortPath(import.meta.url), () => {
       .expect(200)
 
     const json = resp.body as JsonResp
-    assert(json.code === 2404)
+    // assert(json.code === 2404)
+    assert(json.code === ErrorCode.E_Admin_Not_Exists)
     assert(json.msg && json.msg.includes('管理员不存在'), resp.text)
   })
 
