@@ -1,10 +1,10 @@
 import * as boot from '@mwcp/boot'
-import * as tm from '@mwcp/taskman'
+// import * as taskman from '@mwcp/taskman'
 
 
 export const useComponents: IComponentInfo[] = [
   boot,
-  tm,
+  // taskman,
 ]
 
 export interface IComponentInfo {

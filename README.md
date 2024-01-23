@@ -145,7 +145,7 @@ npm run purge
 - Default response MIME type is `application/json` via  `config.middleware` and `response-mime.middleware.ts`
 
 
-## Freamwork and Plugin Documents
+## Framework and Plugin Documents
 
 - [Midway]
 - [Knex]

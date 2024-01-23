@@ -8,11 +8,11 @@ import {
   MidwayInformationService,
   MidwayWebRouterService,
 } from '@midwayjs/core'
-import { IMidwayLogger } from '@midwayjs/logger'
+import { ILogger } from '@midwayjs/logger'
 import { Application, IMidwayContainer, TraceInit } from '@mwcp/boot'
 import { registerMiddleware } from '@mwcp/share'
 
-import * as DefulatConfig from './config/config.default.js'
+import * as DefaultConfig from './config/config.default.js'
 import * as LocalConfig from './config/config.local.js'
 import * as ProdConfig from './config/config.prod.js'
 import * as UnittestConfig from './config/config.unittest.js'
@@ -22,7 +22,7 @@ import { useComponents } from './imports.js'
 @Configuration({
   importConfigs: [
     {
-      default: DefulatConfig,
+      default: DefaultConfig,
       local: LocalConfig,
       prod: ProdConfig,
       unittest: UnittestConfig,
@@ -35,7 +35,7 @@ export class ContainerConfiguration implements ILifeCycle {
 
   @Inject() webRouterService: MidwayWebRouterService
 
-  @Logger() readonly logger: IMidwayLogger
+  @Logger() readonly logger: ILogger
 
   @Inject() readonly informationService: MidwayInformationService
 

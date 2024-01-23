@@ -13,8 +13,8 @@
     "#@/*": "./test/*"
   },
   "dependencies": {
-    "@mwcp/boot": "^19.2.2",
-    "@mwcp/taskman": "^41.6.7",
+    "@mwcp/boot": "^20.0.2",
+    "@mwcp/taskman": "^42.0.0",
     "@scope/docs": "^0.0.0",
     "pg": "^8.11.3"
   },

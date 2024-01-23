@@ -7,10 +7,10 @@ import { NpmPkg } from '@mwcp/boot'
 import { JwtComponent } from '@mwcp/jwt'
 import { DbSourceManager } from '@mwcp/kmore'
 import { Application } from '@mwcp/share'
-import {
-  TaskClientConfig,
-  ConfigKey as TaskmanConfigKey,
-} from '@mwcp/taskman'
+// import {
+//   TaskClientConfig,
+//   ConfigKey as TaskmanConfigKey,
+// } from '@mwcp/taskman'
 import type { Suite } from 'mocha'
 
 import { TestConfig, testConfig } from './root.config.js'
@@ -63,18 +63,18 @@ async function updateConfig(mockApp: Application, config: TestConfig): Promise<v
 }
 
 async function updateConfig2(mockApp: Application, config: TestConfig): Promise<void> {
-  mockApp.addConfigObject({
-    [TaskmanConfigKey.clientConfig]: {
-      host: config.host.slice(0, -1),
-    },
-  })
+  // mockApp.addConfigObject({
+  //   [TaskmanConfigKey.clientConfig]: {
+  //     host: config.host.slice(0, -1),
+  //   },
+  // })
 
   config.jwt = await config.container.getAsync(JwtComponent)
   config.pkg = mockApp.getConfig('pkg') as NpmPkg
 
-  const tmcConfig = mockApp.getConfig(TaskmanConfigKey.clientConfig) as TaskClientConfig
-  const host = tmcConfig.host
-  console.info('taskClientConfig.host', host)
+  // const tmcConfig = mockApp.getConfig(TaskmanConfigKey.clientConfig) as TaskClientConfig
+  // const host = tmcConfig.host
+  // console.info('taskClientConfig.host', host)
 
   const dbManager = await config.container.getAsync(DbSourceManager)
   assert(dbManager)

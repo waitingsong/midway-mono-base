@@ -8,12 +8,12 @@ import {
   DbConfig,
   KmoreSourceConfig,
 } from '@mwcp/kmore'
-import {
-  ClientURL,
-  DbReplica as TaskDbReplica,
-  ServerURL,
-  SupportTaskMapType,
-} from '@mwcp/taskman'
+// import {
+//   ClientURL,
+//   DbReplica as TaskDbReplica,
+//   ServerURL,
+//   SupportTaskMapType,
+// } from '@mwcp/taskman'
 import { ErrorCode } from '@scope/docs'
 
 import {
@@ -37,8 +37,8 @@ const jwtIgnoreArr = [
   '/ping',
   '/test/sign',
   '/test/err',
-  RegExp(`${ClientURL.base}/.*`, 'u'),
-  RegExp(`${ServerURL.base}/.*`, 'u'),
+  // RegExp(`${ClientURL.base}/.*`, 'u'),
+  // RegExp(`${ServerURL.base}/.*`, 'u'),
 ]
 const jwtMiddlewareConfig: AppConfig['jwtMiddlewareConfig'] = {
   enableMiddleware: true,
@@ -82,27 +82,27 @@ const otlpGrpcExporterConfig: AppConfig['otlpGrpcExporterConfig'] = {
 }
 
 
-const taskServerConfig: AppConfig['taskServerConfig'] = {
-  dataSource: {
-    [TaskDbReplica.taskMaster]: {
-      config: {
-        connection: {
-          host: process.env['POSTGRES_HOST'] ? process.env['POSTGRES_HOST'] : 'localhost',
-          port: process.env['POSTGRES_PORT'] ? +process.env['POSTGRES_PORT'] : 5432,
-          database: process.env['POSTGRES_DB'] ? process.env['POSTGRES_DB'] : 'db_ci_mw',
-          user: process.env['POSTGRES_USER'] ? process.env['POSTGRES_USER'] : 'postgres',
-          password: process.env['POSTGRES_PASSWORD'] ? process.env['POSTGRES_PASSWORD'] : 'postgres',
-        },
-      },
-      traceInitConnection: true,
-    },
-  },
-}
-const supportTaskMap: SupportTaskMapType = new Map([ [1, '*'] ])
-const taskClientConfig: AppConfig['taskClientConfig'] = {
-  host: process.env['TASK_AGENT_HOST'] ? process.env['TASK_AGENT_HOST'] : 'http://127.0.0.1:7001',
-  supportTaskMap,
-}
+// const taskServerConfig: AppConfig['taskServerConfig'] = {
+//   dataSource: {
+//     [TaskDbReplica.taskMaster]: {
+//       config: {
+//         connection: {
+//           host: process.env['POSTGRES_HOST'] ? process.env['POSTGRES_HOST'] : 'localhost',
+//           port: process.env['POSTGRES_PORT'] ? +process.env['POSTGRES_PORT'] : 5432,
+//           database: process.env['POSTGRES_DB'] ? process.env['POSTGRES_DB'] : 'db_ci_mw',
+//           user: process.env['POSTGRES_USER'] ? process.env['POSTGRES_USER'] : 'postgres',
+//           password: process.env['POSTGRES_PASSWORD'] ? process.env['POSTGRES_PASSWORD'] : 'postgres',
+//         },
+//       },
+//       traceInitConnection: true,
+//     },
+//   },
+// }
+// const supportTaskMap: SupportTaskMapType = new Map([ [1, '*'] ])
+// const taskClientConfig: AppConfig['taskClientConfig'] = {
+//   host: process.env['TASK_AGENT_HOST'] ? process.env['TASK_AGENT_HOST'] : 'http://127.0.0.1:7001',
+//   supportTaskMap,
+// }
 
 
 const clientConfig = {
@@ -139,8 +139,8 @@ const appConfig: AppConfig = {
   svcHosts,
   otlpGrpcExporterConfig,
   exporterEndpoint,
-  taskClientConfig,
-  taskServerConfig,
+  // taskClientConfig,
+  // taskServerConfig,
 }
 export default appConfig
 

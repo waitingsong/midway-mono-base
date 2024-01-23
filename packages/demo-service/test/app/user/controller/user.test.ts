@@ -9,7 +9,7 @@ import { UserDetailDTO } from '##/app/user/user.types.js'
 import { testConfig } from '#@/root.config.js'
 
 
-describe.only(fileShortPath(import.meta.url), () => {
+describe(fileShortPath(import.meta.url), () => {
 
   it('should GET /user error w/o token', async () => {
     const { app } = testConfig
