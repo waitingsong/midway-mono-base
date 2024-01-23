@@ -13,7 +13,7 @@ describe(fileShortPath(import.meta.url), () => {
       assert(Array.isArray(useComponents))
     })
 
-    it('testAppdir eq testConfig.testAppDir', () => {
+    it('testAppDir eq testConfig.testAppDir', () => {
       const { app } = testConfig
       assert(app)
 

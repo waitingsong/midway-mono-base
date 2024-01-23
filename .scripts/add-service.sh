@@ -23,8 +23,10 @@ if [ -z "$pkgFullName" ]; then
 fi
 
 pkgScope=""
+pkgScopeWoAt=""
 if [ "${pkgFullName:0:1}" == "@" ]; then
   pkgScope=$(echo "$pkgFullName" | awk -F'/' '{print $1}')
+  pkgScopeWoAt="${pkgScope/#@/}"
   pkgName=$(echo "$pkgFullName" | awk -F'/' '{print $2}')
 fi
 
@@ -34,7 +36,7 @@ if [ -z "$pkgName" ]; then
   echo -e "\n"
   exit 1
 fi
-pkgFullDir="${pkgScope}-${pkgName}"
+pkgFullDir="${pkgScopeWoAt}-${pkgName}"
 
 echo -e "-------------------------------------------"
 echo -e " Initialize package from tpl $tplName"
@@ -58,47 +60,41 @@ mkdir -p "$pkgPath"
 fReadme="README.md"
 f1="package.json"
 f2="tsconfig.json"
-f3="tsconfig.eslint.json"
 f4=".editorconfig"
 f6="Dockerfile"
-f7="jest.config.js"
-f8="tsconfig.cjs.json"
 f9="src/*.ts"
 
 f01=".eslintrc.yml"
-f02=".nycrc.json"
 f03="bootstrap.js"
 
+d1="database"
 d2="src/util"
 d3="src/middleware"
 d4="src/core"
 d5="src/config"
 d6="src/app/public"
-d7="src/database"
-mkdir -p "$pkgPath/$d2" "$pkgPath/$d3" "$pkgPath/$d4" "$pkgPath/$d5" "$pkgPath/$d6" "$pkgPath/$d7"
+d7="src/app/home"
+mkdir -p "$pkgPath/$d1" "$pkgPath/$d2" "$pkgPath/$d3" "$pkgPath/$d4" "$pkgPath/$d5" "$pkgPath/$d6" "$pkgPath/$d7"
 
 echo -e "Copying files to folder: $pkgPath/ ..."
 cp "$tplDir/$f1" "$pkgPath/"
 cp "$tplDir/$f2" "$pkgPath/"
-cp "$tplDir/$f3" "$pkgPath/"
 cp "$tplDir/$f4" "$pkgPath/"
 cp "$tplDir/$f6" "$pkgPath/"
-cp "$tplDir/$f7" "$pkgPath/"
-cp "$tplDir/$f8" "$pkgPath/"
 cp "$tplDir/$f01" "$pkgPath/"
-cp "$tplDir/$f02" "$pkgPath/"
 cp "$tplDir/$f03" "$pkgPath/"
 echo "" >> "$pkgPath/$fReadme"
 
 CMD="$tplDir/$f9 $pkgPath/src/"
 cp -a $CMD
 
+# cp -a "$tplDir/$d1" "$pkgPath"
 cp -a "$tplDir/$d2" "$pkgPath/src"
 cp -a "$tplDir/$d3" "$pkgPath/src"
 cp -a "$tplDir/$d4" "$pkgPath/src"
 cp -a "$tplDir/$d5" "$pkgPath/src"
 cp -a "$tplDir/$d6" "$pkgPath/src/app"
-# cp -a "$tplDir/$d7" "$pkgPath/src"
+cp -a "$tplDir/$d7" "$pkgPath/src/app"
 
 pkgJson="$pkgPath/package.json"
 echo -e "Updating file: $pkgJson"
@@ -115,11 +111,19 @@ fi
 testDir="$pkgPath/test"
 mkdir -p "$testDir"
 t1="tsconfig.json"
-t2="0.dummy.test.ts"
-t3=".eslintrc.yml"
+t2=".eslintrc.yml"
+t3="setup.ts"
+t4="root.config.ts"
+t5="00.dummy.test.ts"
+t6="01.index.test.ts"
+t7="10.home.test.ts"
 cp "$tplDir/test/$t1" "$testDir/"
 cp "$tplDir/test/$t2" "$testDir/"
 cp "$tplDir/test/$t3" "$testDir/"
+cp "$tplDir/test/$t4" "$testDir/"
+cp "$tplDir/test/$t5" "$testDir/"
+cp "$tplDir/test/$t6" "$testDir/"
+cp "$tplDir/test/$t7" "$testDir/"
 
 echo -e "Git add files..."
 git add -f -- "$pkgPath"

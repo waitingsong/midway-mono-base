@@ -2,6 +2,6 @@
 export {
   DbModel,
   dbDict,
-} from '@scope/docs'
+} from '##/types.js'
 
 

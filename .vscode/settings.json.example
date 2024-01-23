@@ -7,8 +7,8 @@
   "editor.tabSize": 2,
   "editor.wordWrap": "on",
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true,
-    "source.organizeImports": false
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "never"
   },
   "eslint.run": "onSave",
   "eslint.validate": [
