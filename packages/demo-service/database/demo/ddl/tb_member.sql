@@ -23,8 +23,7 @@ https://git/@scope/project/blob/master/packages/demo-docs/src/uc/db/index.md#tb_
 
 COMMENT ON COLUMN tb_member.user_name IS '小写唯一索引';
 
-CREATE UNIQUE INDEX CONCURRENTLY ON tb_member (LOWER(user_name));
+CREATE UNIQUE INDEX ON tb_member (LOWER(user_name));
 
-CREATE INDEX CONCURRENTLY ON tb_member
-USING BRIN (ctime);
+CREATE INDEX ON tb_member USING BRIN (ctime);
 

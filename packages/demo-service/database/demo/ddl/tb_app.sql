@@ -16,7 +16,7 @@ COMMENT ON TABLE tb_app IS '应用列表
 https://git/@scope/project/blob/master/packages/demo-docs/src/uc/db/index.md#tb_app
 ';
 
-CREATE UNIQUE INDEX CONCURRENTLY ON tb_app (LOWER(app_name));
+CREATE UNIQUE INDEX ON tb_app (LOWER(app_name));
 
 -- INSERT INTO tb_app (app_name, app_url) VALUES ('appfoo', 'https://')
 -- DROP TABLE IF EXISTS tb_app CASCADE;

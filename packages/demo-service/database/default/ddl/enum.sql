@@ -35,6 +35,7 @@ CREATE TYPE type_op_state AS ENUM (
   'suspended',
   'succeeded',
   'cancelled',
+  'closed',
   'completed'
 );
 

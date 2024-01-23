@@ -77,14 +77,14 @@
       "restart": true,
       "runtimeArgs": [
         "run",
-        "dev",
+        "dev:vsc",
         "--",
         "--preserve-symlinks"
       ],
       "runtimeExecutable": "npm",
       "skipFiles": [
-        "**/node_modules/**",
         "**/node_modules/rxjs/**",
+        "**/node_modules/mocha/**",
         "<node_internals>/**",
         "<node_internals>/**/*.js"
       ],
