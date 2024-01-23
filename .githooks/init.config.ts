@@ -20,7 +20,5 @@ export const globalConfigFileArr: string[] = [
   '.vscode/midway.code-snippets.example',
   './tsconfig.base.json',
   './tsconfig.eslint.json',
-  './rollup.config.js',
-  './bin-hashbang.js',
 ]
 

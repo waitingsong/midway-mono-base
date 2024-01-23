@@ -8,11 +8,11 @@ import {
   DbConfig,
   KmoreSourceConfig,
 } from '@mwcp/kmore'
-import {
-  ClientURL,
-  DbReplica as TaskDbReplica,
-  ServerURL,
-} from '@mwcp/taskman'
+// import {
+//   ClientURL,
+//   DbReplica as TaskDbReplica,
+//   ServerURL,
+// } from '@mwcp/taskman'
 
 import { DbReplica } from './config.types.js'
 import { dbDict, DbModel } from './db.model.js'
@@ -46,8 +46,8 @@ const jwtIgnoreArr = [
   '/test/sign',
   /debug\/dump\/.*/u,
   /unittest/u,
-  RegExp(`${ClientURL.base}/.*`, 'u'),
-  RegExp(`${ServerURL.base}/.*`, 'u'),
+  // RegExp(`${ClientURL.base}/.*`, 'u'),
+  // RegExp(`${ServerURL.base}/.*`, 'u'),
 ]
 export const jwtMiddlewareConfig: AppConfig['jwtMiddlewareConfig'] = {
   enableMiddleware: true,
@@ -57,7 +57,7 @@ export const jwtMiddlewareConfig: AppConfig['jwtMiddlewareConfig'] = {
 
 const master: DbConfig<DbModel, Context> = {
   config: {
-    client: 'pgnative',
+    client: 'pg',
     connection: {
       host: process.env['POSTGRES_HOST'] ? process.env['POSTGRES_HOST'] : 'localhost',
       port: process.env['POSTGRES_PORT'] ? +process.env['POSTGRES_PORT'] : 5432,
@@ -77,24 +77,24 @@ export const kmoreConfig: KmoreSourceConfig<DbReplica> = {
 }
 
 
-export const taskServerConfig: AppConfig['taskServerConfig'] = {
-  dataSource: {
-    [TaskDbReplica.taskMaster]: {
-      config: {
-        connection: {
-          host: process.env['POSTGRES_HOST'] ? process.env['POSTGRES_HOST'] : 'localhost',
-          port: process.env['POSTGRES_PORT'] ? +process.env['POSTGRES_PORT'] : 5432,
-          database: process.env['POSTGRES_DB'] ? process.env['POSTGRES_DB'] : 'db_ci_mw',
-          user: process.env['POSTGRES_USER'] ? process.env['POSTGRES_USER'] : 'postgres',
-          password: process.env['POSTGRES_PASSWORD'] ? process.env['POSTGRES_PASSWORD'] : 'postgres',
-        },
-      },
-      sampleThrottleMs: 1000,
-      traceInitConnection: true,
-    },
-  },
-}
-export const taskClientConfig: AppConfig['taskClientConfig'] = {
-  host: process.env['TASK_AGENT_HOST'] ? process.env['TASK_AGENT_HOST'] : 'http://127.0.0.1:7001',
-}
+// export const taskServerConfig: AppConfig['taskServerConfig'] = {
+//   dataSource: {
+//     [TaskDbReplica.taskMaster]: {
+//       config: {
+//         connection: {
+//           host: process.env['POSTGRES_HOST'] ? process.env['POSTGRES_HOST'] : 'localhost',
+//           port: process.env['POSTGRES_PORT'] ? +process.env['POSTGRES_PORT'] : 5432,
+//           database: process.env['POSTGRES_DB'] ? process.env['POSTGRES_DB'] : 'db_ci_mw',
+//           user: process.env['POSTGRES_USER'] ? process.env['POSTGRES_USER'] : 'postgres',
+//           password: process.env['POSTGRES_PASSWORD'] ? process.env['POSTGRES_PASSWORD'] : 'postgres',
+//         },
+//       },
+//       sampleThrottleMs: 1000,
+//       traceInitConnection: true,
+//     },
+//   },
+// }
+// export const taskClientConfig: AppConfig['taskClientConfig'] = {
+//   host: process.env['TASK_AGENT_HOST'] ? process.env['TASK_AGENT_HOST'] : 'http://127.0.0.1:7001',
+// }
 
