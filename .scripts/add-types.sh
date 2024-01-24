@@ -22,8 +22,10 @@ if [ -z "$pkgFullName" ]; then
 fi
 
 pkgScope=""
+pkgScopeWoAt=""
 if [ "${pkgFullName:0:1}" == "@" ]; then
   pkgScope=$(echo "$pkgFullName" | awk -F'/' '{print $1}')
+  pkgScopeWoAt="${pkgScope/#@/}"
   pkgName=$(echo "$pkgFullName" | awk -F'/' '{print $2}')
 fi
 
@@ -33,7 +35,7 @@ if [ -z "$pkgName" ]; then
   echo -e "\n"
   exit 1
 fi
-pkgFullDir="${pkgScope}-${pkgName}"
+pkgFullDir="${pkgScopeWoAt}-${pkgName}"
 
 echo -e "-------------------------------------------"
 echo -e " Initialize package from tpl $tplName"
