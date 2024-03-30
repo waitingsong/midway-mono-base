@@ -7,9 +7,10 @@ import {
 } from '@midwayjs/core'
 import { AppInfomation } from '@mwcp/boot'
 
+import { BaseController } from '##/interface.js'
+
 import { HomeService } from './home.service.js'
 
-import { BaseController } from '##/interface.js'
 
 
 @Controller('/')

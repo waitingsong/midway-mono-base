@@ -20,7 +20,7 @@ describe(fileShortPath(import.meta.url), () => {
       .expect(200)
 
     const msg: string = resp.text
-    assert(msg && msg.includes('Hello Midwayjs!'), msg)
+    assert(msg?.includes('Hello Midwayjs!'), msg)
   })
 
   it('should GET /hello', async () => {
@@ -30,7 +30,7 @@ describe(fileShortPath(import.meta.url), () => {
       .expect(200)
 
     const msg: string = resp.text
-    assert(msg && msg.includes('Hello Midwayjs!'), msg)
+    assert(msg?.includes('Hello Midwayjs!'), msg)
   })
 
   it('should GET /ping', async () => {

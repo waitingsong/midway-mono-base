@@ -33,7 +33,6 @@
     "tsconfig.json",
     "tsconfig.base.json",
     "asset",
-    "src/**/*.js",
     "src/**/*.ts",
     "bin",
     "database",
@@ -52,6 +51,7 @@
   "license": "",
   "scripts": {
     "build": "npm run tsc && tsc-alias && npm run db:gen",
+    "build:unit": "tsc -p test/tsconfig.json",
     "clean": "npm run clean:lock && npm run clean:dist && npm run clean:log",
     "clean:cache": "rm -rf .eslintcache .tsbuildinfo",
     "clean:dist": "npm run clean:cache && rm -rf dist/*",
@@ -59,9 +59,10 @@
     "clean:log": "rm -rf ./logs ./run",
     "cov": "c8 --all npm run test -- --parallel=false",
     "db:gen": "kmore gen --path ./src",
-    "lint": "eslint --fix --cache {src,test}/**/*.ts",
-    "lint:nofix": "eslint --cache {src,test}/**/*.ts",
+    "lint": "eslint --fix --cache src test",
+    "lint:nofix": "eslint --cache src test",
+    "pretest": "npm run build && npm run build:unit",
     "test": "cross-env NODE_ENV=test TS_NODE_PROJECT=test/tsconfig.json mocha --jobs=4",
-    "tsc": "tsc -b"
+    "tsc": "tsc -p tsconfig.json"
   }
 }

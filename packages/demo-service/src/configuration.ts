@@ -33,6 +33,7 @@ const namespace = 'demo'
   imports: useComponents,
 })
 export class ContainerConfiguration implements ILifeCycle {
+
   @App() readonly app: Application
 
   @Inject() webRouterService: MidwayWebRouterService

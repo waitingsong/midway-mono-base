@@ -33,7 +33,7 @@ export function matchISO8601ContentTimes(path: string, matchString: string | Reg
     : matchString
 
   // eslint-disable-next-line @typescript-eslint/prefer-regexp-exec
-  const ret = content.match(regex) || []
+  const ret = content.match(regex) ?? []
   return ret.length
 }
 

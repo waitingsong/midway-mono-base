@@ -19,7 +19,7 @@ describe(fileShortPath(import.meta.url), () => {
       .expect(401)
 
     const msg: string = resp.text
-    assert(msg && msg.includes(JwtMsg.AuthFailed), msg)
+    assert(msg?.includes(JwtMsg.AuthFailed), msg)
   })
 
 
@@ -74,7 +74,7 @@ describe(fileShortPath(import.meta.url), () => {
     assert(body)
 
     const { msg } = body
-    assert(msg && msg.includes('uid必须自然数'))
+    assert(msg?.includes('uid必须自然数'))
   })
 
 })

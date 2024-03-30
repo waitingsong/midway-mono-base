@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-extraneous-class */
 
 export class ErrorCode {
+
   static readonly success = 0
   static readonly E_Common = 1
   /** 身份校验失败 */
@@ -26,4 +27,5 @@ export class ErrorCode {
    * @description 在应用列表中没有对应的 appId 记录
    */
   static readonly E_UC_AppId_Not_Exists = 101001
+
 }

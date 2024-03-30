@@ -64,7 +64,7 @@ f4=".editorconfig"
 f6="Dockerfile"
 f9="src/*.ts"
 
-f01=".eslintrc.yml"
+
 f03="bootstrap.js"
 
 d1="database"
@@ -81,7 +81,7 @@ cp "$tplDir/$f1" "$pkgPath/"
 cp "$tplDir/$f2" "$pkgPath/"
 cp "$tplDir/$f4" "$pkgPath/"
 cp "$tplDir/$f6" "$pkgPath/"
-cp "$tplDir/$f01" "$pkgPath/"
+
 cp "$tplDir/$f03" "$pkgPath/"
 echo "" >> "$pkgPath/$fReadme"
 
@@ -111,14 +111,14 @@ fi
 testDir="$pkgPath/test"
 mkdir -p "$testDir"
 t1="tsconfig.json"
-t2=".eslintrc.yml"
+
 t3="setup.ts"
 t4="root.config.ts"
 t5="00.dummy.test.ts"
 t6="01.index.test.ts"
 t7="10.home.test.ts"
 cp "$tplDir/test/$t1" "$testDir/"
-cp "$tplDir/test/$t2" "$testDir/"
+
 cp "$tplDir/test/$t3" "$testDir/"
 cp "$tplDir/test/$t4" "$testDir/"
 cp "$tplDir/test/$t5" "$testDir/"

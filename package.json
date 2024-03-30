@@ -1,7 +1,7 @@
 {
   "name": "midway-mono-base",
   "version": "3.0.0",
-  "description": "monorepo",
+  "description": "monorepo 模板",
   "private": true,
   "type": "module",
   "devDependencies": {
@@ -13,31 +13,30 @@
     "@types/koa": "2",
     "@types/mocha": "10",
     "@types/node": "20",
-    "@types/supertest": "6",
-    "@waiting/eslint-config": "^9.1.1",
-    "c8": "^9.1.0",
+    "@waiting/eslint-config": "^10.19.0",
+    "@waiting/shared-core": "^23.3.0",
+    "@waiting/shared-types": "^23.2.1",
+    "c8": "9",
     "coveralls": "3",
     "cross-env": "7",
     "debug": "^4.3.4",
     "eslint": "8",
     "kmore-cli": "^59.4.1",
-    "madge": "^6.1.0",
+    "madge": "6",
     "mocha": "10",
     "mocha-lcov-reporter": "1",
     "mwtsc": "^1.7.2",
     "nx": "18",
-    "supertest": "^6.3.4",
-    "swagger-ui-dist": "^5.11.0",
+    "swagger-ui-dist": "^5.12.0",
     "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.8",
-    "tsconfig-paths": "4",
     "tsx": "4",
-    "typescript": "^5.4.2",
+    "typescript": "^5.4.3",
     "zx": "7"
   },
   "engines": {
-    "node": ">=18.12.0",
-    "@midwayjs/core": ">=3.14.0"
+    "node": ">=20.11.0",
+    "@midwayjs/core": ">=3.15.0"
   },
   "workspaces": [
     "packages/*"

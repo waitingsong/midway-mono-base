@@ -3,6 +3,7 @@ import type { JsonObject } from '@waiting/shared-types'
 
 /** UC 注册用户基础信息 */
 export class TbMemberDO {
+
   uid: number
   user_name: string
   user_valid: number
@@ -16,5 +17,6 @@ export class TbMemberDO {
   json: JsonObject
   ctime: Date
   mtime: Date | null
+
 }
 

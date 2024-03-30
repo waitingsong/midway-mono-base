@@ -8,10 +8,11 @@ import {
 import { ApiResponse } from '@midwayjs/swagger'
 import { Validate } from '@midwayjs/validate'
 
+import { BaseController } from '##/interface.js'
+
 import { UserService } from './user.service.js'
 import { GetUserDTO, UserDetailDTO } from './user.types.js'
 
-import { BaseController } from '##/interface.js'
 
 
 @Controller('/user')

@@ -26,7 +26,7 @@ describe(fileShortPath(import.meta.url), () => {
     const json = resp.body as JsonResp
     // assert(json.code === 2404)
     assert(json.code === ErrorCode.E_Admin_Not_Exists)
-    assert(json.msg && json.msg.includes('管理员不存在'), resp.text)
+    assert(json.msg?.includes('管理员不存在'), resp.text)
   })
 
 })

@@ -23,7 +23,7 @@ describe(fileShortPath(import.meta.url), () => {
       .expect(200)
 
     const msg: string = resp.text
-    assert(msg && msg.includes('{"foo":"bar",'), msg)
+    assert(msg?.includes('{"foo":"bar",'), msg)
     assert(msg.includes(header1))
   })
 
@@ -34,7 +34,7 @@ describe(fileShortPath(import.meta.url), () => {
       .expect(401)
 
     const msg: string = resp.text
-    assert(msg && msg.includes(JwtMsg.AuthFailed), msg)
+    assert(msg?.includes(JwtMsg.AuthFailed), msg)
   })
 
   it('should works with header auth with trailing white space', async () => {
@@ -45,7 +45,7 @@ describe(fileShortPath(import.meta.url), () => {
       .expect(200)
 
     const msg: string = resp.text
-    assert(msg && msg.includes(expectPayloadStr), msg)
+    assert(msg?.includes(expectPayloadStr), msg)
   })
 
   it('should works with header auth with trailing tab', async () => {
@@ -56,7 +56,7 @@ describe(fileShortPath(import.meta.url), () => {
       .expect(200)
 
     const msg: string = resp.text
-    assert(msg && msg.includes(expectPayloadStr), msg)
+    assert(msg?.includes(expectPayloadStr), msg)
   })
 
   it('should error with header auth with trailing vertical sep', async () => {
@@ -66,11 +66,10 @@ describe(fileShortPath(import.meta.url), () => {
         .get('/test/token')
         .set('authorization', `${schemePrefix} ${token1}  \v`)
     }
-    catch (ex: any) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      assert(ex && ex.message.includes('Invalid character in header content'))
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      assert(ex && ex.message.includes('["authorization"]'))
+    catch (ex: unknown) {
+      assert(ex instanceof Error)
+      assert(ex.message.includes('Invalid character in header content'))
+      assert(ex.message.includes('["authorization"]'))
       return
     }
 
@@ -85,7 +84,7 @@ describe(fileShortPath(import.meta.url), () => {
       .expect(401)
 
     const msg: string = resp.text
-    assert(msg && msg.includes(JwtMsg.AuthFailed), msg)
+    assert(msg?.includes(JwtMsg.AuthFailed), msg)
   })
 
   it('should works with header auth', async () => {
@@ -98,7 +97,7 @@ describe(fileShortPath(import.meta.url), () => {
       .expect(200)
 
     const msg: string = resp.text
-    assert(msg && msg.includes(expectPayloadStr), msg)
+    assert(msg?.includes(expectPayloadStr), msg)
   })
 
 })

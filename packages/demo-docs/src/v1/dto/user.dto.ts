@@ -9,9 +9,11 @@ import { userValidSchemas } from '../validation-schema/index.schema.js'
  * 查询用户请求参数
  */
 export class GetUserDTO {
+
   @ApiProperty({ example: 1, description: 'user id' })
   @Rule(userValidSchemas.uid.required())
   uid: DO['uid']
+
 }
 
 
@@ -19,6 +21,7 @@ export class GetUserDTO {
  * 查询用户输出结果
  */
 export class UserDetailDTO {
+
   @ApiProperty({ example: 1, description: 'user id' })
   uid: DO['uid']
 
@@ -51,5 +54,6 @@ export class UserDetailDTO {
 
   @ApiProperty()
   mtime: string | null
+
 }
 

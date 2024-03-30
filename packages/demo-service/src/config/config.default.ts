@@ -19,6 +19,8 @@ import {
 // } from '@mwcp/taskman'
 import { genCurrentDirname } from '@waiting/shared-core'
 
+import { ErrorCode } from '##/types.js'
+
 import {
   DbReplica,
   OssClientKey,
@@ -26,7 +28,6 @@ import {
 } from './config.types.js'
 import { dbDict, DbModel } from './db.model.js'
 
-import { ErrorCode } from '##/types.js'
 
 
 const configDir = genCurrentDirname(import.meta.url)
@@ -139,8 +140,9 @@ export const svcHosts: SvcHosts = {
 }
 Object.keys(svcHosts).forEach((key) => {
   const name = `SVC_HOST_${key}`
-  if (typeof process.env[name] === 'string') {
-    svcHosts[key] = process.env[name] as string
+  const value = process.env[name]
+  if (process.env[name] && typeof process.env[name] === 'string' && value) {
+    svcHosts[key] = value
   }
 })
 

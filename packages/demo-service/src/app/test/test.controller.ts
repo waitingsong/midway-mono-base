@@ -9,10 +9,11 @@ import {
   Inject,
 } from '@midwayjs/core'
 
-import { TestService } from './test.service.js'
 
 import { BaseController } from '##/interface.js'
 import { ErrorCode } from '##/types.js'
+
+import { TestService } from './test.service.js'
 
 
 @Controller('/test')
@@ -53,7 +54,7 @@ export class TestController extends BaseController {
   }
 
   @Get('/array')
-  testArray(): (string|number)[] {
+  testArray(): (string | number)[] {
     this.logger.info('return array with JsonResp<T> structure')
     return ['a', 'b', 1]
   }

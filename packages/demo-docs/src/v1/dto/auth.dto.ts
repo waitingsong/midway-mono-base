@@ -5,6 +5,7 @@ import { userValidSchemas } from '../validation-schema/index.schema.js'
 
 
 export class LoginDTO {
+
   @ApiProperty({ example: 'foo', description: '' })
   @Rule(userValidSchemas.uname.required())
   username: string
@@ -12,5 +13,6 @@ export class LoginDTO {
   @ApiProperty({ example: 'fsd98fsdgsgh', description: '' })
   @Rule(userValidSchemas.hashpwd.required())
   hashpwd: string
+
 }
 
