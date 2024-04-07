@@ -77,7 +77,7 @@
       "restart": true,
       "runtimeArgs": [
         "run",
-        "dev:vsc",
+        "dev",
         "--",
         "--preserve-symlinks"
       ],
