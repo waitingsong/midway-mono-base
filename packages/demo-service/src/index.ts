@@ -2,6 +2,7 @@
 export { ContainerConfiguration as Configuration } from './configuration.js'
 export * from './types.js'
 export * from './constant.js'
+export * from './interface.js'
 
 
 // @ts-ignore
