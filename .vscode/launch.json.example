@@ -49,11 +49,13 @@
       ],
       "runtimeExecutable": "npm",
       "skipFiles": [
+        "**/node_modules/**",
         "**/node_modules/rxjs/**",
         "**/node_modules/mocha/**",
         "<node_internals>/**",
         "<node_internals>/**/*.js"
       ],
+      "smartStep": false,
       "timeout": 30000
     },
     {
@@ -77,12 +79,13 @@
       "restart": true,
       "runtimeArgs": [
         "run",
-        "dev:vsc",
+        "dev",
         "--",
         "--preserve-symlinks"
       ],
       "runtimeExecutable": "npm",
       "skipFiles": [
+        "**/node_modules/**",
         "**/node_modules/rxjs/**",
         "**/node_modules/mocha/**",
         "<node_internals>/**",
