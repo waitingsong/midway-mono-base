@@ -2,12 +2,13 @@ import assert from 'node:assert'
 
 import { Init, Provide } from '@midwayjs/core'
 
+import { BaseRepo } from '##/interface.js'
+
 import {
   GetUserDTO,
   UserDetailDTO,
 } from './user.types.js'
 
-import { BaseRepo } from '##/interface.js'
 
 
 @Provide()
@@ -24,9 +25,15 @@ export class UserRepo extends BaseRepo {
 
   async getUserNameByUid(uid: GetUserDTO['uid']): Promise<UserDetailDTO['userName']> {
     // const name = await this.db.camelTables.ref_tb_user()
-    const name = await this.ref_tb_user()
+    const query = this.ref_tb_user()
       .select('userName')
       .where({ uid })
+
+    // eslint-disable-next-line @typescript-eslint/no-base-to-string
+    const sql = query.toString()
+    void sql
+
+    const name = await query
       .then((rows) => {
         if (rows.length === 1) {
           const [row] = rows

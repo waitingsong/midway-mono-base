@@ -9,7 +9,7 @@ import { UserDetailDTO } from '##/app/user/user.types.js'
 import { testConfig } from '#@/root.config.js'
 
 
-describe.only(fileShortPath(import.meta.url), () => {
+describe(fileShortPath(import.meta.url), () => {
 
   it('should GET /user error w/o token', async () => {
     const { app } = testConfig
@@ -19,7 +19,7 @@ describe.only(fileShortPath(import.meta.url), () => {
       .expect(401)
 
     const msg: string = resp.text
-    assert(msg && msg.includes(JwtMsg.AuthFailed), msg)
+    assert(msg?.includes(JwtMsg.AuthFailed), msg)
   })
 
 
@@ -74,7 +74,7 @@ describe.only(fileShortPath(import.meta.url), () => {
     assert(body)
 
     const { msg } = body
-    assert(msg && msg.includes('uid必须自然数'))
+    assert(msg?.includes('uid必须自然数'))
   })
 
 })

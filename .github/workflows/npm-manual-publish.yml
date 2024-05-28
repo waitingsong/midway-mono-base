@@ -1,28 +1,43 @@
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: ci
+name: manual-publish
 
-on: [push, pull_request]
+on:
+  workflow_dispatch:
+    inputs:
+      semver:
+        description: 'Leave empty or input major|minor|patch'
+        required: false
+        default: ''
 
 jobs:
   build:
     runs-on: ${{ matrix.os }}
     container: node:current
     timeout-minutes: 60
-    # if: "!contains(github.event.head_commit.message, '[skip ci]')"
-    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.head_commit.message, '[perf]') }}
 
     strategy:
       matrix:
-        node: ['lts/*', 'current']
+        node: ['lts/*']
         os: [ubuntu-latest]
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          # pulls all commits (needed for lerna / semantic release to correctly version)
+          fetch-depth: "0"
+      # Caution: disable fix below at FIRST publish, then enable
+      - name: Fix for semantic release
+        # pulls all tags (needed for lerna / semantic release to correctly version)
+        run: |
+          export cwd=`pwd`
+          git config --global --add safe.directory $cwd || true
+          git fetch --depth=1 origin +refs/tags/*:refs/tags/* || true
       - name: Use Node.js ${{ matrix.node }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Cache
         uses: actions/cache@v4
@@ -33,16 +48,12 @@ jobs:
           path: |
             node_modules
             package-lock.json
-            packages/*/.tsbuildinfo
-            packages/*/dist
-            /usr/bin/ossutil
-          key: ${{ runner.OS }}-build-${{ env.cache-name }}-${{ github.ref }}-${{ matrix.node }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.OS }}-build-${{ env.cache-name }}-${{ github.ref }}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.OS }}-build-${{ env.cache-name }}-${{ github.ref }}-${{ matrix.node }}-
+            ${{ runner.OS }}-build-${{ env.cache-name }}-${{ github.ref }}-
 
       - name: Prepare
         run: |
-          pwd
           uname -a
           export DEBIAN_FRONTEND=noninteractive
           apt-get update -qq --yes > /dev/null
@@ -59,11 +70,13 @@ jobs:
           locale -a
           netstat -tunpl
           dig jaeger
-          export cwd=`pwd`
-          git config --global --add safe.directory $cwd
 
       - name: Verify
         run: |
+          echo $GITHUB_REF
+          # github project/settings/Secrets/New repository secret: NPM_TOKEN
+          npm ping
+          npm whoami
           psql -V
           dig postgres
           echo "\l" | psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U$POSTGRES_USER -d postgres
@@ -71,6 +84,7 @@ jobs:
           psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U$POSTGRES_USER -d $POSTGRES_DB -c "SHOW TIMEZONE;"
         env:
           CI: true
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           POSTGRES_HOST: postgres
           POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
           POSTGRES_DB: db_ci_test
@@ -81,16 +95,14 @@ jobs:
       - name: Install Dependencies
         timeout-minutes: 15
         run: |
-          # DO NOT execute: npm config set unsafe-perm=true
           export cwd=`pwd`
-          npm i --no-audit -g c8 lerna madge tsx zx
-          npm i
+          npm i --no-audit -g lerna rollup tsx zx madge
+          npm i --no-audit
         env:
           CI: true
 
       - name: Build
         run: |
-          pwd
           whoami
           export cwd=`pwd`
           . .scripts/ci/ci-env.sh
@@ -104,7 +116,7 @@ jobs:
           export cwd=`pwd`
           . .scripts/ci/ci-env.sh
           .scripts/ci/ci-prepare.sh
-          npm run lint:s
+          npm run lint:nofix
           npm run lint:cycle
         env:
           CI: true
@@ -129,8 +141,8 @@ jobs:
           export cwd=`pwd`
           . .scripts/ci/ci-env.sh
           .scripts/ci/ci-prepare.sh
-          .scripts/init.mjs
-          npm run ci
+          # npm run ci
+          npm run test
         env:
           CI: true
           # use `localhost` if running the job on the VM
@@ -146,23 +158,30 @@ jobs:
           REDIS_PORT: 6379
           # otel
           OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
-          # aliyun
-          ALI_ALB_IPS: ${{ secrets.ALI_ALB_IPS }}
-          ALI_ALB_GROUPID: ${{ secrets.ALI_ALB_GROUPID }}
-          ALI_ECS_AID: ${{ secrets.ALI_ECS_AID }}
-          ALI_ECS_ASECRET: ${{ secrets.ALI_ECS_ASECRET }}
-          ALI_ECS_IDS: ${{ secrets.ALI_ECS_IDS }}
-          ALI_ECS_IPS: ${{ secrets.ALI_ECS_IPS }}
-          ALI_OSS_AID: ${{ secrets.ALI_OSS_AID }}
-          ALI_OSS_ASECRET: ${{ secrets.ALI_OSS_ASECRET }}
-          ALI_OSS_ENDPOINT: ${{ secrets.ALI_OSS_ENDPOINT }}
-          ALI_OSS_BUCKET: ${{ secrets.ALI_OSS_BUCKET }}
 
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+      - name: NPM Publish
+        run: |
+          npm ping
+          npm whoami
+          export cwd=`pwd`
+          . .scripts/ci/ci-env.sh
+          # fix: fatal: detected dubious ownership in repository
+          git config --global --add safe.directory $cwd
+          # git restore .
+          git reset --hard
+          git config user.name $GITHUB_ACTOR
+          git config user.email gh-actions-${GITHUB_ACTOR}@github.com
+          # npm run pub major
+          rm -rf package-lock.json
+          rm -rf packages/*/package-lock.json
+          .scripts/publish.sh --yes --no-private --conventional-commits --create-release github ${{ github.event.inputs.semver }}
+          git push -v origin --follow-tags
         env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          CI: true
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
 
 
     services:

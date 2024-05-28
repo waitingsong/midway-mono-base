@@ -6,14 +6,13 @@ import {
   Provide,
 } from '@midwayjs/core'
 
-import { DebugService } from './debug.service.js'
-
 import { BaseController } from '##/interface.js'
+
+import { DebugService } from './debug.service.js'
 
 
 // CHANGE value for prod!
 export const debugPwd = 'debug123456'
-
 
 @Provide()
 @Controller('/debug')
@@ -22,7 +21,7 @@ export class DebugController extends BaseController {
   @Inject() readonly svc: DebugService
 
   @Get('/dump/:id/:hash')
-  async heapdump(@Param('id') id: string, @Param('hash') hash: string): Promise<HeapDumpRet | void> {
+  async heapdump(@Param('id') id: string, @Param('hash') hash: string): Promise<HeapDumpRet | undefined> {
     if (! hash || hash !== debugPwd) {
       this.ctx['status'] = 401
       return

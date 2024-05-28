@@ -1,12 +1,13 @@
 import { Inject, Provide } from '@midwayjs/core'
 
+import { BaseService } from '##/interface.js'
+
 import { UserRepo } from './user.repo.js'
 import {
   GetUserDTO,
   UserDetailDTO,
 } from './user.types.js'
 
-import { BaseService } from '##/interface.js'
 
 
 @Provide()
@@ -30,13 +31,13 @@ export class UserService extends BaseService {
       regip: '127.0.0.1',
       lastip: '127.0.0.1',
       json: {},
-      ctime: new Date(),
-      mtime: new Date(),
+      ctime: new Date().toISOString(),
+      mtime: new Date().toISOString(),
     }
     return ret
   }
 
-  async getUserNameByUid(_uid: GetUserDTO['uid']): Promise<UserDetailDTO['userName']> {
+  async getUserNameByUid(_uid: GetUserDTO['uid']) {
     const name = await this.repo.getUserNameByUid(_uid)
     // const name = 'mockedName'
     return name

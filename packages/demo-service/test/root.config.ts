@@ -6,6 +6,7 @@ import {
   IMidwayContainer,
   JsonResp,
   NpmPkg,
+  ValidateService,
 } from '@mwcp/boot'
 import { JwtComponent } from '@mwcp/jwt'
 import { genCurrentDirname } from '@waiting/shared-core'
@@ -15,8 +16,8 @@ import supertest, { SuperTest } from 'supertest'
 export const testDir = genCurrentDirname(import.meta.url)
 export const baseDir = join(testDir, '..')
 
-const CI = !! (process.env['CI']
-  || process.env['MIDWAY_SERVER_ENV'] === 'unittest'
+const CI = !! ((process.env['CI']
+  ?? process.env['MIDWAY_SERVER_ENV'] === 'unittest')
   || process.env['MIDWAY_SERVER_ENV'] === 'local'
   || process.env['NODE_ENV'] === 'unittest'
   || process.env['NODE_ENV'] === 'local'
@@ -37,6 +38,7 @@ export interface TestConfig {
   CI: boolean
   app: Application
   container: IMidwayContainer
+  validateService: ValidateService
   host: string
   httpRequest: SuperTest<supertest.Test>
   jwt: JwtComponent

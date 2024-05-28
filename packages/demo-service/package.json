@@ -13,16 +13,17 @@
     "#@/*": "./test/*"
   },
   "dependencies": {
-    "@mwcp/boot": "^19.2.2",
-    "@mwcp/taskman": "^41.6.7",
+    "@midwayjs/swagger": "^3.16.1",
+    "@mwcp/boot": "^21.8.0",
     "@scope/docs": "^0.0.0",
-    "pg": "^8.11.3"
+    "pg": "^8.11.5"
   },
   "devDependencies": {
+    "swagger-ui-dist": "^5.17.12"
   },
   "engines": {
     "node": ">=18.12.0",
-    "@midwayjs/core": ">=3.14.0"
+    "@midwayjs/core": ">=3.15.0"
   },
   "files": [
     "README.*.md",
@@ -48,7 +49,8 @@
   },
   "license": "",
   "scripts": {
-    "build": "npm run tsc && tsc-alias && npm run db:gen",
+    "build": "npm run tsc && tsc-alias",
+    "build:unit": "tsc -p test/tsconfig.json",
     "clean": "npm run clean:lock && npm run clean:dist && npm run clean:log",
     "clean:cache": "rm -rf .eslintcache .tsbuildinfo",
     "clean:dist": "npm run clean:cache && rm -rf dist/*",
@@ -57,9 +59,11 @@
     "cov": "c8 --all npm run test -- --parallel=false",
     "db:gen": "kmore gen --path ./src",
     "dev": "cross-env MIDWAY_SERVER_ENV=local mwtsc --watch --run @midwayjs/mock/app",
-    "lint": "eslint --fix --cache {src,test}/**/*.ts",
-    "lint:nofix": "eslint --cache {src,test}/**/*.ts",
-    "predev": "npm run build",
+    "lint": "eslint --fix --cache src test",
+    "lint:nofix": "eslint --cache src test",
+    "predev": "lerna run build",
+    "predev:vsc": "npm run build",
+    "pretest": "lerna run build && npm run build:unit",
     "start": "cross-env NODE_ENV=production node ./bootstrap.js",
     "test": "cross-env MIDWAY_SERVER_ENV=unittest TS_NODE_PROJECT=test/tsconfig.json mocha --parallel=false",
     "tsc": "tsc -b"

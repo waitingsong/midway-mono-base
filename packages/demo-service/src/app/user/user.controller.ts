@@ -5,13 +5,14 @@ import {
   Param,
   Query,
 } from '@midwayjs/core'
+import { ApiResponse } from '@midwayjs/swagger'
 import { Validate } from '@midwayjs/validate'
-import { JsonResp } from '@mwcp/boot'
+
+import { BaseController } from '##/interface.js'
 
 import { UserService } from './user.service.js'
 import { GetUserDTO, UserDetailDTO } from './user.types.js'
 
-import { BaseController } from '##/interface.js'
 
 
 @Controller('/user')
@@ -24,7 +25,8 @@ export class UserController extends BaseController {
    */
   @Get('/')
   @Validate()
-  async getUser(@Query() param: GetUserDTO): Promise<UserDetailDTO> {
+  @ApiResponse({ type: UserDetailDTO })
+  async getUser(@Query() param: GetUserDTO) {
     const user = await this.svc.getUser(param)
     return user
   }
@@ -36,7 +38,8 @@ export class UserController extends BaseController {
    */
   @Get('/:id')
   @Validate()
-  async getUser2(@Param('id') id: GetUserDTO['uid']): Promise<JsonResp<UserDetailDTO>> {
+  @ApiResponse({ type: UserDetailDTO })
+  async getUser2(@Param('id') id: GetUserDTO['uid']) {
     const uid = +id
     if (Number.isNaN(uid) || uid <= 0) {
       this.throwError('uid必须自然数')

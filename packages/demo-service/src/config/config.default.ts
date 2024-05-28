@@ -1,3 +1,6 @@
+import { join } from 'node:path'
+
+import { RouterOption } from '@midwayjs/core'
 import { AliOssConfig } from '@mwcp/ali-oss'
 import type {
   AppConfig,
@@ -8,13 +11,15 @@ import {
   DbConfig,
   KmoreSourceConfig,
 } from '@mwcp/kmore'
-import {
-  ClientURL,
-  DbReplica as TaskDbReplica,
-  ServerURL,
-  SupportTaskMapType,
-} from '@mwcp/taskman'
-import { ErrorCode } from '@scope/docs'
+// import {
+//   ClientURL,
+//   DbReplica as TaskDbReplica,
+//   ServerURL,
+//   SupportTaskMapType,
+// } from '@mwcp/taskman'
+import { genCurrentDirname } from '@waiting/shared-core'
+
+import { ErrorCode } from '##/types.js'
 
 import {
   DbReplica,
@@ -24,10 +29,22 @@ import {
 import { dbDict, DbModel } from './db.model.js'
 
 
-export const enableJsonRespMiddlewareConfig = true
 
-const jwtConfig = {
-  secret: process.env['JWT_SECRET'],
+const configDir = genCurrentDirname(import.meta.url)
+export const APP_BASE_DIR = join(configDir, '../..')
+// 调试、单测时指向src目录，其余指向dist目录
+export const APP_DIST_DIR = join(configDir, '../')
+console.info({ APP_BASE_DIR, APP_DIST_DIR })
+
+export const keys = '1559532739677_8888'
+export const globalErrorCode = ErrorCode
+
+export const jsonRespMiddlewareConfig = {
+  enableMiddleware: true,
+}
+
+export const jwtConfig = {
+  secret: process.env['JWT_SECRET'] ?? keys,
 }
 const jwtIgnoreArr = [
   ...initPathArray,
@@ -37,10 +54,10 @@ const jwtIgnoreArr = [
   '/ping',
   '/test/sign',
   '/test/err',
-  RegExp(`${ClientURL.base}/.*`, 'u'),
-  RegExp(`${ServerURL.base}/.*`, 'u'),
+  // RegExp(`${ClientURL.base}/.*`, 'u'),
+  // RegExp(`${ServerURL.base}/.*`, 'u'),
 ]
-const jwtMiddlewareConfig: AppConfig['jwtMiddlewareConfig'] = {
+export const jwtMiddlewareConfig: AppConfig['jwtMiddlewareConfig'] = {
   enableMiddleware: true,
   ignore: jwtIgnoreArr,
 }
@@ -70,77 +87,72 @@ const master: DbConfig<DbModel, Context> = {
   dict: dbDict,
   traceInitConnection: true,
 }
-const kmoreConfig: KmoreSourceConfig<DbReplica> = {
+export const kmoreConfig: KmoreSourceConfig<DbReplica> = {
   dataSource: {
     master,
   },
 }
 
-const exporterEndpoint = process.env['OTEL_EXPORTER_OTLP_ENDPOINT'] ?? 'http://localhost:4317'
-const otlpGrpcExporterConfig: AppConfig['otlpGrpcExporterConfig'] = {
+export const exporterEndpoint = process.env['OTEL_EXPORTER_OTLP_ENDPOINT'] ?? 'http://localhost:4317'
+export const otlpGrpcExporterConfig: AppConfig['otlpGrpcExporterConfig'] = {
   url: exporterEndpoint,
 }
 
 
-const taskServerConfig: AppConfig['taskServerConfig'] = {
-  dataSource: {
-    [TaskDbReplica.taskMaster]: {
-      config: {
-        connection: {
-          host: process.env['POSTGRES_HOST'] ? process.env['POSTGRES_HOST'] : 'localhost',
-          port: process.env['POSTGRES_PORT'] ? +process.env['POSTGRES_PORT'] : 5432,
-          database: process.env['POSTGRES_DB'] ? process.env['POSTGRES_DB'] : 'db_ci_mw',
-          user: process.env['POSTGRES_USER'] ? process.env['POSTGRES_USER'] : 'postgres',
-          password: process.env['POSTGRES_PASSWORD'] ? process.env['POSTGRES_PASSWORD'] : 'postgres',
-        },
-      },
-      traceInitConnection: true,
-    },
-  },
-}
-const supportTaskMap: SupportTaskMapType = new Map([ [1, '*'] ])
-const taskClientConfig: AppConfig['taskClientConfig'] = {
-  host: process.env['TASK_AGENT_HOST'] ? process.env['TASK_AGENT_HOST'] : 'http://127.0.0.1:7001',
-  supportTaskMap,
-}
+// export const taskServerConfig: AppConfig['taskServerConfig'] = {
+//   dataSource: {
+//     [TaskDbReplica.taskMaster]: {
+//       config: {
+//         connection: {
+//           host: process.env['POSTGRES_HOST'] ? process.env['POSTGRES_HOST'] : 'localhost',
+//           port: process.env['POSTGRES_PORT'] ? +process.env['POSTGRES_PORT'] : 5432,
+//           database: process.env['POSTGRES_DB'] ? process.env['POSTGRES_DB'] : 'db_ci_mw',
+//           user: process.env['POSTGRES_USER'] ? process.env['POSTGRES_USER'] : 'postgres',
+//           password: process.env['POSTGRES_PASSWORD'] ? process.env['POSTGRES_PASSWORD'] : 'postgres',
+//         },
+//       },
+//       traceInitConnection: true,
+//     },
+//   },
+// }
+// const supportTaskMap: SupportTaskMapType = new Map([ [1, '*'] ])
+// export const taskClientConfig: AppConfig['taskClientConfig'] = {
+//   host: process.env['TASK_AGENT_HOST'] ? process.env['TASK_AGENT_HOST'] : 'http://127.0.0.1:7001',
+//   supportTaskMap,
+// }
 
 
-const clientConfig = {
+export const clientConfig = {
   accessKeyId: process.env['ALI_OSS_AID'] ?? '',
   accessKeySecret: process.env['ALI_OSS_ASECRET'] ?? '',
   endpoint: process.env['ALI_OSS_ENDPOINT'] ?? 'https://oss-cn-hangzhou.aliyuncs.com',
   bucket: process.env['ALI_OSS_BUCKET'] ?? '',
 }
-const aliOssConfig: AliOssConfig<OssClientKey> = {
+export const aliOssConfig: AliOssConfig<OssClientKey> = {
   dataSource: {
     ossMain: clientConfig,
   },
 }
 
 
-const svcHosts: SvcHosts = {
+export const svcHosts: SvcHosts = {
   uc: 'http://127.0.0.1:7001',
 }
 Object.keys(svcHosts).forEach((key) => {
   const name = `SVC_HOST_${key}`
-  if (typeof process.env[name] === 'string') {
-    svcHosts[key] = process.env[name] as string
+  const value = process.env[name]
+  if (process.env[name] && typeof process.env[name] === 'string' && value) {
+    svcHosts[key] = value
   }
 })
 
 
-const appConfig: AppConfig = {
-  keys: '1559532739677_8888',
-  aliOssConfig,
-  globalErrorCode: ErrorCode,
-  jwtConfig,
-  jwtMiddlewareConfig,
-  kmoreConfig,
-  svcHosts,
-  otlpGrpcExporterConfig,
-  exporterEndpoint,
-  taskClientConfig,
-  taskServerConfig,
+export const swagger = {
+  routerFilter: (url: string, options: RouterOption) => {
+    void options
+    if (url.startsWith('/_')) {
+      return true
+    }
+  },
 }
-export default appConfig
 

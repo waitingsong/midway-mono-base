@@ -9,9 +9,11 @@ import {
   Inject,
 } from '@midwayjs/core'
 
-import { TestService } from './test.service.js'
 
 import { BaseController } from '##/interface.js'
+import { ErrorCode } from '##/types.js'
+
+import { TestService } from './test.service.js'
 
 
 @Controller('/test')
@@ -48,11 +50,11 @@ export class TestController extends BaseController {
   @Get('/err')
   testError(): never {
     // HTTP Response Code is 200, Result.code is 2404
-    this.throwError('管理员不存在，请检查', this.globalErrorCode.E_Admin_Not_Exists)
+    this.throwError('管理员不存在，请检查', ErrorCode.E_Admin_Not_Exists)
   }
 
   @Get('/array')
-  testArray(): (string|number)[] {
+  testArray(): (string | number)[] {
     this.logger.info('return array with JsonResp<T> structure')
     return ['a', 'b', 1]
   }

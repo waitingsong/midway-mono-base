@@ -8,21 +8,23 @@ import {
   MidwayInformationService,
   MidwayWebRouterService,
 } from '@midwayjs/core'
-import { IMidwayLogger } from '@midwayjs/logger'
+import { ILogger } from '@midwayjs/logger'
 import { Application, IMidwayContainer, TraceInit } from '@mwcp/boot'
 import { registerMiddleware } from '@mwcp/share'
 
-import * as DefulatConfig from './config/config.default.js'
+import * as DefaultConfig from './config/config.default.js'
 import * as LocalConfig from './config/config.local.js'
 import * as ProdConfig from './config/config.prod.js'
 import * as UnittestConfig from './config/config.unittest.js'
 import { useComponents } from './imports.js'
 
 
+const namespace = 'demo'
+
 @Configuration({
   importConfigs: [
     {
-      default: DefulatConfig,
+      default: DefaultConfig,
       local: LocalConfig,
       prod: ProdConfig,
       unittest: UnittestConfig,
@@ -31,16 +33,17 @@ import { useComponents } from './imports.js'
   imports: useComponents,
 })
 export class ContainerConfiguration implements ILifeCycle {
+
   @App() readonly app: Application
 
   @Inject() webRouterService: MidwayWebRouterService
 
-  @Logger() readonly logger: IMidwayLogger
+  @Logger() readonly logger: ILogger
 
   @Inject() readonly informationService: MidwayInformationService
 
   // 启动前处理
-  @TraceInit({ namespace: 'demo' })
+  @TraceInit({ namespace })
   async onReady(container: IMidwayContainer): Promise<void> {
     void container
     void registerMiddleware
@@ -48,7 +51,7 @@ export class ContainerConfiguration implements ILifeCycle {
     // registerMiddleware(this.app, mws)
   }
 
-  @TraceInit({ namespace: 'demo' })
+  @TraceInit({ namespace })
   async onServerReady(container: IMidwayContainer): Promise<void> {
     void container
     this.logger.info('✅ Your APP launched')

@@ -28,12 +28,12 @@ export function matchISO8601ContentTimes(path: string, matchString: string | Reg
     return 0
   }
 
-  const regx = typeof matchString === 'string'
+  const regex = typeof matchString === 'string'
     ? new RegExp(matchString, 'ug')
     : matchString
 
   // eslint-disable-next-line @typescript-eslint/prefer-regexp-exec
-  const ret = content.match(regx) || []
+  const ret = content.match(regex) ?? []
   return ret.length
 }
 
