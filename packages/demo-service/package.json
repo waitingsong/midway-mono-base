@@ -13,8 +13,8 @@
     "#@/*": "./test/*"
   },
   "dependencies": {
-    "@midwayjs/swagger": "^3.16.1",
-    "@mwcp/boot": "^21.8.0",
+    "@midwayjs/swagger": "^3.16.2",
+    "@mwcp/boot": "^21.8.1",
     "@scope/docs": "^0.0.0",
     "pg": "^8.11.5"
   },

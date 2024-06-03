@@ -7,9 +7,9 @@
   "devDependencies": {
     "@commitlint/cli": "19",
     "@commitlint/config-conventional": "19",
-    "@midwayjs/mock": "^3.16.0",
-    "@midwayjs/swagger": "^3.16.1",
-    "@midwayjs/validate": "^3.16.1",
+    "@midwayjs/mock": "^3.16.2",
+    "@midwayjs/swagger": "^3.16.2",
+    "@midwayjs/validate": "^3.16.2",
     "@types/koa": "2",
     "@types/mocha": "10",
     "@types/node": "20",
@@ -23,7 +23,7 @@
     "mocha": "10",
     "mwtsc": "^1.10.0",
     "nx": "19",
-    "swagger-ui-dist": "^5.17.12",
+    "swagger-ui-dist": "^5.17.14",
     "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.10",
     "typescript": "^5.4.5"

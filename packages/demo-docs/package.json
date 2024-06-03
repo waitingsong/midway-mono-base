@@ -18,7 +18,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@midwayjs/validate": "^3.16.1",
+    "@midwayjs/validate": "^3.16.2",
     "@waiting/shared-types": "^23.6.0"
   },
   "devDependencies": {
