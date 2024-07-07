@@ -19,14 +19,14 @@
     "autocannon": "7",
     "cross-env": "7",
     "eslint": "8",
-    "kmore-cli": "^61.0.0",
+    "kmore-cli": "^61.2.2",
     "mocha": "10",
     "mwtsc": "^1.10.0",
     "nx": "19",
     "swagger-ui-dist": "^5.17.14",
     "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.10",
-    "typescript": "^5.4.5"
+    "typescript": "5.4.5"
   },
   "engines": {
     "node": ">=20.11.0",
