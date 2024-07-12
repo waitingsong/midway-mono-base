@@ -3,17 +3,19 @@
 import assert from 'node:assert'
 
 import { createApp, close, createHttpRequest } from '@midwayjs/mock'
-import { NpmPkg, ValidateService } from '@mwcp/boot'
+import type { NpmPkg } from '@mwcp/boot'
+import { ValidateService } from '@mwcp/boot'
 import { JwtComponent } from '@mwcp/jwt'
 import { DbSourceManager } from '@mwcp/kmore'
-import { Application } from '@mwcp/share'
+import type { Application } from '@mwcp/share'
 // import {
 //   TaskClientConfig,
 //   ConfigKey as TaskmanConfigKey,
 // } from '@mwcp/taskman'
 import type { Suite } from 'mocha'
 
-import { TestConfig, testConfig } from './root.config.js'
+import type { TestConfig } from './root.config.js'
+import { testConfig } from './root.config.js'
 
 
 let app: Application

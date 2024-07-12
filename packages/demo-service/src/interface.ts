@@ -1,6 +1,6 @@
-import { JwtState } from '@mwcp/jwt'
+import type { JwtState } from '@mwcp/jwt'
 
-import { JwtUser } from './types.js'
+import type { JwtUser } from './types.js'
 
 
 // @ts-ignore

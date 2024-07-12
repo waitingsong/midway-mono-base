@@ -1,9 +1,10 @@
 import assert from 'node:assert/strict'
 
-import { JsonResp } from '@mwcp/boot'
+import type { JsonResp } from '@mwcp/boot'
 import { fileShortPath } from '@waiting/shared-core'
 
-import { HeapDumpRet, debugPwd } from '##/app/debug/debug.controller.js'
+import type { HeapDumpRet } from '##/app/debug/debug.controller.js'
+import { debugPwd } from '##/app/debug/debug.controller.js'
 import { testConfig } from '#@/root.config.js'
 
 

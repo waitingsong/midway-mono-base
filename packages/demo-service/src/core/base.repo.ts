@@ -2,14 +2,12 @@
 import assert from 'node:assert'
 
 import { Init, Inject } from '@midwayjs/core'
+import { RootClass } from '@mwcp/boot'
 import type { Context, DbTransaction } from '@mwcp/boot'
 import { DbManager, Kmore } from '@mwcp/kmore'
 
-
-import { DbReplica } from '##/config/config.types.js'
-import type { DbModel } from '##/config/db.model.js'
-
-import { RootClass } from './root.class.js'
+import type { DbModel } from '##/config/db/db.model.js'
+import { DbReplica } from '##/config/db/db.types.js'
 
 
 export class BaseRepo extends RootClass {
@@ -20,11 +18,6 @@ export class BaseRepo extends RootClass {
 
   @Init()
   async baseInit(): Promise<void> {
-    /* c8 ignore next 3 */
-    if (! this.ctx) {
-      this.throwError('Value of this.ctx is undefined during Repo init')
-    }
-
     const db = this.dbManager.getDataSource(DbReplica.master)
     assert(db)
     this.db = db

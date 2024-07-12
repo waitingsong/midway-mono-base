@@ -78,7 +78,7 @@ export class TestController extends BaseController {
   @ContentType('text')
   @Get('/fetch')
   async fetchSelf(): Promise<string> {
-    const ret = await this.getJson<TestData>('http://localhost:7001/test/_fetch_target')
+    const ret = await this.getJson<TestData>(this.ctx, 'http://localhost:7001/test/_fetch_target')
     assert(ret)
     return JSON.stringify(ret, null, 2)
   }

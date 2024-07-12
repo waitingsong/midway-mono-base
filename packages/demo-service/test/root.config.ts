@@ -1,29 +1,30 @@
-import { IncomingHttpHeaders } from 'node:http'
+import type { IncomingHttpHeaders } from 'node:http'
 import { join } from 'node:path'
 
-import {
+import type {
   Application,
   IMidwayContainer,
   JsonResp,
   NpmPkg,
   ValidateService,
 } from '@mwcp/boot'
-import { JwtComponent } from '@mwcp/jwt'
+import type { JwtComponent } from '@mwcp/jwt'
 import { genCurrentDirname } from '@waiting/shared-core'
-import supertest, { SuperTest } from 'supertest'
+import type { Response, SuperTest, Test } from 'supertest'
 
 
 export const testDir = genCurrentDirname(import.meta.url)
 export const baseDir = join(testDir, '..')
 
-const CI = !! ((process.env['CI']
-  ?? process.env['MIDWAY_SERVER_ENV'] === 'unittest')
+export const CI = !! process.env['CI'] // GithubAction
+export const TEST = !! (CI
+  || process.env['MIDWAY_SERVER_ENV'] === 'unittest'
   || process.env['MIDWAY_SERVER_ENV'] === 'local'
   || process.env['NODE_ENV'] === 'unittest'
   || process.env['NODE_ENV'] === 'local'
 )
 
-export type TestResponse = supertest.Response
+export type TestResponse = Response
 export type TestRespBody = JsonResp<RespData>
 export interface RespData {
   header: IncomingHttpHeaders
@@ -36,11 +37,12 @@ export interface TestConfig {
   testDir: string
   testAppDir: string
   CI: boolean
+  TEST: boolean
   app: Application
   container: IMidwayContainer
   validateService: ValidateService
   host: string
-  httpRequest: SuperTest<supertest.Test>
+  httpRequest: SuperTest<Test>
   jwt: JwtComponent
   pkg: NpmPkg
   token: string
@@ -56,6 +58,7 @@ export const testConfig = {
   testDir,
   testAppDir,
   CI,
+  TEST,
   host: '',
   httpRequest: {},
   token: jwt.trim().replace(/\n/ug, ' '),

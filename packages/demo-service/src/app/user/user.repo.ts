@@ -10,7 +10,6 @@ import {
 } from './user.types.js'
 
 
-
 @Provide()
 export class UserRepo extends BaseRepo {
 

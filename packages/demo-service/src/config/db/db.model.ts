@@ -1,7 +1,6 @@
 
 export {
-  DbModel,
+  type DbModel,
   dbDict,
 } from '##/types.js'
-
 

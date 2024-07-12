@@ -13,8 +13,8 @@ require:
 #  - ts-node/esm
 spec:
   - test/**/*.test.ts
-timeout: 90000
+timeout: 15000
 ui: bdd
-parallel: false
+parallel: true
 exit: true
 

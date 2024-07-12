@@ -5,7 +5,7 @@
 export * from '@scope/docs'
 
 export {
-  JsonResp,
+  type JsonResp,
   PagingDTO,
   PagingResult,
 } from '@mwcp/share'

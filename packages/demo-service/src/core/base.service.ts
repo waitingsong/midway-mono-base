@@ -1,4 +1,4 @@
-import { RootClass } from './root.class.js'
+import { RootClass } from '@mwcp/boot'
 
 
 export class BaseService extends RootClass {

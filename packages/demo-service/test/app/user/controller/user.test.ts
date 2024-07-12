@@ -5,7 +5,7 @@ import type { JsonResp } from '@mwcp/boot'
 import { JwtMsg, schemePrefix } from '@mwcp/jwt'
 import { fileShortPath } from '@waiting/shared-core'
 
-import { UserDetailDTO } from '##/app/user/user.types.js'
+import type { UserDetailDTO } from '##/app/user/user.types.js'
 import { testConfig } from '#@/root.config.js'
 
 

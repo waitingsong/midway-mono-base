@@ -2,7 +2,7 @@ import { constants } from 'node:fs'
 import { access, mkdir } from 'node:fs/promises'
 import { join } from 'node:path'
 
-import { Provide } from '@midwayjs/core'
+import { Singleton } from '@midwayjs/core'
 import {
   genISO8601String,
   saveHeapSnapshot,
@@ -12,7 +12,7 @@ import {
 import { BaseService } from '##/interface.js'
 
 
-@Provide()
+@Singleton()
 export class DebugService extends BaseService {
 
   async heapdump(): Promise<string> {

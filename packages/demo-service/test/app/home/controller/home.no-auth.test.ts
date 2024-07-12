@@ -15,9 +15,8 @@ describe(fileShortPath(import.meta.url), () => {
 
   it('should GET /', async () => {
     const { app } = testConfig
-    const resp = await createHttpRequest(app)
-      .get('/')
-      .expect(200)
+    const resp = await createHttpRequest(app).get('/')
+    assert(resp.ok, resp.text)
 
     const msg: string = resp.text
     assert(msg?.includes('Hello Midwayjs!'), msg)
@@ -25,9 +24,8 @@ describe(fileShortPath(import.meta.url), () => {
 
   it('should GET /hello', async () => {
     const { app } = testConfig
-    const resp = await createHttpRequest(app)
-      .get('/hello')
-      .expect(200)
+    const resp = await createHttpRequest(app).get('/hello')
+    assert(resp.ok, resp.text)
 
     const msg: string = resp.text
     assert(msg?.includes('Hello Midwayjs!'), msg)
@@ -35,9 +33,8 @@ describe(fileShortPath(import.meta.url), () => {
 
   it('should GET /ping', async () => {
     const { app } = testConfig
-    const resp = await createHttpRequest(app)
-      .get('/ping')
-      .expect(200)
+    const resp = await createHttpRequest(app).get('/ping')
+    assert(resp.ok, resp.text)
 
     const msg: string = resp.text
     assert(msg && msg === 'OK', msg)
@@ -45,9 +42,8 @@ describe(fileShortPath(import.meta.url), () => {
 
   it('should GET /ip', async () => {
     const { app } = testConfig
-    const resp = await createHttpRequest(app)
-      .get('/ip')
-      .expect(200)
+    const resp = await createHttpRequest(app).get('/ip')
+    assert(resp.ok, resp.text)
 
     const ip = resp.text
     assert(ip && /[\d.]+/ui.test(ip))

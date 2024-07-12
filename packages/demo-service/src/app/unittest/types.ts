@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { IncomingHttpHeaders } from 'http'
+import type { IncomingHttpHeaders } from 'http'
 
-import supertest from 'supertest'
+import type supertest from 'supertest'
 
 
 export type TestResponse = supertest.Response

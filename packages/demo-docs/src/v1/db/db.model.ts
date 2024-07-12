@@ -1,4 +1,4 @@
-import { TbAppDO, TbMemberDO } from '../do/index.do.js'
+import type { TbAppDO, TbMemberDO } from '../do/index.do.js'
 
 /**
  * 设定链接库表

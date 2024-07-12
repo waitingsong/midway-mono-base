@@ -13,13 +13,13 @@
     "#@/*": "./test/*"
   },
   "dependencies": {
-    "@midwayjs/swagger": "^3.16.2",
-    "@mwcp/boot": "^21.8.1",
+    "@midwayjs/swagger": "^3.16.4",
+    "@mwcp/boot": "^23.0.0",
     "@scope/docs": "^0.0.0",
-    "pg": "^8.11.5"
+    "pg": "^8.12.0"
   },
   "devDependencies": {
-    "swagger-ui-dist": "^5.17.12"
+    "swagger-ui-dist": "^5.17.14"
   },
   "engines": {
     "node": ">=18.12.0",
@@ -61,9 +61,8 @@
     "dev": "cross-env MIDWAY_SERVER_ENV=local mwtsc --watch --run @midwayjs/mock/app",
     "lint": "eslint --fix --cache src test",
     "lint:nofix": "eslint --cache src test",
-    "predev": "lerna run build",
-    "predev:vsc": "npm run build",
-    "pretest": "lerna run build && npm run build:unit",
+    "predev": "npm run build",
+    "pretest": "npm run build:unit",
     "start": "cross-env NODE_ENV=production node ./bootstrap.js",
     "test": "cross-env MIDWAY_SERVER_ENV=unittest TS_NODE_PROJECT=test/tsconfig.json mocha --parallel=false",
     "tsc": "tsc -b"

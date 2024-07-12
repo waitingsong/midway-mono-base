@@ -4,7 +4,8 @@
 [![GitHub tag](https://img.shields.io/github/tag/waitingsong/midway-mono-base.svg)]()
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![](https://img.shields.io/badge/lang-TypeScript-blue.svg)]()
-[![ci](https://github.com/waitingsong/midway-mono-base/workflows/ci/badge.svg)](https://github.com/waitingsong/midway-mono-base/actions?query=workflow%3A%22ci%22)
+[![ci](https://github.com/waitingsong/midway-mono-base/actions/workflows/nodejs.yml/badge.svg
+)](https://github.com/waitingsong/midway-mono-base/actions)
 [![codecov](https://codecov.io/gh/waitingsong/midway-mono-base/branch/main/graph/badge.svg?token=64mSqC475E)](https://codecov.io/gh/waitingsong/midway-mono-base)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
@@ -13,7 +14,7 @@
 
 ## 安装全局依赖
 ```sh
-npm i -g c8 lerna tsx zx
+npm i -g c8 lerna madge rollup tsx zx
 ```
 
 ## 创建新项目

@@ -18,8 +18,8 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@midwayjs/validate": "^3.16.2",
-    "@waiting/shared-types": "^23.6.0"
+    "@midwayjs/validate": "^3.16.4",
+    "@waiting/shared-types": "^23.20.0"
   },
   "devDependencies": {
   },
@@ -57,12 +57,13 @@
     "clean:dist": "npm run clean:cache && rm -rf dist/*",
     "clean:lock": "rm -f package-lock.json",
     "clean:log": "rm -rf ./logs ./run",
-    "cov": "c8 --all npm run test -- --parallel=false",
+    "cov": "c8 --all npm run test --",
     "db:gen": "kmore gen --path ./src",
-    "lint": "eslint --fix --cache src test",
+    "lint": "eslint --fix --cache src test ",
     "lint:nofix": "eslint --cache src test",
-    "pretest": "npm run build && npm run build:unit",
-    "test": "cross-env NODE_ENV=test TS_NODE_PROJECT=test/tsconfig.json mocha --jobs=4",
+    "pretest": "npm run build:unit",
+    "test": "cross-env NODE_ENV=test TS_NODE_PROJECT=test/tsconfig.json mocha",
+    "test:deb": "cross-env NODE_ENV=test TS_NODE_PROJECT=test/tsconfig.json mocha --parallel=false",
     "tsc": "tsc -p tsconfig.json"
   }
 }
