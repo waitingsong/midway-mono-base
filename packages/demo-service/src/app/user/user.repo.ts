@@ -13,18 +13,18 @@ import {
 @Provide()
 export class UserRepo extends BaseRepo {
 
-  ref_tb_user: typeof this.db.camelTables.ref_tb_user
+  tb_user: typeof this.db.camelTables.tb_user
 
   @Init()
   async initTable(): Promise<void> {
     await this.baseInit()
     assert(this.db.dict, 'this.db.dict not exists')
-    this.ref_tb_user = this.db.camelTables.ref_tb_user
+    this.tb_user = this.db.camelTables.tb_user
   }
 
   async getUserNameByUid(uid: GetUserDTO['uid']): Promise<UserDetailDTO['userName']> {
     // const name = await this.db.camelTables.ref_tb_user()
-    const query = this.ref_tb_user()
+    const query = this.tb_user()
       .select('userName')
       .where({ uid })
 
