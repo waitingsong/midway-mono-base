@@ -1,6 +1,6 @@
 import assert from 'node:assert'
 
-import { Init, Provide } from '@midwayjs/core'
+import { Init, Singleton } from '@midwayjs/core'
 
 import { BaseRepo } from '##/interface.js'
 
@@ -10,7 +10,7 @@ import {
 } from './user.types.js'
 
 
-@Provide()
+@Singleton()
 export class UserRepo extends BaseRepo {
 
   tb_user: typeof this.db.camelTables.tb_user

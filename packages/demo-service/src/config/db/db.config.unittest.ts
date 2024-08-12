@@ -1,4 +1,3 @@
-import type { Context } from '@mwcp/boot'
 import type { DbConfig, KmoreSourceConfig } from '@mwcp/kmore'
 
 import type { DbModel } from './db.model.js'
@@ -6,7 +5,7 @@ import { dbDict } from './db.model.js'
 import type { DbReplica } from './db.types.js'
 
 
-export const master: DbConfig<DbModel, Context> = {
+export const master: DbConfig<DbModel> = {
   config: {
     /**
      * install "pg-native" dependency before use 'pgnative' client
