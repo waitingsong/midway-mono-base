@@ -3,7 +3,7 @@ import assert from 'node:assert'
 
 import { Init, Inject } from '@midwayjs/core'
 import { RootClass } from '@mwcp/boot'
-import type { Context, DbTransaction } from '@mwcp/boot'
+import type { DbTransaction } from '@mwcp/boot'
 import { DbManager, Kmore } from '@mwcp/kmore'
 
 import type { DbModel } from '##/config/db/db.model.js'
@@ -12,9 +12,9 @@ import { DbReplica } from '##/config/db/db.types.js'
 
 export class BaseRepo extends RootClass {
 
-  @Inject() dbManager: DbManager<DbReplica, DbModel, Context>
+  @Inject() dbManager: DbManager<DbReplica, DbModel>
 
-  protected db: Kmore<DbModel, Context>
+  protected db: Kmore<DbModel>
 
   @Init()
   async baseInit(): Promise<void> {
