@@ -3,8 +3,7 @@ import type { JwtState } from '@mwcp/jwt'
 import type { JwtUser } from './types.js'
 
 
-// @ts-ignore
-declare module '@midwayjs/koa/dist/interface' {
+declare module '@midwayjs/koa/dist/interface.js' {
   interface Context {
     // @ts-ignore
     jwtState: JwtState<JwtUser>

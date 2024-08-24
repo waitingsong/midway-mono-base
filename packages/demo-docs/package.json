@@ -33,7 +33,7 @@
     "tsconfig.json",
     "tsconfig.base.json",
     "asset",
-    "src/**/*.ts",
+    "src",
     "bin",
     "database",
     "dist",

@@ -16,10 +16,6 @@ const jwtIgnoreArr = [
   '/hello',
   '/ip',
   '/ping',
-  '/test/sign',
-  '/test/err',
-  // RegExp(`${ClientURL.base}/.*`, 'u'),
-  // RegExp(`${ServerURL.base}/.*`, 'u'),
 ]
 export const jwtMiddlewareConfig: AppConfig['jwtMiddlewareConfig'] = {
   enableMiddleware: true,

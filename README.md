@@ -7,7 +7,6 @@
 [![ci](https://github.com/waitingsong/midway-mono-base/actions/workflows/nodejs.yml/badge.svg
 )](https://github.com/waitingsong/midway-mono-base/actions)
 [![codecov](https://codecov.io/gh/waitingsong/midway-mono-base/branch/main/graph/badge.svg?token=64mSqC475E)](https://codecov.io/gh/waitingsong/midway-mono-base)
-[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
 
 以下所有命令行操作都在 `git-bash` 窗口中执行
