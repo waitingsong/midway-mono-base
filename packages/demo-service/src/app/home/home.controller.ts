@@ -52,7 +52,7 @@ export class HomeController extends BaseController {
   @ContentType('text')
   @Get('/ip')
   async ip(): Promise<string> {
-    const body = await this.svc.retrieveGatewayIp(this.ctx)
+    const body = await this.svc.retrieveGatewayIp()
     return body
   }
 

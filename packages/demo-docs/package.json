@@ -18,8 +18,8 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@midwayjs/validate": "^3.16.4",
-    "@waiting/shared-types": "^23.20.2"
+    "@midwayjs/validate": "^3.17.3",
+    "@waiting/shared-types": "^23.21.0"
   },
   "devDependencies": {
   },
@@ -33,12 +33,11 @@
     "tsconfig.json",
     "tsconfig.base.json",
     "asset",
-    "src",
     "bin",
     "database",
     "dist",
-    "!**/*.spec.*",
-    "!**/*.tsbuildinfo"
+    "src",
+    "!**/*.spec.*"
   ],
   "homepage": "",
   "publishConfig": {
@@ -50,17 +49,18 @@
   },
   "license": "",
   "scripts": {
-    "build": "npm run tsc && tsc-alias && npm run db:gen",
+    "build": "npm run tsc",
     "build:unit": "tsc -p test/tsconfig.json",
     "clean": "npm run clean:lock && npm run clean:dist && npm run clean:log",
     "clean:cache": "rm -rf .eslintcache .tsbuildinfo",
     "clean:dist": "npm run clean:cache && rm -rf dist/*",
     "clean:lock": "rm -f package-lock.json",
     "clean:log": "rm -rf ./logs ./run",
-    "cov": "c8 --all npm run test --",
+    "cov": "c8 --all npm run test",
     "db:gen": "kmore gen --path ./src",
-    "lint": "eslint --fix --cache src test ",
+    "lint": "eslint --fix --cache src test",
     "lint:nofix": "eslint --cache src test",
+    "postbuild": "tsc-alias && npm run db:gen",
     "pretest": "npm run build:unit",
     "test": "cross-env NODE_ENV=test TS_NODE_PROJECT=test/tsconfig.json mocha",
     "test:deb": "cross-env NODE_ENV=test TS_NODE_PROJECT=test/tsconfig.json mocha --parallel=false",

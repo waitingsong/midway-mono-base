@@ -27,12 +27,12 @@ export class HomeService extends BaseService {
   /**
    * 获取网关 IP
    */
-  async retrieveGatewayIp(ctx: Context): Promise<string> {
+  async retrieveGatewayIp(): Promise<string> {
     // const url = 'http://ip.360.cn/IPShare/info'
     // const url = 'https://www.taobao.com/help/getip.php' // ipCallback({ip:"222.233.10.1"})
     const url = 'http://ifconfig.me' // 222.233.10.1
 
-    const text = await this.getText(ctx, url)
+    const text = await this.getText(url)
     let ip = ''
     if (text) {
       const arr = /([\d.]+)/ui.exec(text)
