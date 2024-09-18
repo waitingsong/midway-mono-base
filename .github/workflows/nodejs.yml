@@ -205,3 +205,18 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
+
+      pgmq:
+        image: quay.io/tembo/pgmq-pg:latest
+        ports:
+          - 15432:5432
+        env:
+          POSTGRES_DB: db_ci_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        # needed because the postgres container does not provide a healthcheck
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5

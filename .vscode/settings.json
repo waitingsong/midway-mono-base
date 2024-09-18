@@ -172,5 +172,8 @@
     "packages/*/*.*": "${dirname}/${filename}.${extname}",
     "packages/*/**": "${dirname(1)}/${dirname}/${filename}.${extname}",
     "**/node_modules/**/*": "${filename}.${extname} - ${dirname(2)}/${dirname(1)}/${dirname}"
-  }
+  },
+  "cSpell.words": [
+    "tembo"
+  ]
 }
