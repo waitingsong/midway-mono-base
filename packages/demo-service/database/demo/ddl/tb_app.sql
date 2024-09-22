@@ -1,6 +1,6 @@
 --
 CREATE TABLE tb_app (
-  app_id serial NOT NULL,
+  app_id int GENERATED ALWAYS AS IDENTITY NOT NULL,
   app_name varchar(50) NOT NULL,
   app_url varchar(255) NOT NULL DEFAULT '',
   app_valid int2 NOT NULL DEFAULT 1,
