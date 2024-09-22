@@ -1,6 +1,6 @@
 --
 CREATE TABLE tb_member (
-  uid serial NOT NULL,
+  uid int GENERATED ALWAYS AS IDENTITY NOT NULL,
   user_name varchar(15) NOT NULL,
   user_valid int2 NOT NULL,
   passwd varchar(255) NOT NULL DEFAULT '',
