@@ -141,6 +141,10 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           PGPASSWORD: postgres
+          # pgmq
+          PGMQ_HOST: pgmq
+          PGMQ_PORT: 15432
+          PGMQ_PASSWORD: postgres
           # redis
           REDIS_HOST: redis
           REDIS_PORT: 6379
