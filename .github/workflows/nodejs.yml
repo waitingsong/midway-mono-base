@@ -72,7 +72,7 @@ jobs:
         env:
           CI: true
           POSTGRES_HOST: postgres
-          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
+          POSTGRES_PORT: 5432
           POSTGRES_DB: db_ci_test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -118,7 +118,7 @@ jobs:
         env:
           CI: true
           POSTGRES_HOST: postgres
-          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
+          POSTGRES_PORT: 5432
           POSTGRES_DB: db_ci_test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -136,11 +136,15 @@ jobs:
           # use `localhost` if running the job on the VM
           # use `postgres` if running the job on a container
           POSTGRES_HOST: postgres
-          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
+          POSTGRES_PORT: 5432
           POSTGRES_DB: db_ci_test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           PGPASSWORD: postgres
+          # pgmq
+          PGMQ_HOST: postgres
+          PGMQ_PORT: 15432
+          PGMQ_PASSWORD: postgres
           # redis
           REDIS_HOST: redis
           REDIS_PORT: 6379
@@ -205,3 +209,18 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
+
+      pgmq:
+        image: quay.io/tembo/pgmq-pg:latest
+        ports:
+          - 15432:5432
+        env:
+          POSTGRES_DB: db_ci_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        # needed because the postgres container does not provide a healthcheck
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
