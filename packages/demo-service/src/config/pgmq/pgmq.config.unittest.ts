@@ -5,6 +5,7 @@ const connection: DbConnectionConfig = {
   ...initDbConfig.connection,
 }
 // connection.host = '10.10.1.14'
+connection.port = 15432
 
 const dbConfig: DbConfig = {
   ...initDbConfig,
