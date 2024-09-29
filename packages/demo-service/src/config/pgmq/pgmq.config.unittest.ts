@@ -4,8 +4,7 @@ import { type PgmqConfig as Config, type DbConnectionConfig, type DbConfig, init
 const connection: DbConnectionConfig = {
   ...initDbConfig.connection,
 }
-// connection.host = '10.10.1.14'
-connection.port = 15432
+// connection.port = 5432
 
 const dbConfig: DbConfig = {
   ...initDbConfig,
