@@ -69,9 +69,9 @@
         "TS_NODE_TRANSPILE_ONLY": "true",
         "POSTGRES_HOST": "127.0.0.1",
         "POSTGRES_PORT": "5432",
-        "POSTGRES_DB": "",
+        "POSTGRES_DB": "postgres",
         "POSTGRES_USER": "postgres",
-        "POSTGRES_PASSWORD": ""
+        "POSTGRES_PASSWORD": "postgres"
       },
       "request": "launch",
       "restart": true,

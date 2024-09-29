@@ -23,5 +23,6 @@ export const globalConfigFileArr: string[] = [
   '.vscode/promise.code-snippets.example',
   './tsconfig.base.json',
   './tsconfig.eslint.json',
+  './.env',
 ]
 
