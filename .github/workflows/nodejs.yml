@@ -67,8 +67,14 @@ jobs:
           psql -V
           dig postgres
           echo "\l" | psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U$POSTGRES_USER -d postgres
+          psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U$POSTGRES_USER -d $POSTGRES_DB -c "SELECT version();"
           psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U$POSTGRES_USER -d $POSTGRES_DB -c "\d+"
           psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U$POSTGRES_USER -d $POSTGRES_DB -c "SHOW TIMEZONE;"
+          dig pgmq
+          echo "\l" | psql -h $PGMQ_HOST -p $PGMQ_PORT -U$PGMQ_USER -d postgres
+          psql -h $PGMQ_HOST -p $PGMQ_PORT -U$PGMQ_USER -d $PGMQ_DB -c "SELECT version();"
+          psql -h $PGMQ_HOST -p $PGMQ_PORT -U$PGMQ_USER -d $PGMQ_DB -c "\d+"
+          psql -h $PGMQ_HOST -p $PGMQ_PORT -U$PGMQ_USER -d $PGMQ_DB -c "SHOW TIMEZONE;"
         env:
           CI: true
           POSTGRES_HOST: postgres
@@ -77,6 +83,11 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           PGPASSWORD: postgres
+          PGMQ_HOST: pgmq
+          PGMQ_PORT: 5432
+          PGMQ_DB: db_ci_test
+          PGMQ_USER: postgres
+          PGMQ_PASSWORD: postgres
 
       - name: Install Dependencies
         timeout-minutes: 15
@@ -123,6 +134,12 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           PGPASSWORD: postgres
+          # pgmq
+          PGMQ_HOST: pgmq
+          PGMQ_PORT: 5432
+          PGMQ_DB: db_ci_test
+          PGMQ_USER: postgres
+          PGMQ_PASSWORD: postgres
 
       - name: Testing
         run: |
@@ -143,7 +160,9 @@ jobs:
           PGPASSWORD: postgres
           # pgmq
           PGMQ_HOST: pgmq
-          PGMQ_PORT: 15432
+          PGMQ_PORT: 5432
+          PGMQ_DB: db_ci_test
+          PGMQ_USER: postgres
           PGMQ_PASSWORD: postgres
           # redis
           REDIS_HOST: redis
@@ -211,9 +230,9 @@ jobs:
 
 
       pgmq:
-        image: quay.io/tembo/pgmq-pg:latest
+        image: quay.io/tembo/pg16-pgmq:latest
         ports:
-          - 15432:5432
+          - 5433:5432
         env:
           POSTGRES_DB: db_ci_test
           POSTGRES_USER: postgres
