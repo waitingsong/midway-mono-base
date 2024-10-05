@@ -2,7 +2,7 @@
 // https://mochajs.org/#root-hook-plugins
 import assert from 'node:assert'
 
-import { createApp, close, createHttpRequest } from '@midwayjs/mock'
+import { close, createApp, createHttpRequest } from '@midwayjs/mock'
 import type { NpmPkg } from '@mwcp/boot'
 import { ValidateService } from '@mwcp/boot'
 import { JwtComponent } from '@mwcp/jwt'

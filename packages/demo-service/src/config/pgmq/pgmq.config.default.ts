@@ -1,4 +1,4 @@
-import { type PgmqConfig as Config, type DbConnectionConfig, type DbConfig, initDbConfig } from '@mwcp/pgmq'
+import { type DbConfig, type DbConnectionConfig, type PgmqConfig as Config, initDbConfig } from '@mwcp/pgmq'
 
 
 const connection: DbConnectionConfig = {

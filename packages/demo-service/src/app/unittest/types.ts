@@ -1,5 +1,5 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import type { IncomingHttpHeaders } from 'http'
+
+import type { IncomingHttpHeaders } from 'node:http'
 
 import type supertest from 'supertest'
 

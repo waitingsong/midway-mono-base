@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+
 import assert from 'node:assert'
 
 import { Init, Inject } from '@midwayjs/core'

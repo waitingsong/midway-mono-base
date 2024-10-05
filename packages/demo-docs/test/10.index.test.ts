@@ -3,13 +3,13 @@ import assert from 'node:assert/strict'
 import { fileShortPath } from '@waiting/shared-core'
 
 import {
+  ErrorCode,
+  GetUserDTO,
+  HeadersKey,
+  LoginDTO,
   TbAppDO,
   TbMemberDO,
-  GetUserDTO,
   UserDetailDTO,
-  LoginDTO,
-  ErrorCode,
-  HeadersKey,
   userValidSchemas,
 } from '../src/index.js'
 

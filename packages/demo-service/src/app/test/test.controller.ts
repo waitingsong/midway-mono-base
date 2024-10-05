@@ -26,7 +26,7 @@ export class TestController extends BaseController {
   @ContentType('text')
   @Get('/token')
   token(): string {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+
     const payload = this.ctx['jwtState'].user ? JSON.stringify(this.ctx['jwtState'].user) : 'Not found'
     const body = `\nRequest: ${payload}`
     return body

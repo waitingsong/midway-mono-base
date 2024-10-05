@@ -1,4 +1,4 @@
 
 export * from './db.dict.js'
-export * from './db.model.js'
+export type * from './db.model.js'
 
