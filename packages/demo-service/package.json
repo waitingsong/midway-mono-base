@@ -13,10 +13,10 @@
     "#@/*": "./test/*"
   },
   "dependencies": {
-    "@midwayjs/swagger": "^3.17.3",
-    "@mwcp/boot": "^24.0.0",
+    "@midwayjs/swagger": "^3.18.1",
+    "@mwcp/boot": "^24.1.0",
     "@scope/docs": "^0.0.0",
-    "pg": "^8.12.0"
+    "pg": "^8.13.0"
   },
   "devDependencies": {
     "swagger-ui-dist": "^5.17.14"
