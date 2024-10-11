@@ -64,7 +64,7 @@ git config --local i18n.commitencoding utf-8 \
 
 git push origin
 
-sed -i '/^## 安装全局依赖/,+60 d' README.md
+# sed -i '/^## 安装全局依赖/,+60 d' README.md
 
 if [ -n "$projectScope" ]; then
   sed -i "s#\(NPM scope: \`\)@scope#\1$projectScope#" README.md
